@@ -14,6 +14,9 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var startButton: UIButton!
     @IBOutlet weak var stopButton: UIButton!
+    @IBOutlet weak var xLabel: UILabel!
+    @IBOutlet weak var yLabel: UILabel!
+    @IBOutlet weak var zLabel: UILabel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,7 +34,9 @@ class ViewController: UIViewController {
         self.motionManager.startAccelerometerUpdatesToQueue(NSOperationQueue.currentQueue(), withHandler: {
             (accelerometerData:CMAccelerometerData!, error : NSError!) in
             println("update")
-            println(accelerometerData)
+            println("x: \(accelerometerData.acceleration.x)")
+            println("y: \(accelerometerData.acceleration.y)")
+            println("z: \(accelerometerData.acceleration.z)")
         })
     }
     
