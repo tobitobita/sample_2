@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- ファンクションキーイベント無効はすぐに実行する -->
+        <script src="js/cv-function-disabled.js"></script>
+        <title>Sample UI</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/jquery.bonsai.css" />
+        <link rel="stylesheet" href="css/common.css" />
+        <link rel="stylesheet" href="css/cv-tab.css" />
+        <link rel="stylesheet" href="css/cv-accordion.css" />
+        <link rel="stylesheet" href="css/cv-treeview.css" />
+        <link rel="stylesheet" href="css/cv-menu-toggle.css" />
+        <style>
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>Hello Sample UI!</h1>
+        </header>
+        <div id="container">
+            <div id="menu">
+                <h2>Menu</h2>
+                <div class="accordionSection">
+                    <div class="accordionHead">
+                        <h3>お気に入り</h3>
+                    </div>
+                    <div class="accordionBody">
+                        <ul id="favorite" class="treeview">
+                            <li>お気に入り<ul>
+                                    <li><a href="">お気に入り１</a></li>
+                                    <li><a href="">お気に入り２</a></li>
+                                    <li><a href="">お気に入り３</a></li>
+                                    <li><a href="">お気に入り４</a></li>
+                                    <li><a href="">お気に入り５</a></li>
+                                    <li><a href="">お気に入り６</a></li>
+                                    <li><a href="">お気に入り７</a></li>
+                                </ul></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="accordionSection">
+                    <div class="accordionHead">
+                        <h3>案件管理</h3>
+                    </div>
+                    <div class="accordionBody">
+                        <ul id="ankenList" class="treeview">
+                            <li>案件<ul>
+                                    <li><a href="">案件一覧照会</a></li>
+                                    <li><a href="">案件一覧編集</a></li>
+                                </ul></li>
+                            <li>受注<ul>
+                                    <li><a href="">受注新規登録</a></li>
+                                    <li><a href="">受注一覧照会</a></li>
+                                    <li><a href="">受注一覧編集</a></li>
+                                </ul></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div id="contents">
+                <h2>Contents</h2>
+                <ul class="tabs">
+                    <li class="selectedTab">タブ1</li>
+                    <li>タブ2</li>
+                    <li>タブ3</li>
+                    <li>タブ4</li>
+                </ul>
+                <div class="tabItems">
+                    <div class="tabItem">
+                        <p>親譲りの無鉄砲で小供の時から損ばかりしている。小学校に居る時分学校の二階から飛び降りて一週間ほど腰を抜かした事がある。</p>
+                    </div>
+                    <div class="tabItem hide">
+                        <p>なぜそんな無闇をしたと聞く人があるかも知れぬ。別段深い理由でもない。</p>
+                    </div>
+                    <div class="tabItem hide">
+                        <p>新築の二階から首を出していたら、同級生の一人が冗談に、いくら威張っても、そこから飛び降りる事は出来まい。</p>
+                    </div>
+                    <div class="tabItem hide">
+                        <p>弱虫やーい。と囃したからである。小使に負ぶさって帰って来た時、おやじが大きな眼をして二階ぐらいから飛び降りて腰を抜かす奴があるかと云ったから、この次は抜かさずに飛んで見せますと答えた。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer>
+            <div id="shortcut">
+
+            </div>
+            <p>&copy; cv</p>
+        </footer>
+        <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script src="js/jquery.bonsai.js"></script>
+        <script src="js/cv-menu-toggle.js"></script>
+        <script src="js/cv-treeview.js"></script>
+        <script src="js/cv-accordion.js"></script>
+        <script src="js/cv-tab.js"></script>
+        <script>
+            $(window).keydown(function (event) {
+                var result = false;
+                switch (event.keyCode) {
+                    case 112:
+                        break;
+                    case 113:
+                        break;
+                    case 114:
+                        break;
+                    case 115:
+                        break;
+                    case 116:
+                        break;
+                    case 117:
+                        break;
+                    case 118:
+                        break;
+                    case 119:
+                        break;
+                    case 120:
+                        break;
+                    case 121:
+                        break;
+                    case 122:
+                        break;
+                    case 123:
+                        break;
+                    case 124:
+                        break;
+                    default:
+                        result = true;
+                        break;
+                }
+                return result;
+            });
+        </script>
+    </body>
+</html>

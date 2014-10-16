@@ -1,0 +1,8 @@
+@charset 'utf-8';
+/*
+　メニュー内のツリー表示
+　※高速化のため、ID（#menu）を指定している。
+*/
+#menu .treeview {
+    display: none;
+}

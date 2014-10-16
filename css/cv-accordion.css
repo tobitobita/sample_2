@@ -1,0 +1,28 @@
+@charset 'utf-8';
+/*
+　メニュー内のアコーディオン表示
+　※高速化のため、ID（#menu）を指定している。
+*/
+#menu .accordionSection {
+    position:relative;
+}
+#menu .accordionHead {
+    position:relative;
+}
+#menu .accordionBody {
+    position:relative;
+}
+#menu .accordionToggle {
+    display: block;
+    position: absolute;
+    width:1em;
+    height:1em;
+    line-height: 1;
+    font-size: 80%;
+    text-align: center;
+    margin: 0;
+    bottom:0.125em;
+    right:0.5em;
+    border: 1px #808080 solid;
+    cursor: pointer;
+}

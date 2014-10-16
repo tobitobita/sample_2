@@ -1,0 +1,33 @@
+@charset 'utf-8';
+/*
+　コンテンツ内のタブ表示
+　※高速化のため、ID（#contents）を指定している。
+*/
+#contents .tabs {
+    overflow:hidden;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+#contents .tabs li{
+    background:#ccc;
+    padding:5px 25px;
+    float:left;
+    margin-right:1px;
+    cursor: pointer;
+}
+#contents .selectedTab {
+}
+#contents .tabs li.selectedTab {
+    background:#fff;
+}
+#contents .tabItems {
+}
+#contents .tabItems .tabItem {
+    background:#fff;
+    padding:20px;
+}
+#contents .hide {
+    display:none;
+}
+

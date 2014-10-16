@@ -1,0 +1,24 @@
+@charset 'utf-8';
+/*
+　メニューの表示・非表示表示
+　※高速化のため、ID（#menu）を指定している。
+*/
+#menuHide, #menuShow {
+    display: block;
+    position: absolute;
+    width:1.2em;
+    height:1.2em;
+    line-height: 1.2;
+    text-align: center;
+    margin: 0;
+    top:2px;
+    border: 1px #808080 solid;
+    cursor: pointer;
+}
+#menuHide {
+    right: 2px;
+}
+#menuShow {
+    left: 2px;
+    display: none;
+}
