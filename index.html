@@ -6,12 +6,15 @@
         <title>Sample UI</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/jquery-ui.min.css" />
         <link rel="stylesheet" href="css/jquery.bonsai.css" />
         <link rel="stylesheet" href="css/common.css" />
         <link rel="stylesheet" href="css/cv-tab.css" />
         <link rel="stylesheet" href="css/cv-accordion.css" />
         <link rel="stylesheet" href="css/cv-treeview.css" />
         <link rel="stylesheet" href="css/cv-menu-toggle.css" />
+        <link rel="stylesheet" href="css/cv-dialog-jquery-ui.css" />
+        <link rel="stylesheet" href="css/cv-tooltip-jquery-ui.css" />
         <style>
         </style>
     </head>
@@ -66,19 +69,56 @@
                     <li>タブ2</li>
                     <li>タブ3</li>
                     <li>タブ4</li>
+                    <li>タブ5</li>
                 </ul>
                 <div class="tabItems">
                     <div class="tabItem">
-                        <p>親譲りの無鉄砲で小供の時から損ばかりしている。小学校に居る時分学校の二階から飛び降りて一週間ほど腰を抜かした事がある。</p>
+                        <p><a href="#" id="dialog-link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-newwin"></span>Open Dialog</a></p>
+                        <!-- ui-dialog -->
+                        <div id="dialog" title="Dialog Title">
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                        </div>
                     </div>
                     <div class="tabItem hide">
-                        <p>なぜそんな無闇をしたと聞く人があるかも知れぬ。別段深い理由でもない。</p>
+                        <form action="">
+                            <select>
+                                <option>ドコモ</option>
+                                <option>au</option>
+                                <option>ソフトバンク</option>
+                                <option>Y!モバイル</option>
+                            </select>
+                        </form>
                     </div>
                     <div class="tabItem hide">
-                        <p>新築の二階から首を出していたら、同級生の一人が冗談に、いくら威張っても、そこから飛び降りる事は出来まい。</p>
+                        <form action="">
+                            <select multiple>
+                                <option>りんご</option>
+                                <option>みかん</option>
+                                <option>いちご</option>
+                                <option>なし</option>
+                                <option>もも</option>
+                            </select>
+                        </form>
                     </div>
                     <div class="tabItem hide">
-                        <p>弱虫やーい。と囃したからである。小使に負ぶさって帰って来た時、おやじが大きな眼をして二階ぐらいから飛び降りて腰を抜かす奴があるかと云ったから、この次は抜かさずに飛んで見せますと答えた。</p>
+                        <form action="">
+                            <fieldset>
+                                <legend>コンボボックスサンプル</legend>
+                                好きな麺類：<input type="text" list="Noodles">
+                                <datalist id="Noodles">
+                                    <option value="ラーメン"></option>
+                                    <option value="日本そば"></option>
+                                    <option value="つけ麺"></option>
+                                    <option value="油そば"></option>
+                                    <option value="焼きそば"></option>
+                                </datalist>
+                            </fieldset> 
+                        </form>
+                    </div>
+                    <div class="tabItem hide">
+                        <form action="">
+                            <span title="名前を入力してください">？</span><input>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -90,11 +130,13 @@
             <p>&copy; cv</p>
         </footer>
         <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script src="js/jquery-ui.min.js"></script>
         <script src="js/jquery.bonsai.js"></script>
         <script src="js/cv-menu-toggle.js"></script>
         <script src="js/cv-treeview.js"></script>
         <script src="js/cv-accordion.js"></script>
         <script src="js/cv-tab.js"></script>
+        <script src="js/cv-dialog-jquery-ui.js"></script>
         <script>
             $(window).keydown(function (event) {
                 var result = false;
@@ -130,6 +172,15 @@
                         break;
                 }
                 return result;
+            });
+            $(document).ready(function () {
+                $('body').tooltip({
+                    show: false,
+                    hide: false
+                });
+                $('.ui-dialog-titlebar-close').tooltip({
+                    disabled: true
+                });
             });
         </script>
     </body>

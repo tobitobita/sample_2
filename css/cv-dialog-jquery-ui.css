@@ -1,0 +1,11 @@
+/* Overlays */
+.ui-widget-overlay {
+    background-color: #ccc;
+    opacity: 0.3;
+}
+
+#dialog {
+    display: none;
+    border: 1px solid #ccc;
+    background-color: #fff;
+}
