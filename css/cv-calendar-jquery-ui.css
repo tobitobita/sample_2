@@ -1,0 +1,15 @@
+#ui-datepicker-div {
+    border: 1px solid #808080;
+    background-color: rgba(255, 255, 255, 0.67);
+}
+.ui-datepicker td span, .ui-datepicker td a {
+    text-align: center;
+}
+.ui-datepicker-prev span, .ui-datepicker-next span {
+    text-indent: 0;
+    cursor: pointer;
+}
+.ui-datepicker-trigger {
+    vertical-align: bottom;
+    cursor: pointer;
+}

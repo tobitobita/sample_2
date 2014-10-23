@@ -16,6 +16,7 @@
         <link rel="stylesheet" href="css/cv-dialog-jquery-ui.css" />
         <link rel="stylesheet" href="css/cv-tooltip-jquery-ui.css" />
         <link rel="stylesheet" href="css/cv-progress.css" />
+        <link rel="stylesheet" href="css/cv-calendar-jquery-ui.css" />
         <style>
         </style>
     </head>
@@ -83,16 +84,6 @@
                     </div>
                     <div class="tabItem hide">
                         <form action="">
-                            <select>
-                                <option>ドコモ</option>
-                                <option>au</option>
-                                <option>ソフトバンク</option>
-                                <option>Y!モバイル</option>
-                            </select>
-                        </form>
-                    </div>
-                    <div class="tabItem hide">
-                        <form action="">
                             <select multiple>
                                 <option>りんご</option>
                                 <option>みかん</option>
@@ -119,7 +110,7 @@
                     </div>
                     <div class="tabItem hide">
                         <form action="">
-                            <span title="名前を入力してください">？</span><input>
+                            <span tooltip="名前を入力してください">？</span><input>
                         </form>
                     </div>
                     <div class="tabItem hide">
@@ -128,6 +119,9 @@
                             <p>進行状況：<span class="progress-percnt">0</span>&percnt;<br>
                                 <progress value="0">進捗</progress></p>
                         </div>
+                    </div>
+                    <div class="tabItem hide">
+                        <p><input id="datepicker"></p>
                     </div>
                 </div>
             </div>
@@ -148,9 +142,8 @@
         <script src="js/cv-dialog-jquery-ui.js"></script>
         <script src="js/cv-tooltip-jquery-ui.js"></script>
         <script src="js/cv-progress.js"></script>
+        <script src="js/cv-calendar-jquery-ui.js"></script>
         <script>
-            
-            
             $(window).keydown(function (event) {
                 var result = false;
                 switch (event.keyCode) {
