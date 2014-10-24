@@ -1,0 +1,32 @@
+@charset 'utf-8';
+
+#shortcut {
+    position: relative;
+    width: 60em;
+    height: 2em;
+    margin: 0 auto;
+}
+.functionButton {
+    position: relative;
+    width: 4em;
+    height: 2em;
+    line-height: 1.666;
+    background-color: #ccc;
+    float: left;
+    margin: 0 0.25em;
+    cursor: pointer;
+}
+.functionSeparate {
+    margin-right: 3em;
+}
+.functionButton p {
+    color: #000;
+    text-align: center;
+    margin: 0;
+    cursor: pointer;
+    font-size: 60%
+}
+.functionNone {
+    cursor: default;
+    background-color: #666;
+}

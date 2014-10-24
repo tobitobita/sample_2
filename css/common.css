@@ -32,7 +32,7 @@ header {
     top: 4em;
     left: 0;
     width:100%;
-    height:calc(100% - 8em);
+    height:calc(100% - 6em);
     /*
     display: -webkit-box;
     display: -moz-box;
@@ -78,8 +78,18 @@ footer {
     left: 0;
     bottom: 0;
     width:100%;
-    height:calc(8em - 1px);
+    height:calc(5em - 1px);
     border-top: 1px #808080 solid;
     clear: both;
     background-color: #cfc;
+    padding-top: 1em;
+}
+#copyright {
+    clear: both;
+    position: relative;
+}
+#copyright p {
+    text-align: right;
+    margin-right: 1em;
+    margin-bottom: 0;
 }

@@ -17,6 +17,7 @@
         <link rel="stylesheet" href="css/cv-tooltip-jquery-ui.css" />
         <link rel="stylesheet" href="css/cv-progress.css" />
         <link rel="stylesheet" href="css/cv-calendar-jquery-ui.css" />
+        <link rel="stylesheet" href="css/cv-functions.css" />
         <style>
         </style>
     </head>
@@ -128,13 +129,157 @@
         </div>
         <footer>
             <div id="shortcut">
-
+                <div id="f1" class="functionButton">
+                    <p>F1</p>
+                </div>
+                <div id="f2" class="functionButton">
+                    <p>F2</p>
+                </div>
+                <div id="f3" class="functionButton">
+                    <p>F3</p>
+                </div>
+                <div id="f4" class="functionButton functionSeparate">
+                    <p>F4</p>
+                </div>
+                <div id="f5" class="functionButton">
+                    <p>F5</p>
+                </div>
+                <div id="f6" class="functionButton">
+                    <p>F6</p>
+                </div>
+                <div id="f7" class="functionButton">
+                    <p>F7</p>
+                </div>
+                <div id="f8" class="functionButton functionSeparate">
+                    <p>F8</p>
+                </div>
+                <div id="f9" class="functionButton">
+                    <p>F9</p>
+                </div>
+                <div id="f10" class="functionButton">
+                    <p>F10</p>
+                </div>
+                <div id="f11" class="functionButton">
+                    <p>F11</p>
+                </div>
+                <div id="f12" class="functionButton">
+                    <p>F12</p>
+                </div>
             </div>
-            <p>&copy; cv</p>
+            <div id="copyright">
+                <p>&copy; cv</p>
+            </div>
         </footer>
         <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
         <script src="js/jquery-ui.min.js"></script>
         <script src="js/jquery.bonsai.js"></script>
+        <script src="js/cv-common-functions.js"></script>
+        <script>
+            var viewFuncsions = {
+                f1: {
+                    state: 'none'
+                },
+                f2: {
+                    state: 'enabled',
+                    title: '新規',
+                    func: showCreateView
+                },
+                f3: {
+                    state: 'enabled',
+                    title: '新規コピー',
+                    func: showCopyView
+                },
+                f4: {
+                    state: 'enabled',
+                    title: '変更',
+                    func: showModifyView
+                },
+                f5: {
+                    state: 'enabled',
+                    title: 'アップロード',
+                    func: uploadData
+                },
+                f6: {
+                    state: 'enabled',
+                    title: 'ダウンロード',
+                    func: downloadData
+                },
+                f7: {
+                    state: 'enabled',
+                    title: '印刷',
+                    func: printData
+                },
+                f8: {
+                    state: 'none'
+                },
+                f9: {
+                    state: 'enabled',
+                    title: '削除',
+                    func: deleteData
+                },
+                f10: {
+                    state: 'none'
+                },
+                f11: {
+                    state: 'none'
+                },
+                f12: {
+                    state: 'none'
+                }
+            };
+//            var viewFuncsions = {
+//                f1: {
+//                    state: 'none'
+//                },
+//                f2: {
+//                    state: 'enabled',
+//                    title: '行追加',
+//                    func: addRow
+//                },
+//                f3: {
+//                    state: 'enabled',
+//                    title: '行コピー',
+//                    func: copyRow
+//                },
+//                f4: {
+//                    state: 'none'
+//                },
+//                f5: {
+//                    state: 'enabled',
+//                    title: 'アップロード',
+//                    func: uploadData
+//                },
+//                f6: {
+//                    state: 'enabled',
+//                    title: 'ダウンロード',
+//                    func: downloadData
+//                },
+//                f7: {
+//                    state: 'enabled',
+//                    title: '印刷',
+//                    func: printData
+//                },
+//                f8: {
+//                    state: 'none'
+//                },
+//                f9: {
+//                    state: 'enabled',
+//                    title: '削除',
+//                    func: deleteData
+//                },
+//                f10: {
+//                    state: 'none'
+//                },
+//                f11: {
+//                    state: 'none'
+//                },
+//                f12: {
+//                    state: 'enabled',
+//                    title: '保存',
+//                    func: saveData
+//                }
+//            };
+        </script>
         <script src="js/cv-menu-toggle.js"></script>
         <script src="js/cv-treeview.js"></script>
         <script src="js/cv-accordion.js"></script>
@@ -143,42 +288,6 @@
         <script src="js/cv-tooltip-jquery-ui.js"></script>
         <script src="js/cv-progress.js"></script>
         <script src="js/cv-calendar-jquery-ui.js"></script>
-        <script>
-            $(window).keydown(function (event) {
-                var result = false;
-                switch (event.keyCode) {
-                    case 112:
-                        break;
-                    case 113:
-                        break;
-                    case 114:
-                        break;
-                    case 115:
-                        break;
-                    case 116:
-                        break;
-                    case 117:
-                        break;
-                    case 118:
-                        break;
-                    case 119:
-                        break;
-                    case 120:
-                        break;
-                    case 121:
-                        break;
-                    case 122:
-                        break;
-                    case 123:
-                        break;
-                    case 124:
-                        break;
-                    default:
-                        result = true;
-                        break;
-                }
-                return result;
-            });
-        </script>
+        <script src="js/cv-functions.js"></script>
     </body>
 </html>
