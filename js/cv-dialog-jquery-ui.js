@@ -3,15 +3,16 @@ $(document).ready(function () {
         modal: true,
         autoOpen: false,
         width: 400,
+        closeText: 'X',
         buttons: [
             {
-                text: "Ok",
+                text: "はい",
                 click: function () {
                     $(this).dialog("close");
                 }
             },
             {
-                text: "Cancel",
+                text: "いいえ",
                 click: function () {
                     $(this).dialog("close");
                 }

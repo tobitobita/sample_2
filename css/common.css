@@ -8,7 +8,7 @@ body {
     margin: 0;
     padding: 0;
 }
-input, select, datalist {
+input, select, datalist, button {
     font-family:'Helvetica Neue', 'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ ProN W3', 'Meiryo', 'メイリオ', sans-serif;
     font-size: 120%;
 }
@@ -22,7 +22,7 @@ header {
     width:100%;
     height:calc(4em - 1px);
     border-bottom: 1px #808080 solid;
-    background-color: #fcc;
+    background-color: #c33;
 }
 /*
 　中身の枠
@@ -49,7 +49,7 @@ header {
     height:calc(100% - 4em);
     border-right: 1px #808080 solid;
     float:left;
-    background-color: #ffc;
+    background-color: #cc3;
 }
 
 #menu h2 {
@@ -68,7 +68,7 @@ header {
     width:calc(100% - 20em);
     height:calc(100% - 4em);
     float:left;
-    background-color: #fcf;
+    background-color: #3cc;
 }
 /*
 　フッター
@@ -81,7 +81,7 @@ footer {
     height:calc(5em - 1px);
     border-top: 1px #808080 solid;
     clear: both;
-    background-color: #cfc;
+    background-color: #3c3;
     padding-top: 1em;
 }
 #copyright {

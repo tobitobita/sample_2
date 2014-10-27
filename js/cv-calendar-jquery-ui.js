@@ -1,8 +1,7 @@
 $(document).ready(function () {
     $("#datepicker").datepicker({
         showOn: "button",
-        buttonImage: "img/calendar_blank.png",
-        buttonImageOnly: true,
+        buttonImageOnly: false,
         buttonText: "カレンダーを表示",
         prevText: "≪",
         nextText: "≫",

@@ -9,3 +9,20 @@
     border: 1px solid #ccc;
     background-color: #fff;
 }
+
+.ui-dialog {
+    background-color: #fff;
+    border: 1px solid #ccc;
+}
+
+.ui-dialog .ui-dialog-titlebar-close {
+    width: 1.5em;
+    height: 1.5em;
+    text-align: center;
+    font-size: 80%
+}
+
+.ui-dialog .ui-dialog-titlebar-close .ui-button-text {
+    text-indent: 0;
+    padding: 0;
+}
