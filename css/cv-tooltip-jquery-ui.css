@@ -10,3 +10,7 @@
 body .ui-tooltip {
     border: 1px solid #333;
 }
+
+.cv-tooltip {
+    cursor: pointer;
+}

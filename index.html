@@ -3,9 +3,9 @@
     <head>
         <!-- ファンクションキーイベント無効はすぐに実行する -->
         <script src="js/cv-function-disabled.js"></script>
-        <title>サンプル UI</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>サンプル UI</title>
         <link rel="stylesheet" href="css/jquery-ui.min.css" />
         <link rel="stylesheet" href="css/jquery.bonsai.css" />
         <link rel="stylesheet" href="css/common.css" />
@@ -35,7 +35,11 @@
                     <div class="accordionBody">
                         <ul id="favorite" class="treeview">
                             <li>お気に入り<ul>
-                                    <li><a href="">お気に入り１</a></li>
+                                    <li><a href="">お気に入り１</a><ul>
+                                            <li><a href="">お気に入りA</a></li>
+                                            <li><a href="">お気に入りB</a></li>
+                                            <li><a href="">お気に入りC</a></li>
+                                        </ul></li>
                                     <li><a href="">お気に入り２</a></li>
                                     <li><a href="">お気に入り３</a></li>
                                     <li><a href="">お気に入り４</a></li>
@@ -77,7 +81,7 @@
                 </ul>
                 <div class="tabItems">
                     <div class="tabItem">
-                        <p><a href="#" id="dialog-link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-newwin"></span>Open Dialog</a></p>
+                        <p><a href="#" id="dialog-link">Open Dialog</a></p>
                         <!-- ui-dialog -->
                         <div id="dialog" title="削除確認">
                             <p>削除します。よろしいですか？</p>
@@ -110,9 +114,7 @@
                         </form>
                     </div>
                     <div class="tabItem hide">
-                        <form action="">
-                            <span tooltip="名前を入力してください">？</span><input>
-                        </form>
+                        <span class="cv-tooltip" tooltip="名前を入力してください">？</span><input>
                     </div>
                     <div class="tabItem hide">
                         <div id="progress">
@@ -175,74 +177,24 @@
         <script src="js/jquery.bonsai.js"></script>
         <script src="js/cv-common-functions.js"></script>
         <script>
-            var viewFuncsions = {
-                f1: {
-                    state: 'none'
-                },
-                f2: {
-                    state: 'enabled',
-                    title: '新規',
-                    func: showCreateView
-                },
-                f3: {
-                    state: 'enabled',
-                    title: '新規コピー',
-                    func: showCopyView
-                },
-                f4: {
-                    state: 'enabled',
-                    title: '変更',
-                    func: showModifyView
-                },
-                f5: {
-                    state: 'enabled',
-                    title: 'アップロード',
-                    func: uploadData
-                },
-                f6: {
-                    state: 'enabled',
-                    title: 'ダウンロード',
-                    func: downloadData
-                },
-                f7: {
-                    state: 'enabled',
-                    title: '印刷',
-                    func: printData
-                },
-                f8: {
-                    state: 'none'
-                },
-                f9: {
-                    state: 'enabled',
-                    title: '削除',
-                    func: deleteData
-                },
-                f10: {
-                    state: 'none'
-                },
-                f11: {
-                    state: 'none'
-                },
-                f12: {
-                    state: 'none'
-                }
-            };
 //            var viewFuncsions = {
 //                f1: {
 //                    state: 'none'
 //                },
 //                f2: {
 //                    state: 'enabled',
-//                    title: '行追加',
-//                    func: addRow
+//                    title: '新規',
+//                    func: showCreateView
 //                },
 //                f3: {
 //                    state: 'enabled',
-//                    title: '行コピー',
-//                    func: copyRow
+//                    title: '新規コピー',
+//                    func: showCopyView
 //                },
 //                f4: {
-//                    state: 'none'
+//                    state: 'enabled',
+//                    title: '変更',
+//                    func: showModifyView
 //                },
 //                f5: {
 //                    state: 'enabled',
@@ -274,11 +226,61 @@
 //                    state: 'none'
 //                },
 //                f12: {
-//                    state: 'enabled',
-//                    title: '保存',
-//                    func: saveData
+//                    state: 'none'
 //                }
 //            };
+            var viewFuncsions = {
+                f1: {
+                    state: 'none'
+                },
+                f2: {
+                    state: 'enabled',
+                    title: '行追加',
+                    func: addRow
+                },
+                f3: {
+                    state: 'enabled',
+                    title: '行コピー',
+                    func: copyRow
+                },
+                f4: {
+                    state: 'none'
+                },
+                f5: {
+                    state: 'enabled',
+                    title: 'アップロード',
+                    func: uploadData
+                },
+                f6: {
+                    state: 'enabled',
+                    title: 'ダウンロード',
+                    func: downloadData
+                },
+                f7: {
+                    state: 'enabled',
+                    title: '印刷',
+                    func: printData
+                },
+                f8: {
+                    state: 'none'
+                },
+                f9: {
+                    state: 'enabled',
+                    title: '削除',
+                    func: deleteData
+                },
+                f10: {
+                    state: 'none'
+                },
+                f11: {
+                    state: 'none'
+                },
+                f12: {
+                    state: 'enabled',
+                    title: '保存',
+                    func: saveData
+                }
+            };
         </script>
         <script src="js/cv-menu-toggle.js"></script>
         <script src="js/cv-treeview-jquery-bonsai.js"></script>
