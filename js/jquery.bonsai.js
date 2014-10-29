@@ -1,5 +1,6 @@
 (function($){
   $.fn.bonsai = function(options) {
+    var args = arguments;
     return this.each(function() {
       var bonsai = $(this).data('bonsai');
       if (!bonsai) {
@@ -8,7 +9,7 @@
       }
       if (typeof options == 'string') {
         var method = options;
-        bonsai[method].apply(bonsai, [].slice.call(arguments, 1));
+        bonsai[method].apply(bonsai, [].slice.call(args, 1));
       }
     });
   };
@@ -34,11 +35,21 @@
   };
   var Bonsai = function(el, options) {
     options = options || {};
-    this.update(el, options);
-    if (options.expandAll) this.expandAll();
+    this.options = $.extend({}, $.bonsai.defaults, options);
+    this.el = $(el).addClass('bonsai').data('bonsai', this);
+    this.update();
+    if (this.isRootNode()) {
+      if (this.options.handleDuplicateCheckboxes) this.handleDuplicates();
+      if (this.options.checkboxes) this.el.qubit(this.options);
+      if (this.options.addExpandAll) this.addExpandAllLink();
+      if (this.options.addSelectAll) this.addSelectAllLink();
+    }
+    if (this.options.expandAll) this.expandAll();
   };
   Bonsai.prototype = {
-    initialised: false,
+    isRootNode: function() {
+      return this.options.scope == this.el;
+    },
     toggle: function(listItem) {
       if (!$(listItem).hasClass('expanded')) {
         this.expand(listItem);
@@ -80,28 +91,16 @@
     collapseAll: function() {
       this.collapse(this.el.find('li'));
     },
-    update: function(el, options) {
+    update: function() {
       var self = this;
-      var options = $.extend({}, $.bonsai.defaults, options);
-      var checkboxes, isRootNode;
-      this.el = el = $(el);
       // store the scope in the options for child nodes
-      if (!options.scope) {
-        options.scope = el;
-        isRootNode = true;
-      }
-      this.options = options;
-      el.addClass('bonsai');
-
-      if (options.checkboxes) {
-        checkboxes = true;
-        // handle checkboxes once at the root of the tree, not on each element
-        options.checkboxes = false;
+      if (!this.options.scope) {
+        this.options.scope = this.el;
       }
       // look for a nested list (if any)
-      el.children().each(function() {
+      this.el.children().each(function() {
         var item = $(this);
-        if (options.createCheckboxes) self.insertCheckbox(item);
+        if (self.options.createCheckboxes) self.insertCheckbox(item);
         // insert a thumb if it doesn't already exist
         if (item.children().filter('.thumb').length == 0) {
           var thumb = $('<div class="thumb"></div>');
@@ -111,20 +110,15 @@
           });
         }
         var subLists = item.children().filter('ol, ul');
-        // if there are no child lists
-        if (subLists.length == 0) {
-          item.removeClass('has-children');
-        }
+				item.toggleClass('has-children', subLists.find('li').length > 0);
         // if there is a child list
         subLists.each(function() {
-          // that is not empty
+          // that's not empty
           if ($('li', this).length == 0) {
             return;
           }
           // then this el has children
-          item.addClass('has-children')
-            // attach the sub-list to the item
-            .data('subList', this);
+          item.data('subList', this);
           // collapse the nested list
           if (item.hasClass('expanded')) {
             self.expand(item);
@@ -133,21 +127,15 @@
             self.collapse(item);
           }
           // handle any deeper nested lists
-          $(this).bonsai('update');
+          var exists = !!$(this).data('bonsai');
+          $(this).bonsai(exists ? 'update' : self.options);
         });
       });
-      // if this is root node of the tree
-      if (isRootNode) {
-        if (checkboxes) el.qubit(options);
-        if (this.options.addExpandAll) this.addExpandAll();
-        if (this.options.addSelectAll) this.addSelectAll();
-      }
-      this.expand = options.expand || this.expand;
-      this.collapse = options.collapse || this.collapse;
-      this.el.data('bonsai', this);
-      this.initialised = true;
+      this.expand = this.options.expand || this.expand;
+      this.collapse = this.options.collapse || this.collapse;
     },
     insertCheckbox: function(listItem) {
+      if (listItem.find('> input[type=checkbox]').length) return;
       var id = this.generateId(listItem),
           checkbox = $('<input type="checkbox" name="'
             + this.getCheckboxName(listItem) + '" id="' + id + '" /> '
@@ -156,51 +144,29 @@
           // get the first text node for the label
           text = listItem.contents().filter(function() {
             return this.nodeType == 3;
-          }).first(),
-          self = this;
+          }).first();
       checkbox.val(listItem.data('value'));
       checkbox.prop('checked', listItem.data('checked'))
       children.remove();
       listItem.append(checkbox)
-        .append($('<label for="' + id + '">')
-          .append(text ? text : children.first())
-      )
+        .append(
+          $('<label for="' + id + '">').append(text ? text : children.first())
+        )
         .append(text ? children : children.slice(1));
-      if (this.options.handleDuplicateCheckboxes) {
-        this.handleDuplicates(checkbox);
-      }
     },
-    handleDuplicates: function(checkbox) {
-      var self = this,
-          checkbox = $(checkbox);
-      checkbox.bind('change', function(e) {
-        var isChecked = checkbox.prop('checked');
-        if (this.value) {
-          var id = this.id;
-          e.duplicateIds = e.duplicateIds || [];
-          e.duplicateIds.push(id);
-          // select all duplicate checkboxes within the same scope
-          self.options.scope
-            .find('input[type=checkbox]')
-            .filter('[value="' + $(checkbox).attr('value') + '"][name="' + $(checkbox).attr('name') + '"]'
-            + (isChecked ? ':not(:checked)' : ':checked'))
-            .filter(function() {
-              return e.duplicateIds.indexOf(this.id) == -1;
-            })
-            .each(function() {
-              // copy checked and indeterminate to the duplicate
-              $(this).prop({
-                checked: isChecked,
-                indeterminate: $(this).prop('indeterminate')
-              })
-                .trigger({
-                  type: 'change',
-                  duplicateIds: e.duplicateIds,
-                  doneIds: e.doneIds
-                });
-            });
-        }
-        return true;
+    handleDuplicates: function() {
+      var self = this;
+      self.el.on('change', function(ev) {
+        var checkbox = $(ev.target);
+        // select all duplicate checkboxes that need to be updated
+        var selector = 'input[type=checkbox]'
+            + '[value="' + checkbox.val() + '"]'
+            + '[name="' + checkbox.attr('name') + '"]'
+            + (checkbox.prop('checked') ? ':not(:checked)' : ':checked');
+        self.el.find(selector).prop({
+          checked: checkbox.prop('checked'),
+          indeterminate: checkbox.prop('indeterminate')
+        }).change();
       });
     },
     idPrefix: 'checkbox-',
@@ -215,26 +181,23 @@
       return listItem.data('name')
         || listItem.parents().filter('[data-name]').data('name');
     },
-    addExpandAll: function() {
-      var self = this,
-          scope = this.options.scope;
+    addExpandAllLink: function() {
+      var self = this;
       $('<div class="expand-all">')
         .append($('<a class="all">Expand all</a>')
-          .css('cursor', 'pointer')
-          .bind('click', function() {
+          .on('click', function() {
             self.expandAll();
           })
-      )
+        )
         .append('<i class="separator"></i>')
         .append($('<a class="none">Collapse all</a>')
-          .css('cursor', 'pointer')
-          .bind('click', function() {
+          .on('click', function() {
             self.collapseAll();
           })
-      )
+        )
         .insertBefore(this.el);
     },
-    addSelectAll: function() {
+    addSelectAllLink: function() {
       var scope = this.options.scope,
           self = this;
       function getCheckboxes() {
@@ -248,7 +211,7 @@
       $('<div class="check-all">')
         .append($('<a class="all">Select all</a>')
           .css('cursor', 'pointer')
-          .bind('click', function() {
+          .on('click', function() {
             getCheckboxes().prop({
               checked: true,
               indeterminate: false
@@ -258,7 +221,7 @@
         .append('<i class="separator"></i>')
         .append($('<a class="none">Select none</a>')
           .css('cursor', 'pointer')
-          .bind('click', function() {
+          .on('click', function() {
             getCheckboxes().prop({
               checked: false,
               indeterminate: false
