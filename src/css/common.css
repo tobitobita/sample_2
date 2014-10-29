@@ -1,0 +1,34 @@
+body {
+    margin-top:60px;
+    background-color:#fff;
+}
+a:link,a:visited,a:hover,a:active {
+    color:#4169e1;
+}
+.navbar a:link,
+.navbar a:visited,
+.navbar a:hover,
+.navbar a:active {
+    color:#fff;
+}
+.navbar li a:link,
+.navbar li a:visited,
+.navbar li a:hover,
+.navbar li a:active {
+    color:#fff;
+}
+div.aid {
+    background-color: #ffb6c1;
+}
+a.aid:link,a.aid:visited,a.aid:hover,a.aid:active {
+    color:#fff;
+}
+.navbar-inverse {
+    background-image: linear-gradient(to bottom, #808080 0px, #333333 100%);
+}
+img {
+    margin:0;
+    padding:0;
+    vertical-align:middle;
+    border-style:none;
+}

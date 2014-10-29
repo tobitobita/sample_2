@@ -1,0 +1,19 @@
+{
+  "name": "sample_dashboard",
+  "version": "0.0.0",
+  "authors": [
+    "tobitobita <tobitobita.jp@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.2.0",
+    "fullcalendar": "~2.1.1"
+  }
+}
