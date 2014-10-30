@@ -7,7 +7,13 @@
         <meta name="Keywords" content="サンプル,ダミー">
         <meta name="description" content="サンプルのダミーです。">
         <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/fullcalendar.min.css">
         <link rel="stylesheet" href="css/common.css">
+        <style>
+            #calendar {
+                width:50%;
+            }
+        </style>
     </head>
     <body>
         <div class="navbar navbar-inverse navbar-fixed-top">
@@ -20,9 +26,146 @@
         <div class="container">
             <h1><a href="">ダミー</a></h1>
             <p><a href=""><img src="http://dummyimage.com/120x100/808080/ffffff.png" alt="ダミー" title="ダミー" /></a></p>
+            <div id="calendar"></div>
         </div>
         <script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
+        <script src="js/moment.min.js"></script>
+        <script src="js/fullcalendar.min.js"></script>
         <script src="js/common.js"></script>
+        <script>
+            $(document).ready(function () {
+                // Documentの読み込みが完了するまで待機し、カレンダーを初期化します。
+                $('#calendar').fullCalendar({
+                    lang: 'ja',
+                    // ヘッダーのタイトルとボタン
+                    header: {
+                        // title, prev, next, prevYear, nextYear, today
+                        left: 'title',
+                        center: '',
+                        right: 'today month,agendaWeek,agendaDay prev,next'
+                    },
+                    // jQuery UI theme
+                    theme: false,
+                    // 最初の曜日
+//                    firstDay: 1, // 1:月曜日
+                    // 土曜、日曜を表示
+//                    weekends: true,
+                    // 週モード (fixed, liquid, variable)
+//                    weekMode: 'fixed',
+                    // 週数を表示
+//                    weekNumbers: false,
+                    // 高さ(px)
+                    //height: 700,
+                    // コンテンツの高さ(px)
+                    //contentHeight: 600,
+                    // カレンダーの縦横比(比率が大きくなると高さが縮む)
+                    //aspectRatio: 1.35,
+                    // ビュー表示イベント
+                    viewDisplay: function (view) {
+                        //alert('ビュー表示イベント ' + view.title);
+                    },
+                    // ウィンドウリサイズイベント
+                    windowResize: function (view) {
+                        //alert('ウィンドウリサイズイベント');
+                    },
+                    // 日付クリックイベント
+                    dayClick: function () {
+                        //alert('日付クリックイベント');
+                    },
+                    // 初期表示ビュー
+                    defaultView: 'agendaWeek',
+                    // 終日スロットを表示
+                    allDaySlot: false,
+                    // スロットの分
+//                    slotMinutes: 15,
+                    // 選択する時間間隔
+//                    snapMinutes: 15,
+                    // TODO よくわからない
+                    //defaultEventMinutes: 120,
+                    // スクロール開始時間
+//                    firstHour: 9,
+                    // 時間の書式
+                    axisFormat: 'H:mm',
+                    timeFormat: {
+                        agenda: 'HH:mm',
+                        'default': 'H:mm'
+                    },
+                    // 列の書式
+                    columnFormat: {
+//                        month: 'ddd', // 月
+                        week: 'D[(]ddd[)]'
+                    },
+                    // タイトルの書式
+                    titleFormat: {
+                        month: 'YYYY年M月'
+//                        week: "YYYY年M月d日"
+                    },
+                    // ボタン文字列
+                    buttonText: {
+//                        prev: '&lsaquo;', // <
+//                        next: '&rsaquo;', // >
+//                        prevYear: '&laquo;', // <<
+//                        nextYear: '&raquo;', // >>
+                        today: '今日',
+                        month: '月',
+                        week: '週',
+                        day: '日'
+                    },
+                    scrollTime: '00:00:00',
+                    // 選択可
+//                    selectable: true,
+                    // 選択時にプレースホルダーを描画
+//                    selectHelper: true,
+                    // 自動選択解除
+//                    unselectAuto: true,
+                    // 自動選択解除対象外の要素
+//                    unselectCancel: '',
+                    // イベントソース
+                    eventSources: [
+                        {
+                            events: [
+                                {
+                                    start: '2014-10-30 10:00:00',
+                                    end: '2014-10-30 11:00:00'
+                                },
+                                {
+                                    start: '2014-10-30 12:00:00',
+                                    end: '2014-10-30 13:00:00'
+                                },
+                                {
+                                    start: '2014-10-30 14:00:00',
+                                    end: '2014-10-30 15:00:00'
+                                },
+                                {
+                                    start: '2014-10-30 16:00:00',
+                                    end: '2014-10-30 17:00:00'
+                                },
+                                {
+                                    start: '2014-10-30 18:00:00',
+                                    end: '2014-10-30 19:00:00'
+                                },
+                                {
+                                    start: '2014-10-30 20:00:00',
+                                    end: '2014-10-30 21:00:00'
+                                },
+                                {
+                                    start: '2014-10-30 23:00:00',
+                                    end: '2014-10-31 01:34:56'
+                                }
+                            ]
+                        }
+                    ]
+                });
+                // 動的にオプションを変更する
+                //$('#calendar').fullCalendar('option', 'height', 700);
+
+                // カレンダーをレンダリング。表示切替時などに使用
+                //$('#calendar').fullCalendar('render');
+
+                // カレンダーを破棄（イベントハンドラや内部データも破棄する）
+                //$('#calendar').fullCalendar('destroy')
+            });
+        </script>
     </body>
 </html>

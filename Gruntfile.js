@@ -41,6 +41,12 @@ module.exports = function (grunt) {
                         src: 'bower_components/bootstrap/dist/js/bootstrap.min.js', dest: 'dist/js/bootstrap.min.js'
                     }, {
                         src: 'bower_components/jquery/dist/jquery.min.js', dest: 'dist/js/jquery.min.js'
+                    }, {
+                        src: 'bower_components/moment/min/moment-with-locales.min.js', dest: 'dist/js/moment.min.js'
+                    }, {
+                        src: 'bower_components/fullcalendar/dist/fullcalendar.min.js', dest: 'dist/js/fullcalendar.min.js'
+                    }, {
+                        src: 'bower_components/fullcalendar/dist/fullcalendar.min.css', dest: 'dist/css/fullcalendar.min.css'
                     }
                 ]
             }
