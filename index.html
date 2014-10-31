@@ -8,6 +8,7 @@
         <title>サンプル UI</title>
         <link rel="stylesheet" href="css/jquery-ui.min.css" />
         <link rel="stylesheet" href="css/dhtmlxcalendar.css" />
+        <link rel="stylesheet" href="css/dhtmlxcombo.css" />
         <link rel="stylesheet" href="css/jquery.bonsai.css" />
         <link rel="stylesheet" href="css/common.css" />
         <link rel="stylesheet" href="css/cv-tab.css" />
@@ -100,19 +101,36 @@
                         </form>
                     </div>
                     <div class="tabItem hide">
-                        <form action="">
-                            <fieldset>
-                                <legend>コンボボックスサンプル</legend>
-                                好きな麺類：<input type="text" list="Noodles">
-                                <datalist id="Noodles">
-                                    <option value="ラーメン"></option>
-                                    <option value="日本そば"></option>
-                                    <option value="つけ麺"></option>
-                                    <option value="油そば"></option>
-                                    <option value="焼きそば"></option>
-                                </datalist>
-                            </fieldset> 
-                        </form>
+                        <div>
+                            <form action="">
+                                <fieldset>
+                                    <legend>コンボボックスサンプル（HTML5）</legend>
+                                    好きな麺類：<input type="text" list="Noodles">
+                                    <datalist id="Noodles">
+                                        <option value="ラーメン"></option>
+                                        <option value="日本そば"></option>
+                                        <option value="つけ麺"></option>
+                                        <option value="油そば"></option>
+                                        <option value="焼きそば"></option>
+                                    </datalist>
+                                </fieldset> 
+                            </form>
+                        </div>
+                        <div>
+                            <form action="">
+                                <fieldset>
+                                    <legend>コンボボックスサンプル（dhtmlxcombo）</legend>
+                                    好きな麺類：<select id="noodlesByDhtmlxcombo">
+                                        <option value="" selected></option>
+                                        <option value="ラーメン">ラーメン</option>
+                                        <option value="日本そば">日本そば</option>
+                                        <option value="つけ麺">つけ麺</option>
+                                        <option value="油そば">油そば</option>
+                                        <option value="焼きそば">焼きそば</option>
+                                    </select>
+                                </fieldset> 
+                            </form>
+                        </div>
                     </div>
                     <div class="tabItem hide">
                         <span class="cv-tooltip" tooltip="名前を入力してください">？</span><input>
@@ -179,113 +197,10 @@
         <script src="js/jquery-ui.min.js"></script>
         <script src="js/jquery.bonsai.js"></script>
         <script src="js/dhtmlxcalendar.js"></script>
+        <script src="js/dhtmlxcombo.js"></script>
         <script src="js/cv-common-functions.js"></script>
-        <script>
-//            var viewFuncsions = {
-//                f1: {
-//                    state: 'none'
-//                },
-//                f2: {
-//                    state: 'enabled',
-//                    title: '新規',
-//                    func: showCreateView
-//                },
-//                f3: {
-//                    state: 'enabled',
-//                    title: '新規コピー',
-//                    func: showCopyView
-//                },
-//                f4: {
-//                    state: 'enabled',
-//                    title: '変更',
-//                    func: showModifyView
-//                },
-//                f5: {
-//                    state: 'enabled',
-//                    title: 'アップロード',
-//                    func: uploadData
-//                },
-//                f6: {
-//                    state: 'enabled',
-//                    title: 'ダウンロード',
-//                    func: downloadData
-//                },
-//                f7: {
-//                    state: 'enabled',
-//                    title: '印刷',
-//                    func: printData
-//                },
-//                f8: {
-//                    state: 'none'
-//                },
-//                f9: {
-//                    state: 'enabled',
-//                    title: '削除',
-//                    func: deleteData
-//                },
-//                f10: {
-//                    state: 'none'
-//                },
-//                f11: {
-//                    state: 'none'
-//                },
-//                f12: {
-//                    state: 'none'
-//                }
-//            };
-            var viewFuncsions = {
-                f1: {
-                    state: 'none'
-                },
-                f2: {
-                    state: 'enabled',
-                    title: '行追加',
-                    func: addRow
-                },
-                f3: {
-                    state: 'enabled',
-                    title: '行コピー',
-                    func: copyRow
-                },
-                f4: {
-                    state: 'none'
-                },
-                f5: {
-                    state: 'enabled',
-                    title: 'アップロード',
-                    func: uploadData
-                },
-                f6: {
-                    state: 'enabled',
-                    title: 'ダウンロード',
-                    func: downloadData
-                },
-                f7: {
-                    state: 'enabled',
-                    title: '印刷',
-                    func: printData
-                },
-                f8: {
-                    state: 'none'
-                },
-                f9: {
-                    state: 'enabled',
-                    title: '削除',
-                    func: deleteData
-                },
-                f10: {
-                    state: 'none'
-                },
-                f11: {
-                    state: 'none'
-                },
-                f12: {
-                    state: 'enabled',
-                    title: '保存',
-                    func: saveData
-                }
-            };
-        </script>
+        <script src="js/cv-function-data.js"></script>
+        <script src="js/cv-init-functions.js"></script>
         <script src="js/cv-menu-toggle.js"></script>
         <script src="js/cv-treeview-jquery-bonsai.js"></script>
         <script src="js/cv-accordion.js"></script>
@@ -293,77 +208,9 @@
         <script src="js/cv-dialog-jquery-ui.js"></script>
         <script src="js/cv-tooltip-jquery-ui.js"></script>
         <script src="js/cv-progress.js"></script>
+        <script src="js/cv-calendar-data.js"></script>
         <script src="js/cv-calendar-jquery-ui.js"></script>
-        <script>
-            $(document).ready(function () {
-
-                var myCalendar = new dhtmlXCalendarObject({
-                    input: "calendar_input",
-                    button: "calendar_icon"
-                });
-                myCalendar.setWeekStartDay(7);// sunday
-                myCalendar.hideTime();
-                myCalendar.disableDays('year', [
-                     '2014-10-04',
-                     '2014-10-05',
-                     '2014-10-11',
-                     '2014-10-12',
-                     '2014-10-18',
-                     '2014-10-19',
-                     '2014-10-25',
-                     '2014-10-26',
-                     '2014-11-01',
-                     '2014-11-02',
-                     '2014-11-08',
-                     '2014-11-09',
-                     '2014-11-15',
-                     '2014-11-16',
-                     '2014-11-22',
-                     '2014-11-23',
-                     '2014-11-29',
-                     '2014-11-30',
-                     '2014-12-06',
-                     '2014-12-07',
-                     '2014-12-13',
-                     '2014-12-14',
-                     '2014-12-20',
-                     '2014-12-21',
-                     '2014-12-27',
-                     '2014-12-28',
-                     '2014-12-31'
-                    /*
-                    '2014-10-01',
-                    '2014-10-07',
-                    '2014-10-08',
-                    '2014-10-14',
-                    '2014-10-15',
-                    '2014-10-21',
-                    '2014-10-22',
-                    '2014-10-28',
-                    '2014-10-29',
-                    '2014-11-04',
-                    '2014-11-05',
-                    '2014-11-11',
-                    '2014-11-12',
-                    '2014-11-18',
-                    '2014-11-19',
-                    '2014-11-25',
-                    '2014-11-26',
-                    '2014-12-02',
-                    '2014-12-03',
-                    '2014-12-09',
-                    '2014-12-10',
-                    '2014-12-16',
-                    '2014-12-17',
-                    '2014-12-23',
-                    '2014-12-24',
-                    '2014-12-30',
-                    '2014-12-31'
-                     */
-                ]);
-            });
-
-        </script>
-        <script src="js/cv-functions.js"></script>
+        <script src="js/cv-calendar-dhtmlxcalendar.js"></script>
+        <script src="js/cv-combo-dhtmlxcombo.js"></script>
     </body>
 </html>
