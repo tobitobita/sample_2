@@ -74,7 +74,10 @@
                         week: '週',
                         day: '日'
                     },
-                    scrollTime: '00:00:00'
+                    scrollTime: '00:00:00',
+                    viewRender: function (view, element) {
+                        console.log(view.name);
+                    }
                 });
                 $('#calendar').fullCalendar('addEventSource', {
                     events: [
