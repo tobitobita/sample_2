@@ -16,10 +16,73 @@
             header {
                 background-color: #fff;
                 width:100%;
+                padding-bottom:2em;
             }
-            #calendar {
-                padding-right: 1em;
-                width:50%;
+            #body.container {
+                margin-top:2em;
+            }
+            .container h3 .glyphicon {
+                padding-right: 0.75em;
+            }
+            
+            #latest-status {
+                display: table;
+                width:100%;
+                margin-top: 2em;
+            }
+            .latest-status-block {
+                display: table-cell;
+                width: 25%;
+                border-right: 1px solid #ccc;
+                text-align: center;
+            }
+            .latest-status-block:last-child {
+                border-right-style: none;
+            }
+            .latest-status-block .glyphicon {
+                font-size: 220%;
+            }
+            .latest-status-block .glyphicon:hover {
+                color: #f33;
+            }
+            .latest-status-value {
+                font-size: 180%;
+                font-weight: bold;
+            }
+            .latest-status-date {
+                font-size: 130%;
+                line-height: 2.25;
+            }
+            #calendar-panel {
+                position: relative;
+            }
+            
+            #calendar h2{
+                font-size: 150%;
+                padding-top: 2px;
+            }
+            .fc-right .fc-button-group {
+                position: absolute;
+                top : 4px;
+                right:5px;
+                width:100px;
+            }
+            button.fc-today-button {
+                position: absolute;
+                top : 4px;
+                left:110px;
+            }
+            .fc-prev-button {
+                background-color: #fff;
+                border-style: none;
+                background-image:none;
+                box-shadow: none;
+            }
+            .fc-next-button {
+                background-color: #fff;
+                border-style: none;
+                background-image:none;
+                box-shadow: none;
             }
         </style>
     </head>
@@ -37,22 +100,70 @@
                 <p><a href=""><img src="http://dummyimage.com/120x100/808080/ffffff.png" alt="ダミー" title="ダミー" /></a></p>
             </div>
         </header>
-        <div class="container">
-            <div id="calendar"></div>
+        <div id="body" class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"><i class="glyphicon glyphicon-exclamation-sign"></i>直前の配信状況</h3>
+                        </div>
+                        <div class="panel-body">
+                            <p>直前の配信情報をまとめたものです。「配信日」、「配信時間」、「最高同時視聴数」、「アクセス数」を表示しています。</p>
+                            <div id="latest-status">
+                                <div class="latest-status-block">
+                                    <p class="glyphicon glyphicon-calendar" data-toggle="tooltip" data-placement="top" title="直前の配信日"></p>
+                                    <p class="latest-status-value latest-status-date">2014/10/31</p>
+                                </div>
+                                <div class="latest-status-block">
+                                    <p class="glyphicon glyphicon-dashboard" data-toggle="tooltip" data-placement="top"  title="直前の配信時間"></p>
+                                    <p class="latest-status-value">1:23</p>
+                                </div>
+                                <div class="latest-status-block">
+                                    <p class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="top"  title="直前の最高同時視聴数"></p>
+                                    <p class="latest-status-value">456</p>
+                                </div>
+                                <div class="latest-status-block">
+                                    <p class="glyphicon glyphicon-hand-right" data-toggle="tooltip" data-placement="top" title="直前のアクセス数"></p>
+                                    <p class="latest-status-value">789</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="calendar-panel" class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"><i class="glyphicon glyphicon-calendar"></i>配信履歴</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div id="calendar"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"><i class="glyphicon glyphicon-stats"></i>直前の視聴推移</h3>
+                        </div>
+                        <div class="panel-body">
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
+        <script src="js/tooltip.js"></script>
         <script src="js/moment.min.js"></script>
         <script src="js/fullcalendar.min.js"></script>
         <script src="js/common.js"></script>
         <script>
             $(document).ready(function () {
+                $('.glyphicon').tooltip();
                 $('#calendar').fullCalendar({
                     lang: 'ja',
                     header: {
-                        left: 'title',
-                        center: '',
-                        right: 'today month,agendaWeek,agendaDay prev,next'
+                        left: 'prev today',
+                        center: 'title',
+                        right: 'month,agendaWeek,agendaDay next'
                     },
                     theme: false,
                     defaultView: 'agendaWeek',

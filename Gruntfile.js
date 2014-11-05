@@ -25,7 +25,7 @@ module.exports = function (grunt) {
         },
         clean: {
             dist: [
-                'dist/**'
+                'dist'
             ]
         },
         copy: {
@@ -39,6 +39,10 @@ module.exports = function (grunt) {
                         src: 'bower_components/bootstrap/dist/css/bootstrap.min.css', dest: 'dist/css/bootstrap.min.css'
                     }, {
                         src: 'bower_components/bootstrap/dist/js/bootstrap.min.js', dest: 'dist/js/bootstrap.min.js'
+                    }, {
+                        src: 'bower_components/bootstrap/js/tooltip.js', dest: 'dist/js/tooltip.js'
+                    }, {
+                        expand: true, cwd: 'bower_components/bootstrap/dist/fonts', src: '**', dest: 'dist/fonts'
                     }, {
                         src: 'bower_components/jquery/dist/jquery.min.js', dest: 'dist/js/jquery.min.js'
                     }, {
