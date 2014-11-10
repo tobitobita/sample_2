@@ -51,6 +51,8 @@ module.exports = function (grunt) {
                         src: 'bower_components/fullcalendar/dist/fullcalendar.min.js', dest: 'dist/js/fullcalendar.min.js'
                     }, {
                         src: 'bower_components/fullcalendar/dist/fullcalendar.min.css', dest: 'dist/css/fullcalendar.min.css'
+                    }, {
+                        src: 'bower_components/chartjs/Chart.min.js', dest: 'dist/js/Chart.min.js'
                     }
                 ]
             }

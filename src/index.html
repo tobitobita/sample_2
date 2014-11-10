@@ -24,7 +24,7 @@
             .container h3 .glyphicon {
                 padding-right: 0.75em;
             }
-            
+
             #latest-status {
                 display: table;
                 width:100%;
@@ -56,7 +56,7 @@
             #calendar-panel {
                 position: relative;
             }
-            
+
             #calendar h2{
                 font-size: 150%;
                 padding-top: 2px;
@@ -83,6 +83,10 @@
                 border-style: none;
                 background-image:none;
                 box-shadow: none;
+            }
+            
+            #chart {
+                text-align: center;
             }
         </style>
     </head>
@@ -143,7 +147,7 @@
                         <div class="panel-heading">
                             <h3 class="panel-title"><i class="glyphicon glyphicon-stats"></i>直前の視聴推移</h3>
                         </div>
-                        <div class="panel-body">
+                        <div id="chart" class="panel-body">
                         </div>
                     </div>
                 </div>
@@ -154,9 +158,11 @@
         <script src="js/tooltip.js"></script>
         <script src="js/moment.min.js"></script>
         <script src="js/fullcalendar.min.js"></script>
+        <script src="js/Chart.min.js"></script>
         <script src="js/common.js"></script>
         <script>
             $(document).ready(function () {
+                var id = '81850646';
                 $('.glyphicon').tooltip();
                 $('#calendar').fullCalendar({
                     lang: 'ja',
@@ -187,41 +193,95 @@
                     },
                     scrollTime: '00:00:00',
                     viewRender: function (view, element) {
-                        console.log(view.name);
+                        var url = '/user/' + id;
+                        url = '/from/' + view.start.add(-1, "days").format('YYYY-MM-DD 00:00:00');
+                        url += '/to/' + view.end.format('YYYY-MM-DD 00:00:00');
+                        console.log(url);
+//                        var req = $.ajax({
+//                            url: url,
+//                            type: 'GET',
+//                            dataType: 'json'
+//                        });
+//                        req.done(function (res, textStatus, jqXHR) {
+//                            console.log(res);
+                            $('#calendar').fullCalendar('addEventSource', {
+                                events: [
+                                    {
+                                        start: '2014-10-30 10:00:00',
+                                        end: '2014-10-30 11:00:00'
+                                    },
+                                    {
+                                        start: '2014-10-30 12:00:00',
+                                        end: '2014-10-30 13:00:00'
+                                    },
+                                    {
+                                        start: '2014-10-30 14:00:00',
+                                        end: '2014-10-30 15:00:00'
+                                    },
+                                    {
+                                        start: '2014-10-30 16:00:00',
+                                        end: '2014-10-30 17:00:00'
+                                    },
+                                    {
+                                        start: '2014-10-30 18:00:00',
+                                        end: '2014-10-30 19:00:00'
+                                    },
+                                    {
+                                        start: '2014-10-30 20:00:00',
+                                        end: '2014-10-30 21:00:00'
+                                    },
+                                    {
+                                        start: '2014-10-30 23:00:00',
+                                        end: '2014-10-31 01:34:56'
+                                    }
+                                ]
+                            });
+//                        });
+//                        req.fail(function (jqXHR, textStatus) {
+//                            console.log("Request failed: " + textStatus);
+//                        });
                     }
                 });
-                $('#calendar').fullCalendar('addEventSource', {
-                    events: [
-                        {
-                            start: '2014-10-30 10:00:00',
-                            end: '2014-10-30 11:00:00'
-                        },
-                        {
-                            start: '2014-10-30 12:00:00',
-                            end: '2014-10-30 13:00:00'
-                        },
-                        {
-                            start: '2014-10-30 14:00:00',
-                            end: '2014-10-30 15:00:00'
-                        },
-                        {
-                            start: '2014-10-30 16:00:00',
-                            end: '2014-10-30 17:00:00'
-                        },
-                        {
-                            start: '2014-10-30 18:00:00',
-                            end: '2014-10-30 19:00:00'
-                        },
-                        {
-                            start: '2014-10-30 20:00:00',
-                            end: '2014-10-30 21:00:00'
-                        },
-                        {
-                            start: '2014-10-30 23:00:00',
-                            end: '2014-10-31 01:34:56'
-                        }
-                    ]
+                var canvas = document.createElement('canvas');
+                $(canvas).attr({
+                    id:'canvas',
+                    width: 480,
+                    height:480
                 });
+		var lineChartData = {
+			labels : ["January","February","March","April","May","June","July"],
+			datasets : [
+				{
+					fillColor : "rgba(220,220,220,0.5)",
+					strokeColor : "rgba(220,220,220,1)",
+					pointColor : "rgba(220,220,220,1)",
+					pointStrokeColor : "#fff",
+					data : [65,59,90,81,56,55,40]
+				},
+				{
+					fillColor : "rgba(151,187,205,0.5)",
+					strokeColor : "rgba(151,187,205,1)",
+					pointColor : "rgba(151,187,205,1)",
+					pointStrokeColor : "#fff",
+					data : [28,48,40,19,96,27,100]
+				}
+			]
+			
+		};
+                new Chart(canvas.getContext("2d")).Line(lineChartData);
+                $('#chart').append(canvas);
+//                var graphUrl = '/user/' + id + '/history/latest';
+//                var req = $.ajax({
+//                    url: graphUrl,
+//                    type: 'GET',
+//                    dataType: 'json'
+//                });
+//                req.done(function (res, textStatus, jqXHR) {
+//                    console.log(res);
+//                });
+//                req.fail(function (jqXHR, textStatus) {
+//                    console.log("Request failed: " + textStatus);
+//                });
             });
         </script>
     </body>
