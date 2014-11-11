@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>サンプル UI</title>
+        <style>
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>サンプル UI</h1>
+        </header>
+        <div id="container">
+        </div>
+        <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script src="js/jquery-ui.min.js"></script>
+        <script src="js/jquery.bonsai.js"></script>
+        <script src="js/lib/ccs-lib-common.js"></script>
+        <script src="js/lib/ccs-lib-treeview.js"></script>
+        <script>
+            $(function () {
+              console.log('start');
+              var tv = new ccs.Treeview('asdf');
+              
+              tv.print();
+              //tv.staticPrint();
+              ccs.Treeview.staticPrint();
+            });
+        </script>
+    </body>
+</html>
