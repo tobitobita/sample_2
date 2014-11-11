@@ -11,12 +11,13 @@
         <link rel="stylesheet" href="css/common.css">
         <style>
             body {
+                margin-top:51px;
                 background-color: #F9F6F1;
             }
             header {
                 background-color: #fff;
                 width:100%;
-                padding-bottom:2em;
+                padding-bottom:0.75em;
             }
             #body.container {
                 margin-top:2em;
@@ -24,7 +25,12 @@
             .container h3 .glyphicon {
                 padding-right: 0.75em;
             }
-
+            #user-info {
+                min-height: 232px;
+            }
+            #user-info p {
+                margin: 1em 0;
+            }
             #latest-status {
                 display: table;
                 width:100%;
@@ -84,7 +90,7 @@
                 background-image:none;
                 box-shadow: none;
             }
-            
+
             #chart {
                 text-align: center;
             }
@@ -92,20 +98,32 @@
     </head>
     <body>
         <div class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
+            <div class="container-fluid">
                 <div class="navbar-header">
                     <a class="navbar-brand" href="/">サンプル</a>
                 </div>
             </div><!--/.nav-collapse -->
         </div>
         <header>
-            <div class="container">
+            <div class="container-fluid">
                 <h1><a href="">ダミー</a></h1>
                 <p><a href=""><img src="http://dummyimage.com/120x100/808080/ffffff.png" alt="ダミー" title="ダミー" /></a></p>
             </div>
         </header>
-        <div id="body" class="container">
+        <div id="body" class="container-fluid">
             <div class="row">
+                <div class="col-md-6">
+                    <div id="user-info" class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"><i class="glyphicon glyphicon-user"></i>配信者情報</h3>
+                        </div>
+                        <div class="panel-body">
+                            <p>年齢</p>
+                            <p>性別</p>
+                            <p>内容</p>
+                        </div>
+                    </div>
+                </div>
                 <div class="col-md-6">
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -133,6 +151,10 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
                     <div id="calendar-panel" class="panel panel-default">
                         <div class="panel-heading">
                             <h3 class="panel-title"><i class="glyphicon glyphicon-calendar"></i>配信履歴</h3>
@@ -142,6 +164,7 @@
                         </div>
                     </div>
                 </div>
+                <!--
                 <div class="col-md-6">
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -151,6 +174,7 @@
                         </div>
                     </div>
                 </div>
+                -->
             </div>
         </div>
         <script src="js/jquery.min.js"></script>
@@ -193,95 +217,67 @@
                     },
                     scrollTime: '00:00:00',
                     viewRender: function (view, element) {
-                        var url = '/user/' + id;
-                        url = '/from/' + view.start.add(-1, "days").format('YYYY-MM-DD 00:00:00');
-                        url += '/to/' + view.end.format('YYYY-MM-DD 00:00:00');
-                        console.log(url);
-//                        var req = $.ajax({
-//                            url: url,
-//                            type: 'GET',
-//                            dataType: 'json'
-//                        });
-//                        req.done(function (res, textStatus, jqXHR) {
-//                            console.log(res);
-                            $('#calendar').fullCalendar('addEventSource', {
-                                events: [
-                                    {
-                                        start: '2014-10-30 10:00:00',
-                                        end: '2014-10-30 11:00:00'
-                                    },
-                                    {
-                                        start: '2014-10-30 12:00:00',
-                                        end: '2014-10-30 13:00:00'
-                                    },
-                                    {
-                                        start: '2014-10-30 14:00:00',
-                                        end: '2014-10-30 15:00:00'
-                                    },
-                                    {
-                                        start: '2014-10-30 16:00:00',
-                                        end: '2014-10-30 17:00:00'
-                                    },
-                                    {
-                                        start: '2014-10-30 18:00:00',
-                                        end: '2014-10-30 19:00:00'
-                                    },
-                                    {
-                                        start: '2014-10-30 20:00:00',
-                                        end: '2014-10-30 21:00:00'
-                                    },
-                                    {
-                                        start: '2014-10-30 23:00:00',
-                                        end: '2014-10-31 01:34:56'
-                                    }
-                                ]
-                            });
-//                        });
-//                        req.fail(function (jqXHR, textStatus) {
-//                            console.log("Request failed: " + textStatus);
-//                        });
+                        //                        var url = '/user/' + id;
+                        //                        url = '/from/' + view.start.add(-1, "days").format('YYYY-MM-DD 00:00:00');
+                        //                        url += '/to/' + view.end.format('YYYY-MM-DD 00:00:00');
+                        //                        console.log(url);
+                        //                        var req = $.ajax({
+                        //                            url: url,
+                        //                            type: 'GET',
+                        //                            dataType: 'json'
+                        //                        });
+                        //                        req.done(function (res, textStatus, jqXHR) {
+                        //                            console.log(res);
+                        $('#calendar').fullCalendar('addEventSource', {
+                            events: [
+                                {
+                                    start: '2014-10-30 10:00:00',
+                                    end: '2014-10-30 11:00:00'
+                                },
+                                {
+                                    start: '2014-10-30 12:00:00',
+                                    end: '2014-10-30 13:00:00'
+                                },
+                                {
+                                    start: '2014-10-30 14:00:00',
+                                    end: '2014-10-30 15:00:00'
+                                },
+                                {
+                                    start: '2014-10-30 16:00:00',
+                                    end: '2014-10-30 17:00:00'
+                                },
+                                {
+                                    start: '2014-10-30 18:00:00',
+                                    end: '2014-10-30 19:00:00'
+                                },
+                                {
+                                    start: '2014-10-30 20:00:00',
+                                    end: '2014-10-30 21:00:00'
+                                },
+                                {
+                                    start: '2014-10-30 23:00:00',
+                                    end: '2014-10-31 01:34:56'
+                                }
+                            ]
+                        });
+                        //                        });
+                        //                        req.fail(function (jqXHR, textStatus) {
+                        //                            console.log("Request failed: " + textStatus);
+                        //                        });
                     }
                 });
-                var canvas = document.createElement('canvas');
-                $(canvas).attr({
-                    id:'canvas',
-                    width: 480,
-                    height:480
-                });
-		var lineChartData = {
-			labels : ["January","February","March","April","May","June","July"],
-			datasets : [
-				{
-					fillColor : "rgba(220,220,220,0.5)",
-					strokeColor : "rgba(220,220,220,1)",
-					pointColor : "rgba(220,220,220,1)",
-					pointStrokeColor : "#fff",
-					data : [65,59,90,81,56,55,40]
-				},
-				{
-					fillColor : "rgba(151,187,205,0.5)",
-					strokeColor : "rgba(151,187,205,1)",
-					pointColor : "rgba(151,187,205,1)",
-					pointStrokeColor : "#fff",
-					data : [28,48,40,19,96,27,100]
-				}
-			]
-			
-		};
-                new Chart(canvas.getContext("2d")).Line(lineChartData);
-                $('#chart').append(canvas);
-//                var graphUrl = '/user/' + id + '/history/latest';
-//                var req = $.ajax({
-//                    url: graphUrl,
-//                    type: 'GET',
-//                    dataType: 'json'
-//                });
-//                req.done(function (res, textStatus, jqXHR) {
-//                    console.log(res);
-//                });
-//                req.fail(function (jqXHR, textStatus) {
-//                    console.log("Request failed: " + textStatus);
-//                });
+                //                var graphUrl = '/user/' + id + '/history/latest';
+                //                var req = $.ajax({
+                //                    url: graphUrl,
+                //                    type: 'GET',
+                //                    dataType: 'json'
+                //                });
+                //                req.done(function (res, textStatus, jqXHR) {
+                //                    console.log(res);
+                //                });
+                //                req.fail(function (jqXHR, textStatus) {
+                //                    console.log("Request failed: " + textStatus);
+                //                });
             });
         </script>
     </body>
