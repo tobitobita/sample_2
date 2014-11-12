@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Sample Chart!</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            body {
+                width:100%;
+            }
+            #chartArea {
+                width:480px;
+                height:480px;
+                margin: 1em auto;
+                /*background-color: #efefef;*/
+                text-align: center;
+                overflow: scroll;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Sample Chart!</h1>
+        <div id="chartArea"></div>
+        <script src="js/jquery.min.js"></script>
+        <script src="js/moment.min.js"></script>
+        <script src="js/Chart.min.js"></script>
+        <script>
+            $(function () {
+                console.log('start');
+                var labels = [];
+                var data = [];
+                var w = 18;
+                var length = 200;
+                for (var i = 0; i < length; ++i) {
+                    labels.push('2014/12/31 00:' + String(i));
+                    data.push(i + 1);
+                }
+                var lineChartData = {
+                    labels: labels,
+                    datasets: [
+                        {
+                            fillColor: "rgba(220,220,220,0.5)",
+                            strokeColor: "rgba(220,220,220,1)",
+                            pointColor: "rgba(220,220,220,1)",
+                            pointStrokeColor: "#fff",
+                            data: data
+                        }
+                    ]
+                };
+                var canvas = document.createElement('canvas');
+                $(canvas).attr({
+                    width: w * length,
+                    height: 400
+                });
+                $('#chartArea').append(canvas);
+                new Chart(canvas.getContext("2d")).Line(lineChartData);
+                $('#chartArea').scrollLeft(w * length);
+            });
+        </script>
+    </body>
+</html>
