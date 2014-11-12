@@ -49,11 +49,14 @@
                 };
                 var canvas = document.createElement('canvas');
                 $(canvas).attr({
-                    width: w * length,
+                    width: w * length - 68,
                     height: 400
                 });
                 $('#chartArea').append(canvas);
-                new Chart(canvas.getContext("2d")).Line(lineChartData);
+                new Chart(canvas.getContext("2d")).Line(lineChartData, {
+                    showTooltips: true,
+                    tooltipTemplate: "<%= value %>"
+                });
                 $('#chartArea').scrollLeft(w * length);
             });
         </script>
