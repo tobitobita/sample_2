@@ -8,91 +8,25 @@
         <meta name="description" content="サンプルのダミーです。">
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/fullcalendar.min.css">
+        <link rel="stylesheet" href="css/introjs.css">
         <link rel="stylesheet" href="css/common.css">
+        <link rel="stylesheet" href="css/index.css">
         <style>
-            body {
-                margin-top:51px;
-                background-color: #F9F6F1;
-            }
-            header {
-                background-color: #fff;
-                width:100%;
-                padding-bottom:0.75em;
-            }
-            #body.container {
-                margin-top:2em;
-            }
-            .container h3 .glyphicon {
-                padding-right: 0.75em;
-            }
-            #user-info {
-                min-height: 232px;
-            }
-            #user-info p {
-                margin: 1em 0;
-            }
-            #latest-status {
-                display: table;
-                width:100%;
-                margin-top: 2em;
-            }
-            .latest-status-block {
-                display: table-cell;
-                width: 25%;
-                border-right: 1px solid #ccc;
-                text-align: center;
-            }
-            .latest-status-block:last-child {
-                border-right-style: none;
-            }
-            .latest-status-block .glyphicon {
-                font-size: 220%;
-            }
-            .latest-status-block .glyphicon:hover {
-                color: #f33;
-            }
-            .latest-status-value {
-                font-size: 180%;
-                font-weight: bold;
-            }
-            .latest-status-date {
-                font-size: 130%;
-                line-height: 2.25;
-            }
-            #calendar-panel {
-                position: relative;
-            }
-
-            #calendar h2{
-                font-size: 150%;
-                padding-top: 2px;
-            }
-            .fc-right .fc-button-group {
+            .area {
                 position: absolute;
-                top : 4px;
-                right:5px;
-                width:100px;
+                width: 150px;
+                height: 200px;
+                background-color: #fcc;
+                border: 1px solid #666;
+                z-index: 10000;
             }
-            button.fc-today-button {
+            .areaClose {
                 position: absolute;
-                top : 4px;
-                left:110px;
-            }
-            .fc-prev-button {
-                background-color: #fff;
-                border-style: none;
-                background-image:none;
-                box-shadow: none;
-            }
-            .fc-next-button {
-                background-color: #fff;
-                border-style: none;
-                background-image:none;
-                box-shadow: none;
-            }
-
-            #chart {
-                text-align: center;
+                top:0;
+                right:0;
+                margin: 0;
+                padding: 0;
+                cursor: pointer;
             }
         </style>
     </head>
@@ -112,18 +46,6 @@
         </header>
         <div id="body" class="container-fluid">
             <div class="row">
-                <div class="col-md-6">
-                    <div id="user-info" class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title"><i class="glyphicon glyphicon-user"></i>配信者情報</h3>
-                        </div>
-                        <div class="panel-body">
-                            <p>年齢</p>
-                            <p>性別</p>
-                            <p>内容</p>
-                        </div>
-                    </div>
-                </div>
                 <div class="col-md-6">
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -152,29 +74,16 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
                 <div class="col-md-6">
-                    <div id="calendar-panel" class="panel panel-default">
+                    <div id="calendar-panel" class="panel panel-default" data-step="1" data-intro="イベントをクリックすると詳細が表示されます。">
                         <div class="panel-heading">
-                            <h3 class="panel-title"><i class="glyphicon glyphicon-calendar"></i>配信履歴</h3>
+                            <h3 class="panel-title"><i class="glyphicon glyphicon-calendar"></i>サンプルカレンダー</h3>
                         </div>
                         <div class="panel-body">
                             <div id="calendar"></div>
                         </div>
                     </div>
                 </div>
-                <!--
-                <div class="col-md-6">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title"><i class="glyphicon glyphicon-stats"></i>直前の視聴推移</h3>
-                        </div>
-                        <div id="chart" class="panel-body">
-                        </div>
-                    </div>
-                </div>
-                -->
             </div>
         </div>
         <script src="js/jquery.min.js"></script>
@@ -183,10 +92,13 @@
         <script src="js/moment.min.js"></script>
         <script src="js/fullcalendar.min.js"></script>
         <script src="js/Chart.min.js"></script>
+        <script src="js/intro.js"></script>
         <script src="js/common.js"></script>
         <script>
             $(document).ready(function () {
-                var id = '81850646';
+                introJs().setOptions({
+                    tooltipPosition: 'left'
+                }).start();
                 $('.glyphicon').tooltip();
                 $('#calendar').fullCalendar({
                     lang: 'ja',
@@ -215,69 +127,99 @@
                         week: '週',
                         day: '日'
                     },
-                    scrollTime: '00:00:00',
+                    scrollTime: '10:00:00',
                     viewRender: function (view, element) {
-                        //                        var url = '/user/' + id;
-                        //                        url = '/from/' + view.start.add(-1, "days").format('YYYY-MM-DD 00:00:00');
-                        //                        url += '/to/' + view.end.format('YYYY-MM-DD 00:00:00');
-                        //                        console.log(url);
-                        //                        var req = $.ajax({
-                        //                            url: url,
-                        //                            type: 'GET',
-                        //                            dataType: 'json'
-                        //                        });
-                        //                        req.done(function (res, textStatus, jqXHR) {
-                        //                            console.log(res);
+                        $('#calendar').fullCalendar('removeEvents');
                         $('#calendar').fullCalendar('addEventSource', {
                             events: [
                                 {
-                                    start: '2014-10-30 10:00:00',
-                                    end: '2014-10-30 11:00:00'
+                                    id: 'ev_id_' + '1',
+                                    start: '2014-11-19 10:00:00',
+                                    end: '2014-11-19 11:00:00',
+                                    asdf: {
+                                        a: 'b',
+                                        c: 'd'
+                                    }
                                 },
                                 {
-                                    start: '2014-10-30 12:00:00',
-                                    end: '2014-10-30 13:00:00'
+                                    id: 'ev_id_' + '2',
+                                    start: '2014-11-20 12:00:00',
+                                    end: '2014-11-20 13:00:00',
+                                    asdf: {
+                                        a: 'b',
+                                        c: 'd'
+                                    }
                                 },
                                 {
-                                    start: '2014-10-30 14:00:00',
-                                    end: '2014-10-30 15:00:00'
+                                    id: 'ev_id_' + '3',
+                                    start: '2014-11-21 14:00:00',
+                                    end: '2014-11-21 15:00:00',
+                                    asdf: {
+                                        a: 'b',
+                                        c: 'd'
+                                    }
                                 },
                                 {
-                                    start: '2014-10-30 16:00:00',
-                                    end: '2014-10-30 17:00:00'
+                                    id: 'ev_id_' + '4',
+                                    start: '2014-11-22 16:00:00',
+                                    end: '2014-11-22 17:00:00',
+                                    asdf: {
+                                        a: 'b',
+                                        c: 'd'
+                                    }
                                 },
                                 {
-                                    start: '2014-10-30 18:00:00',
-                                    end: '2014-10-30 19:00:00'
+                                    id: 'ev_id_' + '5',
+                                    start: '2014-11-19 18:00:00',
+                                    end: '2014-11-19 19:00:00',
+                                    asdf: {
+                                        a: 'b',
+                                        c: 'd'
+                                    }
                                 },
                                 {
-                                    start: '2014-10-30 20:00:00',
-                                    end: '2014-10-30 21:00:00'
+                                    id: 'ev_id_' + '6',
+                                    start: '2014-11-19 20:00:00',
+                                    end: '2014-11-19 21:00:00',
+                                    asdf: {
+                                        a: 'b',
+                                        c: 'd'
+                                    }
                                 },
                                 {
-                                    start: '2014-10-30 23:00:00',
-                                    end: '2014-10-31 01:34:56'
+                                    id: 'ev_id_' + '7',
+                                    start: '2014-11-19 23:00:00',
+                                    end: '2014-10-31 01:34:56',
+                                    asdf: {
+                                        a: 'b',
+                                        c: 'd'
+                                    }
                                 }
                             ]
                         });
-                        //                        });
-                        //                        req.fail(function (jqXHR, textStatus) {
-                        //                            console.log("Request failed: " + textStatus);
-                        //                        });
+                    },
+                    eventClick: function (event, jsEvent, view) {
+                        var isRight = ($(window).width() - jsEvent.pageX - 150) > 0;
+                        var isBottom = ($(window).height() - jsEvent.pageY - 200) > 0;
+                        var area = $('#' + event.id)[0];
+                        if (area === undefined) {
+                            var area = document.createElement('div');
+                            $(area).addClass('area').attr({
+                                id: event.id
+                            }).css({
+                                top: isBottom ? jsEvent.pageY : jsEvent.pageY - 200,
+                                left: isRight ? jsEvent.pageX : jsEvent.pageX - 150
+                            }).append($(document.createElement('p')).text('×').addClass('areaClose').on('click', function () {
+                                $(this).parent().remove();
+                            }));
+                            $('body').append(area);
+                        }
+                    },
+                    eventMouseover: function (event, jsEvent, view) {
+                    },
+                    eventMouseout: function (event, jsEvent, view) {
                     }
                 });
-                //                var graphUrl = '/user/' + id + '/history/latest';
-                //                var req = $.ajax({
-                //                    url: graphUrl,
-                //                    type: 'GET',
-                //                    dataType: 'json'
-                //                });
-                //                req.done(function (res, textStatus, jqXHR) {
-                //                    console.log(res);
-                //                });
-                //                req.fail(function (jqXHR, textStatus) {
-                //                    console.log("Request failed: " + textStatus);
-                //                });
             });
         </script>
     </body>

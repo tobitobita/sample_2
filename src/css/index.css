@@ -1,0 +1,85 @@
+body {
+    margin-top:51px;
+    background-color: #F9F6F1;
+}
+header {
+    background-color: #fff;
+    width:100%;
+    padding-bottom:0.75em;
+}
+#body.container {
+    margin-top:2em;
+}
+.container h3 .glyphicon {
+    padding-right: 0.75em;
+}
+#user-info {
+    min-height: 232px;
+}
+#user-info p {
+    margin: 1em 0;
+}
+#latest-status {
+    display: table;
+    width:100%;
+    margin-top: 2em;
+}
+.latest-status-block {
+    display: table-cell;
+    width: 25%;
+    border-right: 1px solid #ccc;
+    text-align: center;
+}
+.latest-status-block:last-child {
+    border-right-style: none;
+}
+.latest-status-block .glyphicon {
+    font-size: 220%;
+}
+.latest-status-block .glyphicon:hover {
+    color: #f33;
+}
+.latest-status-value {
+    font-size: 180%;
+    font-weight: bold;
+}
+.latest-status-date {
+    font-size: 130%;
+    line-height: 2.25;
+}
+#calendar-panel {
+    position: relative;
+    height:534px;
+}
+
+#calendar h2{
+    font-size: 150%;
+    padding-top: 2px;
+}
+.fc-right .fc-button-group {
+    position: absolute;
+    top : 4px;
+    right:5px;
+    width:100px;
+}
+button.fc-today-button {
+    position: absolute;
+    top : 4px;
+    left:110px;
+}
+.fc-prev-button {
+    background-color: #fff;
+    border-style: none;
+    background-image:none;
+    box-shadow: none;
+}
+.fc-next-button {
+    background-color: #fff;
+    border-style: none;
+    background-image:none;
+    box-shadow: none;
+}
+
+#chart {
+    text-align: center;
+}
