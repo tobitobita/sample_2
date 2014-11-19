@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html >
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>ダミー | サンプル</title>
+        <meta name="Keywords" content="サンプル,ダミー">
+        <meta name="description" content="サンプルのダミーです。">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/fullcalendar.min.css">
+        <link rel="stylesheet" href="css/common.css">
+        <style>
+            body {
+                margin-top:51px;
+                background-color: #F9F6F1;
+            }
+            header {
+                background-color: #fff;
+                width:100%;
+                padding-bottom:0.75em;
+                margin: 0;
+            }
+            #body.container {
+                margin-top:2em;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/">サンプル</a>
+                </div>
+            </div><!--/.nav-collapse -->
+        </div>
+        <header>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-10">
+                        <h1><a href="">サンプル</a></h1>
+                    </div>
+                    <div class="col-md-1">
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div id="body" class="container-fluid">
+            <div class="row">
+                <div class="col-md-1">
+                </div>
+                <div class="col-md-10">
+                    <select id="selectDate" name="selectDate">
+                    </select>
+                </div>
+                <div class="col-md-1">
+                </div>
+            </div>
+        </div>
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/moment.min.js"></script>
+        <script src="js/common.js"></script>
+        <script>
+            $(document).ready(function () {
+                var start = moment();
+                var min = moment({
+                    y: 2014,
+                    M: 10 - 1
+                });
+                var isFirst = true;
+                do {
+                    var option = document.createElement('option');
+                    $(option).val(start.format('YYYYMM')).text(start.format('YYYY年M月'));
+                    if (isFirst) {
+                        $(option).prop('selected', true);
+                        isFirst = false;
+                    }
+                    $('#selectDate').append(option);
+                    start.subtract(1, 'months');
+                } while (min.isBefore(start));
+
+                $('#selectDate').on('change', function () {
+                    console.log($(this).val());
+                    var req = $.ajax({
+                        url: '/userlist/' + $(this).val(),
+                        type: 'GET',
+                        dataType: 'json'
+                    });
+                    req.done(function (res, textStatus, jqXHR) {
+                        console.log(res);
+                    });
+                    req.fail(function (jqXHR, textStatus) {
+                        console.log("Request failed: " + textStatus);
+                    });
+                }).trigger('change');
+            });
+        </script>
+    </body>
+</html>
