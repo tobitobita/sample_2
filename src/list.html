@@ -35,7 +35,7 @@
         </div>
         <header>
             <div class="container-fluid">
-                <div class="row">
+                <div class="row-fluid">
                     <div class="col-md-1">
                     </div>
                     <div class="col-md-10">
@@ -47,54 +47,44 @@
             </div>
         </header>
         <div id="body" class="container-fluid">
-            <div class="row">
+            <div class="row-fluid">
                 <div class="col-md-1">
+                    <p>今、話題の新製品</p>
+                    <div>
+                    </div>
+                    <p>急なポイント不足には？</p>
+                    <div>
+                    </div>
+                    <p>人気のあのジャンルから♪</p>
+                    <div>
+                    </div>
                 </div>
                 <div class="col-md-10">
-                    <select id="selectDate" name="selectDate">
-                    </select>
+                    aaa
                 </div>
                 <div class="col-md-1">
+                    <p>今、話題の新製品</p>
+                    <div>
+                    </div>
+                    <p>急なポイント不足には？</p>
+                    <div>
+                    </div>
+                    <p>人気のあのジャンルから♪</p>
+                    <div>
+                    </div>
                 </div>
             </div>
         </div>
+        <script src="http://www.infotop.co.jp/tools/category.js" charset="utf-8"></script>
+        <script src="http://www.infotop.co.jp/tools/crr.js" charset="utf-8"></script>
         <script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <script src="js/moment.min.js"></script>
         <script src="js/common.js"></script>
         <script>
+            loadAdSense('284612', '00');
             $(document).ready(function () {
-                var start = moment();
-                var min = moment({
-                    y: 2014,
-                    M: 10 - 1
-                });
-                var isFirst = true;
-                do {
-                    var option = document.createElement('option');
-                    $(option).val(start.format('YYYYMM')).text(start.format('YYYY年M月'));
-                    if (isFirst) {
-                        $(option).prop('selected', true);
-                        isFirst = false;
-                    }
-                    $('#selectDate').append(option);
-                    start.subtract(1, 'months');
-                } while (min.isBefore(start));
-
-                $('#selectDate').on('change', function () {
-                    console.log($(this).val());
-                    var req = $.ajax({
-                        url: '/userlist/' + $(this).val(),
-                        type: 'GET',
-                        dataType: 'json'
-                    });
-                    req.done(function (res, textStatus, jqXHR) {
-                        console.log(res);
-                    });
-                    req.fail(function (jqXHR, textStatus) {
-                        console.log("Request failed: " + textStatus);
-                    });
-                }).trigger('change');
+                console.log('start.');
             });
         </script>
     </body>
