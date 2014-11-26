@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html >
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>ダミー | サンプル</title>
+        <meta name="Keywords" content="サンプル,ダミー">
+        <meta name="description" content="サンプルのダミーです。">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/fullcalendar.min.css">
+        <link rel="stylesheet" href="css/introjs.css">
+        <link rel="stylesheet" href="css/common.css">
+        <link rel="stylesheet" href="css/index.css">
+        <style>
+            .container-fluid .col-sm-8 {
+                padding: 0;
+            }
+            .cm h3 {
+                font-size: 16px;
+                line-height: 1.4;
+                margin-bottom: 0;
+            }
+            .cm h3 strong {
+                font-weight: bold;
+            }
+            .cm h3 a:link {
+                color:#0F0AD1;
+                text-decoration: underline;
+            }
+            .cm .cm-link {
+                color:#080;
+                word-break: break-all;
+                word-wrap: break-word;
+            }
+            /* #0F0AD1 */
+        </style>
+    </head>
+    <body>
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/">サンプル</a>
+                </div>
+            </div><!--/.nav-collapse -->
+        </div>
+        <div id="body" class="container-fluid">
+            <div class="row">
+                <div class="col-sm-2 cm-area">
+                </div>
+                <div class="col-sm-8" style="background-color: #cfc;">
+                    <p style="background-color: #fcc; height: 300px;">あいうえお</p>
+                    <p style="background-color: #fcc; height: 300px;">あいうえお</p>
+                    <p style="background-color: #fcc; height: 300px;">あいうえお</p>
+                    <p style="background-color: #fcc; height: 300px;">あいうえお</p>
+                </div>
+                <div class="col-sm-2" style="background-color: #ccf;">
+                    <p>あいうえお</p>
+                </div>
+            </div>
+        </div>
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/moment.min.js"></script>
+        <script src="js/common.js"></script>
+        <script>
+            var count = 0;
+            var data = [
+                {
+                    title: '社会福祉士突破！暗記不要の合格戦略',
+                    url: 'http://swpsw.com',
+                    description: 'お悩み解決！人気のあのジャンルから♪',
+                    type: 'infotop'
+                },
+                {
+                    title: '斉藤恵一「心が読めれば人生が変わる！」出版記念セミナー',
+                    url: 'http://acepro.info/infotop/',
+                    description: 'お悩み解決！人気のあのジャンルから♪',
+                    type: 'infotop'
+                },
+                {
+                    title: '起業理学療法士 亀田×犬尾の療法士飽和時代を勝ち抜くための療法士マインドマスター講座',
+                    url: 'http://websanta.jp/lp/mind-master/',
+                    description: 'お悩み解決！人気のあのジャンルから♪',
+                    type: 'infotop'
+                },
+                {
+                    title: '【無料】感情の法則 序章（音声シリーズ）',
+                    url: 'http://everchanging.info/free/info/kanjou.html',
+                    description: 'お悩み解決！人気のあのジャンルから♪',
+                    type: 'infotop'
+                },
+                {
+                    title: 'もう人間関係で悩まない！変われる自分を今すぐ実感！',
+                    url: 'http://haseyan.net/ningenkankei/',
+                    description: 'お悩み解決！人気のあのジャンルから♪',
+                    type: 'infotop'
+                },
+                {
+                    title: '女装子　メイク上達革命',
+                    url: 'http://jyoso.jyoutatu.info',
+                    description: 'お悩み解決！人気のあのジャンルから♪',
+                    type: 'infotop'
+                },
+                {
+                    title: '努力しても結果が出ない本当の理由　　ブレインオブブッダ',
+                    url: 'http://www.goodviral.net/buddha.html',
+                    description: 'お悩み解決！人気のあのジャンルから♪',
+                    type: 'infotop'
+                }
+            ];
+            var shuffle = function (array) {
+                var m = array.length, t, i;
+                // While there remain elements to shuffle…
+                while (m) {
+                    // Pick a remaining element…
+                    i = Math.floor(Math.random() * m--);
+                    // And swap it with the current element.
+                    t = array[m];
+                    array[m] = array[i];
+                    array[i] = t;
+                }
+                return array;
+            };
+            shuffle(data);
+            var showCm = function (callback) {
+                while (true) {
+                    var cm = document.createElement('div');
+                    $(cm).addClass('cm');
+                    if (data[count].type === 'infotop') {
+                        $(cm).append('<h3><a href="' + data[count].url + '" target="_blank" onClick="return clickCount(284612, 60529);">' + data[count].title + '</a></h3>');
+                    } else {
+                        $(cm).append('<h3><a href="' + data[count].url + '">' + data[count].title + '</a></h3>');
+                    }
+                    $(cm).append('<p class="cm-link">' + data[count].url + '</p>')
+                            .append('<p class="cm-p">' + data[count].description + '</p>')
+                            ;
+                    $('.cm-area').append(cm);
+                    ++count;
+                    if (count >= data.length) {
+                        count = 0;
+                    }
+                    if ($('#body .cm-area').height() + 60 > $(window).height()) {
+                        $('.cm-area .cm:last-child').remove();
+                        --count;
+                        if (count <= 0) {
+                            count = 0;
+                        }
+                        break;
+                    }
+                }
+                callback = callback || function () {
+                };
+                callback();
+            };
+            $(document).ready(function () {
+                console.log('start.');
+                showCm(function () {
+                    $(window).scroll(function () {
+                        var scrollBottom = $(window).height() - 60 + $(this).scrollTop();
+                        if (scrollBottom - 100 > $(window).height()) {
+                            if ($('#body .cm-area').height() + 100 <= $(document).height() && $('#body .cm-area').height() < scrollBottom - 100) {
+                                var cm = document.createElement('div');
+                                $(cm)
+                                        .css({display: 'none'})
+                                        .addClass('cm')
+                                        .append('<h3><a href="' + data[count].url + '">' + data[count].title + '</a></h3>')
+                                        .append('<p class="cm-link">' + data[count].url + '</p>')
+                                        .append('<p class="cm-p">' + data[count].description + '</p>')
+                                        ;
+                                $('.cm-area').append(cm);
+                                ++count;
+                                if (count >= data.length) {
+                                    count = 0;
+                                }
+                                $(cm).fadeIn('show');
+                            }
+                        }
+                    });
+                });
+            });
+        </script>
+    </body>
+</html>
