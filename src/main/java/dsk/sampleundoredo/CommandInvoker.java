@@ -5,7 +5,7 @@ public class CommandInvoker {
     public Command<Void> CreateUpdateCommand(Foo foo, int x, int y) {
         int prevX = foo.getX();
         int prevY = foo.getY();
-        Command<Void> cmd = new Command();
+        Command<Void> cmd = new Command<>();
         cmd.invoke = () -> {
             System.out.println("invoke");
             foo.setX(x);
