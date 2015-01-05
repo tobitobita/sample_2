@@ -1,6 +1,6 @@
 package dsk.sampletransaction;
 
-public interface RollbackListener {
+public interface RollbackDelegate {
 
     void rollback();
 }

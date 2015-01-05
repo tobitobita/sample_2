@@ -1,21 +1,23 @@
 package dsk.sampletransaction;
 
-import dsk.sampleundoredo.Command;
 import java.beans.PropertyChangeEvent;
+import java.lang.reflect.InvocationTargetException;
+import org.apache.commons.beanutils.PropertyUtils;
 
 public class RollbackInvoker {
 
     public Command<Void> CreateRollbackCommand(PropertyChangeEvent event) {
-        Object oldValue = event.getOldValue();
-        Command<Void> cmd = new Command();
-        cmd.invoke = () -> {
-            return null;
-        };
-        cmd.redo = () -> {
-            return null;
-        };
+        Object source = event.getSource();
+        String propertyName = event.getPropertyName();
+        Object prevValue = event.getOldValue();
+        Command<Void> cmd = new Command<>();
         cmd.undo = () -> {
-//            event.getSource().
+            try {
+                System.out.printf("Rollback -> source: %s, proertyName: %s, prevValue: %s\n", source.toString(), propertyName, prevValue);
+                PropertyUtils.setSimpleProperty(source, propertyName, prevValue);
+            } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                e.printStackTrace();
+            }
             return null;
         };
         return cmd;

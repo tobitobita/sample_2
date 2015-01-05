@@ -13,13 +13,13 @@ public class ModelUserTransaction implements UserTransaction {
 
     private boolean rollbacking;
 
-    private final CommitListener commitListener;
+    private final CommitDelegate commitDelegate;
 
-    private final RollbackListener rollbackListener;
+    private final RollbackDelegate rollbackDelegate;
 
-    public ModelUserTransaction(CommitListener commitListener, RollbackListener rollbackListener) {
-        this.commitListener = commitListener;
-        this.rollbackListener = rollbackListener;
+    public ModelUserTransaction(CommitDelegate commitDelegate, RollbackDelegate rollbackDelegate) {
+        this.commitDelegate = commitDelegate;
+        this.rollbackDelegate = rollbackDelegate;
     }
 
     boolean hasTransaction() {
@@ -40,14 +40,14 @@ public class ModelUserTransaction implements UserTransaction {
 
     @Override
     public void commit() throws RollbackException, HeuristicMixedException, HeuristicRollbackException, SecurityException, IllegalStateException, SystemException {
-        this.commitListener.commit();
+        this.commitDelegate.commit();
         this.transactioning = false;
     }
 
     @Override
     public void rollback() throws IllegalStateException, SecurityException, SystemException {
         this.rollbacking = true;
-        this.rollbackListener.rollback();
+        this.rollbackDelegate.rollback();
         this.rollbacking = false;
         this.transactioning = false;
     }

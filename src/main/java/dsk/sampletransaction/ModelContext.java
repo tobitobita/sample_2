@@ -1,21 +1,20 @@
 package dsk.sampletransaction;
 
-import dsk.sampleundoredo.Command;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 import javax.transaction.UserTransaction;
 
-public class ModelContext implements PropertyChangeListener, CommitListener, RollbackListener {
+public class ModelContext implements PropertyChangeListener, CommitDelegate, RollbackDelegate {
 
     private final ModelUserTransaction transaction;
 
-    private final Map<Long, ObjectInstance> modelPool = new HashMap<>();
+    private final Map<Long, ParentInstance> modelPool = new HashMap<>();
 
-    private final Deque<Command<Void>> commandStack = new LinkedList<>();
+    private final Deque<Command<Void>> commandStack = new ArrayDeque<>();
 
     private final RollbackInvoker rollbackInvoker = new RollbackInvoker();
 
@@ -23,7 +22,7 @@ public class ModelContext implements PropertyChangeListener, CommitListener, Rol
         this.transaction = new ModelUserTransaction(this, this);
     }
 
-    public void addModel(ObjectInstance objectInstance) {
+    public void addModel(ParentInstance objectInstance) {
         this.modelPool.put(objectInstance.getId(), objectInstance);
         objectInstance.addPropertyChangeListener(this);
     }
@@ -41,7 +40,7 @@ public class ModelContext implements PropertyChangeListener, CommitListener, Rol
             return;
         }
         System.out.println(evt);
-//        commandStack.addLast(rollbackInvoker.CreateRollbackCommand((ObjectInstance) evt.getSource()));
+        commandStack.push(rollbackInvoker.CreateRollbackCommand(evt));
     }
 
     @Override
@@ -51,8 +50,12 @@ public class ModelContext implements PropertyChangeListener, CommitListener, Rol
 
     @Override
     public void rollback() {
-        this.commandStack.stream().forEach((cmd) -> {
+        while (true) {
+            Command<Void> cmd = this.commandStack.poll();
+            if (cmd == null) {
+                return;
+            }
             cmd.undo.execute();
-        });
+        }
     }
 }

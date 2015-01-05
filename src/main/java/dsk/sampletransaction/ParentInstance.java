@@ -4,19 +4,19 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 
-public class ObjectInstance implements Serializable, Cloneable {
+public class ParentInstance implements Serializable, Cloneable {
 
     private static final long serialVersionUID = 1;
 
     private long id;
     private String name;
 
-    private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
+    protected final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 
-    public ObjectInstance() {
+    public ParentInstance() {
     }
 
-    public ObjectInstance(long id, String name) {
+    public ParentInstance(long id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -50,10 +50,10 @@ public class ObjectInstance implements Serializable, Cloneable {
     }
 
     @Override
-    public ObjectInstance clone() {
+    public ParentInstance clone() {
         try {
             // シャローコピー
-            return (ObjectInstance) super.clone();
+            return (ParentInstance) super.clone();
         } catch (CloneNotSupportedException e) {
             throw new InternalError(e);
         }
@@ -61,6 +61,6 @@ public class ObjectInstance implements Serializable, Cloneable {
 
     @Override
     public String toString() {
-        return "ObjectInstance{" + "id=" + id + ", name=" + name + '}';
+        return "ParentInstance{" + "id=" + id + ", name=" + name + '}';
     }
 }

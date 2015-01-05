@@ -1,6 +1,6 @@
 package dsk.sampletransaction;
 
-public interface CommitListener {
+public interface CommitDelegate {
 
     void commit();
 }
