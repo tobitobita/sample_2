@@ -1,12 +1,10 @@
 package dsk.sampleundoredo;
 
-import java.util.function.Supplier;
+public class Command<R> {
 
-class Command<R> {
+    public Executable<R> undo;
 
-    public Supplier<R> undo;
+    public Executable<R> redo;
 
-    public Supplier<R> redo;
-
-    public Supplier<R> invoke;
+    public Executable<R> invoke;
 }
