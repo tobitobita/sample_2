@@ -11,8 +11,23 @@ public class ModelUserTransaction implements UserTransaction {
 
     private boolean transactioning;
 
+    private boolean rollbacking;
+
+    private final CommitListener commitListener;
+
+    private final RollbackListener rollbackListener;
+
+    public ModelUserTransaction(CommitListener commitListener, RollbackListener rollbackListener) {
+        this.commitListener = commitListener;
+        this.rollbackListener = rollbackListener;
+    }
+
     boolean hasTransaction() {
-        return transactioning;
+        return this.transactioning;
+    }
+
+    boolean hasRollback() {
+        return this.rollbacking;
     }
 
     @Override
@@ -25,11 +40,15 @@ public class ModelUserTransaction implements UserTransaction {
 
     @Override
     public void commit() throws RollbackException, HeuristicMixedException, HeuristicRollbackException, SecurityException, IllegalStateException, SystemException {
+        this.commitListener.commit();
         this.transactioning = false;
     }
 
     @Override
     public void rollback() throws IllegalStateException, SecurityException, SystemException {
+        this.rollbacking = true;
+        this.rollbackListener.rollback();
+        this.rollbacking = false;
         this.transactioning = false;
     }
 

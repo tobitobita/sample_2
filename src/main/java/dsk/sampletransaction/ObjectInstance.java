@@ -4,7 +4,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 
-public class ObjectInstance implements Serializable {
+public class ObjectInstance implements Serializable, Cloneable {
 
     private static final long serialVersionUID = 1;
 
@@ -47,5 +47,20 @@ public class ObjectInstance implements Serializable {
 
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         propertyChangeSupport.removePropertyChangeListener(listener);
+    }
+
+    @Override
+    public ObjectInstance clone() {
+        try {
+            // シャローコピー
+            return (ObjectInstance) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new InternalError(e);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "ObjectInstance{" + "id=" + id + ", name=" + name + '}';
     }
 }
