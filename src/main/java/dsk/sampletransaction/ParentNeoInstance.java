@@ -4,17 +4,17 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.Serializable;
 
-public class ChildInstance extends ParentInstance implements PropertyChangeListener, Serializable, Cloneable {
+public class ParentNeoInstance extends ParentInstance implements PropertyChangeListener, Serializable, Cloneable {
 
     private static final long serialVersionUID = 1;
 
     private String parentName;
 
-    public ChildInstance() {
+    public ParentNeoInstance() {
         super();
     }
 
-    public ChildInstance(long id, String name, String parentName) {
+    public ParentNeoInstance(long id, String name, String parentName) {
         super(id, name);
         this.parentName = parentName;
     }
@@ -32,6 +32,6 @@ public class ChildInstance extends ParentInstance implements PropertyChangeListe
 
     @Override
     public String toString() {
-        return super.toString() + ", ChildInstance{" + "parentName=" + parentName + '}';
+        return super.toString() + ", ParentNeoInstance{" + "parentName=" + parentName + '}';
     }
 }
