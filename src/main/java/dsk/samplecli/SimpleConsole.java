@@ -17,14 +17,17 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 public class SimpleConsole extends WindowAdapter implements ActionListener, Runnable {
 
     private JFrame frame;
     private JTextArea textArea;
+    private JTextField textField;
 
     private final PipedInputStream stdIs = new PipedInputStream();
     private final PipedInputStream errIs = new PipedInputStream();
+    private final Thread inThread = new Thread(this);
     private final Thread stdThread = new Thread(this);
     private final Thread errThread = new Thread(this);
     private boolean quit;
@@ -46,8 +49,14 @@ public class SimpleConsole extends WindowAdapter implements ActionListener, Runn
         textArea.setEditable(false);
         JButton button = new JButton("Clear");
 
+        textField = new JTextField();
+        TextFieldStreamer inputStream = new TextFieldStreamer(textField);
+        textField.addActionListener(inputStream);
+        System.setIn(inputStream);
+
         frame.getContentPane().setLayout(new BorderLayout());
         frame.getContentPane().add(new JScrollPane(textArea), BorderLayout.CENTER);
+        frame.getContentPane().add(textField, BorderLayout.NORTH);
         frame.getContentPane().add(button, BorderLayout.SOUTH);
 
         frame.addWindowListener(this);
@@ -76,6 +85,9 @@ public class SimpleConsole extends WindowAdapter implements ActionListener, Runn
 
         errThread.setDaemon(true);
         errThread.start();
+        
+        inThread.setDaemon(true);
+        inThread.start();
     }
 
     public void show() {
