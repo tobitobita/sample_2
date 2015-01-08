@@ -3,7 +3,6 @@ package dsk.samplecli;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,11 +22,10 @@ public class SimpleConsole extends WindowAdapter implements ActionListener, Runn
 
     private JFrame frame;
     private JTextArea textArea;
-    private JTextField textField;
 
     private final PipedInputStream stdIs = new PipedInputStream();
     private final PipedInputStream errIs = new PipedInputStream();
-    private final Thread inThread = new Thread(this);
+
     private final Thread stdThread = new Thread(this);
     private final Thread errThread = new Thread(this);
     private boolean quit;
@@ -49,10 +47,11 @@ public class SimpleConsole extends WindowAdapter implements ActionListener, Runn
         textArea.setEditable(false);
         JButton button = new JButton("Clear");
 
-        textField = new JTextField();
-        TextFieldStreamer inputStream = new TextFieldStreamer(textField);
-        textField.addActionListener(inputStream);
-        System.setIn(inputStream);
+        JTextField textField = new JTextField();
+        textField.addActionListener((ActionEvent e) -> {
+            System.out.println(textField.getText());
+            textField.setText("");
+        });
 
         frame.getContentPane().setLayout(new BorderLayout());
         frame.getContentPane().add(new JScrollPane(textArea), BorderLayout.CENTER);
@@ -85,9 +84,6 @@ public class SimpleConsole extends WindowAdapter implements ActionListener, Runn
 
         errThread.setDaemon(true);
         errThread.start();
-        
-        inThread.setDaemon(true);
-        inThread.start();
     }
 
     public void show() {
@@ -102,11 +98,13 @@ public class SimpleConsole extends WindowAdapter implements ActionListener, Runn
             stdThread.join(1000);
             stdIs.close();
         } catch (InterruptedException | IOException e) {
+            e.printStackTrace();
         }
         try {
             errThread.join(1000);
             errIs.close();
         } catch (InterruptedException | IOException e) {
+            e.printStackTrace();
         }
         System.exit(0);
     }
@@ -140,7 +138,6 @@ public class SimpleConsole extends WindowAdapter implements ActionListener, Runn
                     return;
                 }
             }
-
             while (Thread.currentThread() == errThread) {
                 try {
                     this.wait(100);
@@ -181,20 +178,6 @@ public class SimpleConsole extends WindowAdapter implements ActionListener, Runn
     public static void main(String[] arg) {
         EventQueue.invokeLater(() -> {
             new SimpleConsole().show();
-
-            // testing part
-            // you may omit this part for your application
-            // 
-            System.out.println("Hello World 2");
-            System.out.println("All fonts available to Graphic2D:\n");
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            String[] fontNames = ge.getAvailableFontFamilyNames();
-            for (String fontName : fontNames) {
-                System.out.println(fontName);
-            }
-            // Testing part: simple an error thrown anywhere in this JVM will be printed on the Console
-            // We do it with a seperate Thread becasue we don't wan't to break a Thread used by the Console.
-            System.out.println("\nLets throw an error on this console");
         });
     }
 }
