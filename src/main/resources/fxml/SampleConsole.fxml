@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="dsk.samplecli.SampleConsoleController">
+   <children>
+      <Button layoutX="271.0" layoutY="360.0" mnemonicParsing="false" text="Clear" AnchorPane.bottomAnchor="10.0" />
+      <TextArea layoutX="13.0" layoutY="45.0" prefHeight="305.0" prefWidth="580.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+      <TextField layoutX="11.0" layoutY="14.0" prefHeight="26.0" prefWidth="565.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+   </children>
+</AnchorPane>
