@@ -6,11 +6,14 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="dsk.samplecli.SampleConsoleController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dsk.samplecli.SampleConsoleController">
    <children>
-      <Button layoutX="271.0" layoutY="360.0" mnemonicParsing="false" text="Clear" AnchorPane.bottomAnchor="10.0" />
-      <TextArea layoutX="13.0" layoutY="45.0" prefHeight="305.0" prefWidth="580.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
-      <TextField layoutX="11.0" layoutY="14.0" prefHeight="26.0" prefWidth="565.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+      <TextArea fx:id="textArea" editable="false" layoutX="13.0" layoutY="45.0" prefHeight="300.0" prefWidth="300.0" AnchorPane.bottomAnchor="55.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="45.0" />
+      <TextField layoutX="11.0" layoutY="14.0" onAction="#handleTextFieldAction" prefHeight="26.0" prefWidth="565.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+      <VBox alignment="CENTER" layoutX="10.0" layoutY="354.0" prefHeight="39.0" prefWidth="580.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#handleButtonAction" text="Clear" />
+         </children>
+      </VBox>
    </children>
 </AnchorPane>
