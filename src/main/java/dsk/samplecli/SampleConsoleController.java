@@ -26,7 +26,13 @@ public class SampleConsoleController implements Initializable {
     }
 
     @FXML
-    protected void handleButtonAction(ActionEvent event) {
+    protected void handleClearAction(ActionEvent event) {
         this.textArea.clear();
+    }
+
+    @FXML
+    protected void handleSaveAction(ActionEvent event) {
+        XmlSeiarizer s = new XmlSeiarizer();
+        s.save(this.textArea.getText());
     }
 }
