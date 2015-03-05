@@ -1,7 +1,7 @@
-package dsk.bookshelf.inventory.api.bundle;
+package dsk.bookshelf.inventory.mock.bundle;
 
 import dsk.bookshelf.inventory.api.BookInventory;
-import dsk.bookshelf.inventory.api.mock.BookInventoryMock;
+import dsk.bookshelf.inventory.mock.BookInventoryMock;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleEvent;

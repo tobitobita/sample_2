@@ -1,4 +1,4 @@
-package dsk.bookshelf.inventory.api.mock;
+package dsk.bookshelf.inventory.mock;
 
 import dsk.bookshelf.inventory.api.Book;
 import dsk.bookshelf.inventory.api.BookInventory;
