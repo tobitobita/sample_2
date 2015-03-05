@@ -33,13 +33,23 @@
                 <artifactId>maven-bundle-plugin</artifactId>
                 <version>2.5.3</version>
                 <extensions>true</extensions>
+                <executions>
+                    <execution>
+                        <id>build-manifest</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>bundle</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
                     <instructions>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-                        <Export-Package>dsk.bookshelf.inventory.api</Export-Package>
+                        <Bundle-Version>${project.version}</Bundle-Version>
+                        <Bundle-Activator>dsk.bookshelf.inventory.api.bundle.Activator</Bundle-Activator>
+                        <Export-Package>dsk.bookshelf.inventory.api.*</Export-Package>
                         <!--
-                        <Private-Package>org.foo.myproject.*</Private-Package>
-                        <Bundle-Activator>org.foo.myproject.impl1.Activator</Bundle-Activator>
+                        <Private-Package>dsk.bookshelf.inventory.api.bundle</Private-Package>
                         -->
                     </instructions>
                 </configuration>

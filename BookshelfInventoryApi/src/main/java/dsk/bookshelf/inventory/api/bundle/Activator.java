@@ -1,6 +1,7 @@
-package dsk.bookshelf.inventory.api.mock;
+package dsk.bookshelf.inventory.api.bundle;
 
 import dsk.bookshelf.inventory.api.BookInventory;
+import dsk.bookshelf.inventory.api.mock.BookInventoryMock;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleEvent;
@@ -28,6 +29,7 @@ public class Activator implements BundleActivator, BundleListener {
 
     @Override
     public void bundleChanged(BundleEvent event) {
+        System.out.printf("bundleChanged.\n");
         System.out.println(event);
     }
 }
