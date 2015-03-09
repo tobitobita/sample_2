@@ -12,7 +12,7 @@ import org.osgi.framework.ServiceReference;
 
 public class BookshelfServiceImpl implements BookshelfService {
 
-    private BundleContext context;
+    private final BundleContext context;
 
     public BookshelfServiceImpl(BundleContext context) {
         this.context = context;

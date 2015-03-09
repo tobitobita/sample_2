@@ -1,3 +1,2 @@
-/BookshelfInventoryApi/target/
-/BookshelfInventoryMock/target/
-/BookshelfService/target/
+target/
+nb-configuration.xml

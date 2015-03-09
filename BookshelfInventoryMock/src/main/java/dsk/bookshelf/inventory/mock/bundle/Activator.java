@@ -2,6 +2,7 @@ package dsk.bookshelf.inventory.mock.bundle;
 
 import dsk.bookshelf.inventory.api.BookInventory;
 import dsk.bookshelf.inventory.mock.BookInventoryMock;
+import dsk.bookshelf.inventory.api.utils.BundleUtils;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleEvent;
@@ -29,7 +30,6 @@ public class Activator implements BundleActivator, BundleListener {
 
     @Override
     public void bundleChanged(BundleEvent event) {
-        System.out.printf("bundleChanged.\n");
-        System.out.println(event);
+        System.out.printf("Mock BundleChanged. => status: %s\n", BundleUtils.toStringStatus(event));
     }
 }

@@ -51,7 +51,7 @@
                         <Bundle-Version>${project.version}</Bundle-Version>
                         <Bundle-Activator>dsk.bookshelf.service.bundle.Activator</Bundle-Activator>
                         <Export-Package>dsk.bookshelf.service.*</Export-Package>
-                        <Private-Package>dsk.bookshelf.service.bundle.Activator</Private-Package>
+                        <Private-Package>dsk.bookshelf.service.bundle.*</Private-Package>
                     </instructions>
                 </configuration>
             </plugin>

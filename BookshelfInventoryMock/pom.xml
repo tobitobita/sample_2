@@ -51,7 +51,7 @@
                         <Bundle-Version>${project.version}</Bundle-Version>
                         <Bundle-Activator>dsk.bookshelf.inventory.mock.bundle.Activator</Bundle-Activator>
                         <Export-Package>dsk.bookshelf.inventory.mock.*</Export-Package>
-                        <Private-Package>dsk.bookshelf.inventory.mock.bundle.Activator</Private-Package>
+                        <Private-Package>dsk.bookshelf.inventory.mock.bundle.*</Private-Package>
                     </instructions>
                 </configuration>
             </plugin>
