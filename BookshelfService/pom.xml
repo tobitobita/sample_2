@@ -5,7 +5,10 @@
     <artifactId>BookshelfService</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <build>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>    
+    <build>        
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -28,7 +31,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <!--
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
@@ -47,13 +49,12 @@
                     <instructions>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Bundle-Version>${project.version}</Bundle-Version>
-                        <Bundle-Activator>dsk.bookshelf.inventory.mock.bundle.Activator</Bundle-Activator>
-                        <Export-Package>dsk.bookshelf.inventory.mock.*</Export-Package>
-                        <Private-Package>dsk.bookshelf.inventory.mock.bundle.Activator</Private-Package>
+                        <Bundle-Activator>dsk.bookshelf.service.bundle.Activator</Bundle-Activator>
+                        <Export-Package>dsk.bookshelf.service.*</Export-Package>
+                        <Private-Package>dsk.bookshelf.service.bundle.Activator</Private-Package>
                     </instructions>
                 </configuration>
             </plugin>
-            -->
         </plugins>
     </build>
     <dependencies>
