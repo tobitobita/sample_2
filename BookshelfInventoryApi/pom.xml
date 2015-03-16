@@ -51,6 +51,7 @@
                         <Bundle-Version>${project.version}</Bundle-Version>
                         <Export-Package>dsk.bookshelf.inventory.api.*</Export-Package>
                         <!--
+                        <Export-Package />
                         <Private-Package>dsk.bookshelf.inventory.api.bundle</Private-Package>
                         -->
                     </instructions>

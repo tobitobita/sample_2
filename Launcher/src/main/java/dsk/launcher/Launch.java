@@ -21,11 +21,12 @@ public class Launch {
         BundleContext context = framework.getBundleContext();
         List<Bundle> bundles = new ArrayList<>();
         bundles.add(context.installBundle("file:///Users/makoto/git/SampleOsgi/BookshelfInventoryApi/target/BookshelfInventoryApi-1.0-SNAPSHOT.jar"));
-//        bundles.add(context.installBundle("file:///Users/makoto/git/SampleOsgi/BookshelfInventoryMock/target/BookshelfInventoryMock-1.0-SNAPSHOT.jar"));
-//        bundles.add(context.installBundle("file:///Users/makoto/git/SampleOsgi/BookshelfService/target/BookshelfService-1.0-SNAPSHOT.jar"));
+        bundles.add(context.installBundle("file:///Users/makoto/git/SampleOsgi/BookshelfInventoryMock/target/BookshelfInventoryMock-1.0-SNAPSHOT.jar"));
+        bundles.add(context.installBundle("file:///Users/makoto/git/SampleOsgi/BookshelfService/target/BookshelfService-1.0-SNAPSHOT.jar"));
         for (Bundle bundle : bundles) {
             bundle.start();
         }
+        framework.stop();
     }
 
     public static void main(String[] args) {
