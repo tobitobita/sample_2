@@ -6,10 +6,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="200" prefWidth="320" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dsk.bookshelf.inventory.gui.GuiAppController">
+<AnchorPane id="AnchorPane" prefHeight="345.0" prefWidth="434.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dsk.bookshelf.inventory.gui.GuiAppController">
     <children>
-        <Button fx:id="button" layoutX="124.0" layoutY="160.0" onAction="#handleButtonAction" text="Click Me!" />
-        <Label fx:id="label" layoutX="126" layoutY="120" minHeight="16" minWidth="69" />
-      <Button layoutX="262.0" layoutY="160.0" mnemonicParsing="false" onAction="#handleExitButtonAction" text="終了" />
+        <Button fx:id="button" layoutX="118.0" layoutY="17.0" onAction="#handleButtonAction" text="Click Me!" />
+        <Label fx:id="label" layoutX="25.0" layoutY="22.0" minHeight="16" minWidth="69" />
+      <Button layoutX="376.0" layoutY="305.0" mnemonicParsing="false" onAction="#handleExitButtonAction" text="終了" />
+      <TabPane fx:id="tabs" layoutX="14.0" layoutY="65.0" prefHeight="265.0" prefWidth="349.0" tabClosingPolicy="UNAVAILABLE" />
     </children>
 </AnchorPane>

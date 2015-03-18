@@ -1,8 +1,6 @@
 package dsk.launcher;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,7 +22,7 @@ public class Launch {
         FrameworkFactory frameworkFactory = ServiceLoader.load(FrameworkFactory.class).iterator().next();
         Map<String, String> conf = new HashMap<>();
         conf.put(Constants.FRAMEWORK_STORAGE_CLEAN, Constants.FRAMEWORK_STORAGE_CLEAN_ONFIRSTINIT);
-        conf.put(Constants.FRAMEWORK_SYSTEMPACKAGES_EXTRA, "javafx.application,javafx.event,javafx.fxml,javafx.scene,javafx.scene.control,javafx.stage");
+        conf.put(Constants.FRAMEWORK_SYSTEMPACKAGES_EXTRA, "javafx.application,javafx.event,javafx.fxml,javafx.scene,javafx.scene.control,javafx.stage,javafx.collections");
         Framework framework = frameworkFactory.newFramework(conf);
         framework.adapt(FrameworkStartLevel.class).setInitialBundleStartLevel(4);
         try {
