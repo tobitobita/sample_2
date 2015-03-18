@@ -15,14 +15,14 @@ public class Activator implements BundleActivator, BundleListener {
 
     @Override
     public void start(BundleContext context) throws Exception {
-        System.out.printf("start bundle.\n");
+        System.out.printf("START MOCK.\n");
         this.register = context.registerService(BookInventory.class, new BookInventoryMock(), null);
         context.addBundleListener(this);
     }
 
     @Override
     public void stop(BundleContext context) throws Exception {
-        System.out.printf("stop bundle.\n");
+        System.out.printf("STOP MOCK.\n");
         context.ungetService(this.register.getReference());
         context.removeBundleListener(this);
         this.register = null;
@@ -30,6 +30,6 @@ public class Activator implements BundleActivator, BundleListener {
 
     @Override
     public void bundleChanged(BundleEvent event) {
-        System.out.printf("Mock BundleChanged. => status: %s\n", BundleUtils.toStringStatus(event));
+        System.out.printf("MOCK BundleChanged. => status: %s\n", BundleUtils.toStringStatus(event));
     }
 }

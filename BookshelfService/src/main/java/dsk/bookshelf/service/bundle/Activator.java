@@ -44,6 +44,6 @@ public class Activator implements BundleActivator, BundleListener {
 
     @Override
     public void bundleChanged(BundleEvent event) {
-        System.out.printf("Service BundleChanged. => status: %s\n", BundleUtils.toStringStatus(event));
+        System.out.printf("SERVICE BundleChanged. => status: %s\n", BundleUtils.toStringStatus(event));
     }
 }
