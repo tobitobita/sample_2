@@ -13,15 +13,22 @@ public class FXMLController implements Initializable {
 
     private double x;
     private double y;
+    private double draggedX;
+    private double draggedY;
+    private double draggedW;
+    private double draggedH;
     private GraphicsContext context;
 
     @FXML
     private Canvas canvas;
 
+    private static final double LINE_WIDTH = 0.5d;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         context = canvas.getGraphicsContext2D();
         context.setStroke(Color.LIGHTSEAGREEN);
+        context.setLineWidth(LINE_WIDTH);
         canvas.setOnMousePressed((MouseEvent event) -> {
             System.out.println("OnMousePressed: " + event);
             x = event.getX();
@@ -29,31 +36,26 @@ public class FXMLController implements Initializable {
         });
         canvas.setOnMouseReleased((MouseEvent event) -> {
             System.out.println("OnMouseReleased: " + event);
-            context.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+            this.clearRect();
         });
         canvas.setOnMouseDragged((MouseEvent event) -> {
 //            System.out.println("OnMouseDragged: " + event);
-            context.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-            double x;
-            double y;
-            double w;
+            this.clearRect();
             if (this.x < event.getX()) {
-                x = this.x;
-                w = event.getX() - this.x;
+                draggedX = this.x;
+                draggedW = event.getX() - this.x;
             } else {
-                x = event.getX();
-                w = this.x - event.getX();
+                draggedX = event.getX();
+                draggedW = this.x - event.getX();
             }
-            double h;
             if (this.y < event.getY()) {
-                y = this.y;
-                h = event.getY() - this.y;
+                draggedY = this.y;
+                draggedH = event.getY() - this.y;
             } else {
-                y = event.getY();
-                h = this.y - event.getY();
+                draggedY = event.getY();
+                draggedH = this.y - event.getY();
             }
-            System.out.printf("x:%f, y:%f, w:%f, h:%f\n", x, y, w, h);
-            context.strokeRect(x, y, w, h);
+            context.strokeRect(draggedX, draggedY, draggedW, draggedH);
         });
         canvas.setOnMouseDragEntered((MouseEvent event) -> {
             System.out.println("OnMouseDragEntered: " + event);
@@ -64,5 +66,10 @@ public class FXMLController implements Initializable {
         canvas.setOnMouseDragExited((MouseEvent event) -> {
             System.out.println("OnMouseDragExited: " + event);
         });
+    }
+
+    private void clearRect() {
+        double halfLineWidth = LINE_WIDTH / 2;
+        context.clearRect(draggedX - halfLineWidth, draggedY - halfLineWidth, draggedW + LINE_WIDTH, draggedH + LINE_WIDTH);
     }
 }
