@@ -4,31 +4,71 @@ import dsk.metamodel.kernel.Comment;
 import dsk.metamodel.kernel.Element;
 import dsk.metamodel.kernel.Relationship;
 import java.util.List;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 
 public class ElementImpl implements Element {
 
+    private final StringProperty id = new SimpleStringProperty(this, "id");
+
+    private final ObjectProperty<Element> owner = new SimpleObjectProperty<>(this, "owner");
+
+    private final ObservableList<Element> ownedElements = FXCollections.observableArrayList();
+
+    private final ObservableList<Comment> ownedComments = FXCollections.observableArrayList();
+
+    private final ObservableList<Relationship> relationships = FXCollections.observableArrayList();
+
     @Override
     public String getId() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.id.get();
     }
 
     @Override
     public Element getOwner() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.owner.get();
     }
 
     @Override
     public List<Element> getOwnedElements() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.ownedElements;
     }
 
     @Override
     public List<Comment> getOwnedComments() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.ownedComments;
     }
 
     @Override
     public List<Relationship> getRelationships() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.relationships;
+    }
+
+    public StringProperty idProperty() {
+        return this.id;
+    }
+
+    public ObjectProperty<Element> ownerProperty() {
+        return this.owner;
+    }
+
+    public ObservableList<Element> ownedElementsProperty() {
+        return this.ownedElements;
+    }
+
+    public ObservableList<Comment> ownedCommentsProperty() {
+        return this.ownedComments;
+    }
+
+    public ObservableList<Relationship> relationshipsProperty() {
+        this.relationships.addListener((ListChangeListener.Change<? extends Relationship> c) -> {
+        });
+        
+        return this.relationships;
     }
 }
