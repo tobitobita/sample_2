@@ -66,9 +66,6 @@ public class ElementImpl implements Element {
     }
 
     public ObservableList<Relationship> relationshipsProperty() {
-        this.relationships.addListener((ListChangeListener.Change<? extends Relationship> c) -> {
-        });
-        
         return this.relationships;
     }
 }
