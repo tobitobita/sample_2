@@ -3,7 +3,6 @@ package dsk.metamodel.kernel.impl;
 import dsk.metamodel.kernel.Association;
 import dsk.metamodel.kernel.Package;
 import dsk.metamodel.kernel.Type;
-import java.util.List;
 
 public class TypeImpl extends PackageableElementImpl implements Type {
 
@@ -18,7 +17,7 @@ public class TypeImpl extends PackageableElementImpl implements Type {
     }
 
     @Override
-    public List<Association> getAssociations() {
+    public Iterable<Association> getAssociations() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

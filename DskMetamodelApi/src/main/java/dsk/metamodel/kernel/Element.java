@@ -1,16 +1,14 @@
 package dsk.metamodel.kernel;
 
-import java.util.List;
-
 public interface Element {
 
     String getId();
 
     Element getOwner();
 
-    List<Element> getOwnedElements();
+    Iterable<Element> getOwnedElements();
 
-    List<Comment> getOwnedComments();
+    Iterable<Comment> getOwnedComments();
 
-    List<Relationship> getRelationships();
+    Iterable<Relationship> getRelationships();
 }

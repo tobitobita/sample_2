@@ -3,13 +3,11 @@ package dsk.metamodel.kernel.impl;
 import dsk.metamodel.kernel.Comment;
 import dsk.metamodel.kernel.Element;
 import dsk.metamodel.kernel.Relationship;
-import java.util.List;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
 public class ElementImpl implements Element {
@@ -35,17 +33,17 @@ public class ElementImpl implements Element {
     }
 
     @Override
-    public List<Element> getOwnedElements() {
+    public Iterable<Element> getOwnedElements() {
         return this.ownedElements;
     }
 
     @Override
-    public List<Comment> getOwnedComments() {
+    public Iterable<Comment> getOwnedComments() {
         return this.ownedComments;
     }
 
     @Override
-    public List<Relationship> getRelationships() {
+    public Iterable<Relationship> getRelationships() {
         return this.relationships;
     }
 

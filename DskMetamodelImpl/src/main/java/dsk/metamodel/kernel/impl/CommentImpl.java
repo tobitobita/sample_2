@@ -2,7 +2,6 @@ package dsk.metamodel.kernel.impl;
 
 import dsk.metamodel.kernel.Comment;
 import dsk.metamodel.kernel.Element;
-import java.util.List;
 
 public class CommentImpl extends ElementImpl implements Comment {
 
@@ -17,7 +16,7 @@ public class CommentImpl extends ElementImpl implements Comment {
     }
 
     @Override
-    public List<Element> getAnnotatedElements() {
+    public Iterable<Element> getAnnotatedElements() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
