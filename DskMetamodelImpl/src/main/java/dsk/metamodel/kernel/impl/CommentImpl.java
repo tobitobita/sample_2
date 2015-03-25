@@ -2,21 +2,27 @@ package dsk.metamodel.kernel.impl;
 
 import dsk.metamodel.kernel.Comment;
 import dsk.metamodel.kernel.Element;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class CommentImpl extends ElementImpl implements Comment {
 
+    private String body;
+
+    private final ObservableList<Element> annotatedElements = FXCollections.observableArrayList();
+
     @Override
     public String getBody() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return body;
     }
 
     @Override
     public void setBody(String body) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.body = body;
     }
 
     @Override
     public Iterable<Element> getAnnotatedElements() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return annotatedElements;
     }
 }

@@ -6,14 +6,15 @@ import dsk.metamodel.kernel.TypedElement;
 
 public class StructuralFeatureImpl extends FeatureImpl implements TypedElement, StructuralFeature {
 
+    private Type type;
+
     @Override
     public Type getType() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.type;
     }
 
     @Override
     public void setType(Type type) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.type = type;
     }
-
 }
