@@ -14,6 +14,10 @@ public class ToolboxController implements Initializable {
     @FXML
     private Pane titlebar;
 
+    private double clickX;
+
+    private double clickY;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
     }
@@ -32,9 +36,6 @@ public class ToolboxController implements Initializable {
     protected void handleNextAction(ActionEvent event) {
         System.out.printf("handleNextAction\n");
     }
-
-    private double clickX;
-    private double clickY;
 
     public void postInit() {
         final Window window = getWindow();
