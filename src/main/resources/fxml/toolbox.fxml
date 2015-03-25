@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.shape.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="91.0" prefWidth="60.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dsk.samplecanvas.ToolboxController">
+   <children>
+      <VBox layoutY="-1.0" prefHeight="91.0" prefWidth="60.0">
+         <children>
+            <Pane fx:id="titlebar" prefHeight="10.0" prefWidth="60.0" style="-fx-background-color: red;" />
+            <Button mnemonicParsing="false" onAction="#handleSeeAction" prefHeight="26.0" prefWidth="66.0" text="See" textAlignment="CENTER" />
+            <Button mnemonicParsing="false" onAction="#handleActionAction" prefHeight="26.0" prefWidth="66.0" text="Action" textAlignment="CENTER" />
+            <Separator prefWidth="200.0" />
+            <Button mnemonicParsing="false" onAction="#handleNextAction" prefHeight="26.0" prefWidth="65.0" text="Next" textAlignment="CENTER" />
+         </children>
+         <opaqueInsets>
+            <Insets top="10.0" />
+         </opaqueInsets>
+      </VBox>
+   </children>
+   <opaqueInsets>
+      <Insets top="10.0" />
+   </opaqueInsets>
+</AnchorPane>
