@@ -1,12 +1,12 @@
 package dsk.samplecanvas;
 
+import dsk.samplecanvas.control.OvalControl;
 import dsk.samplecanvas.control.RectControl;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Group;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Window;
@@ -58,7 +58,7 @@ public class ToolboxController implements Initializable, ClickHandler {
     }
 
     @Override
-    public void onClickDiagram(Group pane, MouseEvent event) {
+    public void onClickDiagram(Pane pane, MouseEvent event) {
         System.out.printf("onClickDiagram, %d\n", selected);
         switch (selected) {
             case 1:
@@ -68,27 +68,32 @@ public class ToolboxController implements Initializable, ClickHandler {
                 addAction(pane, event);
                 break;
             case 3:
-                addNext(pane, event);
+//                addNext(pane, event);
                 break;
             default:
                 break;
         }
     }
 
-    private void addSee(Group pane, MouseEvent event) {
+    private void addSee(Pane pane, MouseEvent event) {
         RectControl rect = new RectControl();
-        System.out.printf("ADD x:%f, y:%f\n", event.getX(), event.getY());
+        System.out.printf("ADD x:%f, y::%f\n", event.getX(), event.getY());
         rect.setLayoutX(event.getX());
         rect.setLayoutY(event.getY());
         pane.getChildren().add(rect);
         this.clearSelect();
     }
 
-    private void addAction(Group pane, MouseEvent event) {
+    private void addAction(Pane pane, MouseEvent event) {
+        OvalControl oval = new OvalControl();
+        System.out.printf("ADD x:%f, y::%f\n", event.getX(), event.getY());
+        oval.setLayoutX(event.getX());
+        oval.setLayoutY(event.getY());
+        pane.getChildren().add(oval);
         this.clearSelect();
     }
 
-    private void addNext(Group pane, MouseEvent event) {
+    private void addNext(Pane pane, MouseEvent event) {
         this.clearSelect();
     }
 

@@ -3,8 +3,16 @@ package dsk.samplecanvas.control;
 public class RectControl extends DrawControl {
 
     public RectControl() {
-        this.setWidth(20d);
-        this.setHeight(20d);
-        this.setSkin(new RectSkin(this));
+        this(20d, 20d);
     }
+
+    public RectControl(double defaultWidth, double defaultHeight) {
+        super(defaultWidth, defaultHeight);
+    }
+
+    @Override
+    protected RectSkin getDrawSkin() {
+        return new RectSkin(this);
+    }
+
 }

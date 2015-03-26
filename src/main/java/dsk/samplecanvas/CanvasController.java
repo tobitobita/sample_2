@@ -4,11 +4,11 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
 public class CanvasController implements Initializable {
@@ -25,7 +25,7 @@ public class CanvasController implements Initializable {
     @FXML
     private Canvas ghostCanvas;
     @FXML
-    private Group mainCanvas;
+    private Pane mainCanvas;
 
     private static final double LINE_WIDTH = 0.5d;
 

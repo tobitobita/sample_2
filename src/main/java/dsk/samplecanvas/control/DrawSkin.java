@@ -11,15 +11,15 @@ public abstract class DrawSkin<T extends DrawControl> implements Skin<T> {
 
     private Canvas canvas;
 
-    public DrawSkin(T control) {
-        this.control = control;
+    protected DrawSkin(T skin) {
+        this.control = skin;
     }
 
     protected T getControl() {
         return this.control;
     }
 
-    protected Canvas getCanvas() {
+    private Canvas getCanvas() {
         if (this.canvas == null) {
             System.out.printf("CANVAS w:%f, h:%f\n", this.control.getWidth(), this.control.getHeight());
             this.canvas = new Canvas(this.control.getWidth(), this.control.getHeight());
