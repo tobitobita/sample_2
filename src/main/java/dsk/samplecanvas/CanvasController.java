@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
@@ -22,28 +23,35 @@ public class CanvasController implements Initializable {
     @FXML
     private AnchorPane anchorPane;
     @FXML
-    private Canvas canvas;
+    private Canvas ghostCanvas;
+    @FXML
+    private Group mainCanvas;
 
     private static final double LINE_WIDTH = 0.5d;
 
+    private ClickHandler diagramHandler;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        canvas.widthProperty().bind(anchorPane.widthProperty());
-        canvas.heightProperty().bind(anchorPane.heightProperty());
-        GraphicsContext context = canvas.getGraphicsContext2D();
+        ghostCanvas.widthProperty().bind(anchorPane.widthProperty());
+        ghostCanvas.heightProperty().bind(anchorPane.heightProperty());
+
+        GraphicsContext context = ghostCanvas.getGraphicsContext2D();
         context.setStroke(Color.LIGHTSEAGREEN);
         context.setLineWidth(LINE_WIDTH);
-        canvas.setOnMousePressed((MouseEvent event) -> {
+        ghostCanvas.setOnMousePressed((MouseEvent event) -> {
             System.out.println("OnMousePressed: " + event);
             x = event.getX();
             y = event.getY();
         });
-        canvas.setOnMouseReleased((MouseEvent event) -> {
+        ghostCanvas.setOnMouseReleased((MouseEvent event) -> {
             System.out.println("OnMouseReleased: " + event);
             this.clearRect();
+            if (diagramHandler != null) {
+                diagramHandler.onClickDiagram(mainCanvas, event);
+            }
         });
-        canvas.setOnMouseDragged((MouseEvent event) -> {
-//            System.out.println("OnMouseDragged: " + event);
+        ghostCanvas.setOnMouseDragged((MouseEvent event) -> {
             this.clearRect();
             if (this.x < event.getX()) {
                 draggedX = this.x;
@@ -61,20 +69,15 @@ public class CanvasController implements Initializable {
             }
             context.strokeRect(draggedX, draggedY, draggedW, draggedH);
         });
-        canvas.setOnMouseDragEntered((MouseEvent event) -> {
-            System.out.println("OnMouseDragEntered: " + event);
-        });
-        canvas.setOnMouseDragOver((MouseEvent event) -> {
-            System.out.println("OnMouseDragOver: " + event);
-        });
-        canvas.setOnMouseDragExited((MouseEvent event) -> {
-            System.out.println("OnMouseDragExited: " + event);
-        });
     }
 
     private void clearRect() {
-        GraphicsContext context = canvas.getGraphicsContext2D();
+        GraphicsContext context = ghostCanvas.getGraphicsContext2D();
         double halfLineWidth = LINE_WIDTH / 2;
         context.clearRect(draggedX - halfLineWidth, draggedY - halfLineWidth, draggedW + LINE_WIDTH, draggedH + LINE_WIDTH);
+    }
+
+    public void setDiagramHandler(ClickHandler diagramHandler) {
+        this.diagramHandler = diagramHandler;
     }
 }

@@ -1,15 +1,17 @@
 package dsk.samplecanvas;
 
+import dsk.samplecanvas.control.RectControl;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Window;
 
-public class ToolboxController implements Initializable {
+public class ToolboxController implements Initializable, ClickHandler {
 
     @FXML
     private Pane titlebar;
@@ -18,23 +20,25 @@ public class ToolboxController implements Initializable {
 
     private double clickY;
 
+    private int selected;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
     }
 
     @FXML
     protected void handleSeeAction(ActionEvent event) {
-        System.out.printf("handleSeeAction\n");
+        selected = 1;
     }
 
     @FXML
     protected void handleActionAction(ActionEvent event) {
-        System.out.printf("handleActionAction\n");
+        selected = 2;
     }
 
     @FXML
     protected void handleNextAction(ActionEvent event) {
-        System.out.printf("handleNextAction\n");
+        selected = 3;
     }
 
     public void postInit() {
@@ -51,5 +55,44 @@ public class ToolboxController implements Initializable {
 
     private Window getWindow() {
         return this.titlebar.getScene().getWindow();
+    }
+
+    @Override
+    public void onClickDiagram(Group pane, MouseEvent event) {
+        System.out.printf("onClickDiagram, %d\n", selected);
+        switch (selected) {
+            case 1:
+                addSee(pane, event);
+                break;
+            case 2:
+                addAction(pane, event);
+                break;
+            case 3:
+                addNext(pane, event);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void addSee(Group pane, MouseEvent event) {
+        RectControl rect = new RectControl();
+        System.out.printf("ADD x:%f, y:%f\n", event.getX(), event.getY());
+        rect.setLayoutX(event.getX());
+        rect.setLayoutY(event.getY());
+        pane.getChildren().add(rect);
+        this.clearSelect();
+    }
+
+    private void addAction(Group pane, MouseEvent event) {
+        this.clearSelect();
+    }
+
+    private void addNext(Group pane, MouseEvent event) {
+        this.clearSelect();
+    }
+
+    private void clearSelect() {
+        selected = 0;
     }
 }

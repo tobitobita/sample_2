@@ -18,6 +18,7 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // menu
+        ToolboxController toolboxController = null;
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/toolbox.fxml"));
             Scene scene = new Scene(loader.load());
@@ -25,8 +26,8 @@ public class MainController implements Initializable {
             toolbox.setScene(scene);
             toolbox.setResizable(false);
             toolbox.initStyle(StageStyle.TRANSPARENT);
-            ToolboxController controller = loader.getController();
-            controller.postInit();
+            toolboxController = loader.getController();
+            toolboxController.postInit();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -36,8 +37,9 @@ public class MainController implements Initializable {
             Scene scene = new Scene(loader.load());
             dialog = new Stage();
             dialog.setScene(scene);
-//            dialog.setResizable(false);
             dialog.initStyle(StageStyle.DECORATED);
+            CanvasController controller = loader.getController();
+            controller.setDiagramHandler(toolboxController);
         } catch (IOException e) {
             e.printStackTrace();
         }
