@@ -22,6 +22,12 @@ public class ToolboxController implements Initializable, ClickHandler {
 
     private int selected;
 
+    private ControlAdder adder;
+
+    public void setAdder(ControlAdder adder) {
+        this.adder = adder;
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
     }
@@ -81,6 +87,7 @@ public class ToolboxController implements Initializable, ClickHandler {
         rect.setLayoutX(event.getX());
         rect.setLayoutY(event.getY());
         pane.getChildren().add(rect);
+        this.adder.onAdded(rect);
         this.clearSelect();
     }
 
@@ -90,6 +97,7 @@ public class ToolboxController implements Initializable, ClickHandler {
         oval.setLayoutX(event.getX());
         oval.setLayoutY(event.getY());
         pane.getChildren().add(oval);
+        this.adder.onAdded(oval);
         this.clearSelect();
     }
 

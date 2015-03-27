@@ -20,6 +20,7 @@ public abstract class DrawSkin<T extends DrawControl> implements Skin<T> {
     }
 
     private Canvas getCanvas() {
+        System.out.println("getCanvas");
         if (this.canvas == null) {
             System.out.printf("CANVAS w:%f, h:%f\n", this.control.getWidth(), this.control.getHeight());
             this.canvas = new Canvas(this.control.getWidth(), this.control.getHeight());
@@ -29,16 +30,22 @@ public abstract class DrawSkin<T extends DrawControl> implements Skin<T> {
 
     @Override
     public Node getNode() {
+        System.out.println("getNode");
+        this.paint();
+        return this.getCanvas();
+    }
+
+    protected void paint() {
         GraphicsContext ctx = this.getCanvas().getGraphicsContext2D();
         ctx.clearRect(0, 0, this.control.getWidth(), this.control.getHeight());
         this.paintComponent(ctx);
-        return this.getCanvas();
     }
 
     protected abstract void paintComponent(GraphicsContext ctx);
 
     @Override
     public T getSkinnable() {
+        System.out.println("getSkinnable");
         return this.control;
     }
 
