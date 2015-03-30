@@ -1,5 +1,6 @@
 package dsk.samplecanvas.control;
 
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -11,14 +12,8 @@ public class RectSkin extends DrawSkin<RectControl> {
 
     @Override
     protected void paintComponent(GraphicsContext ctx) {
-        System.out.println("paintComponent");
-        RectControl control = this.getControl();
-        if (control.isSelected()) {
-            ctx.setFill(Color.BLACK);
-            ctx.fillRect(0, 0, control.getWidth(), control.getHeight());
-        } else {
-            ctx.setFill(Color.RED);
-            ctx.fillRect(0, 0, control.getWidth(), control.getHeight());
-        }
+        Canvas canvas = this.getCanvas();
+        ctx.setFill(Color.RED);
+        ctx.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
     }
 }

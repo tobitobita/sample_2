@@ -1,5 +1,6 @@
 package dsk.samplecanvas;
 
+import dsk.samplecanvas.control.DrawControl;
 import dsk.samplecanvas.control.OvalControl;
 import dsk.samplecanvas.control.RectControl;
 import java.net.URL;
@@ -11,7 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Window;
 
-public class ToolboxController implements Initializable, ClickHandler {
+public class ToolboxController implements Initializable, DrawControlFactory {
 
     @FXML
     private Pane titlebar;
@@ -21,12 +22,6 @@ public class ToolboxController implements Initializable, ClickHandler {
     private double clickY;
 
     private int selected;
-
-    private ControlAdder adder;
-
-    public void setAdder(ControlAdder adder) {
-        this.adder = adder;
-    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -64,14 +59,15 @@ public class ToolboxController implements Initializable, ClickHandler {
     }
 
     @Override
-    public void onClickDiagram(Pane pane, MouseEvent event) {
+    public DrawControl createControl() {
         System.out.printf("onClickDiagram, %d\n", selected);
+        DrawControl control = null;
         switch (selected) {
             case 1:
-                addSee(pane, event);
+                control = new RectControl();
                 break;
             case 2:
-                addAction(pane, event);
+                control = new OvalControl();
                 break;
             case 3:
 //                addNext(pane, event);
@@ -79,30 +75,8 @@ public class ToolboxController implements Initializable, ClickHandler {
             default:
                 break;
         }
-    }
-
-    private void addSee(Pane pane, MouseEvent event) {
-        RectControl rect = new RectControl();
-        System.out.printf("ADD x:%f, y::%f\n", event.getX(), event.getY());
-        rect.setLayoutX(event.getX());
-        rect.setLayoutY(event.getY());
-        pane.getChildren().add(rect);
-        this.adder.onAdded(rect);
         this.clearSelect();
-    }
-
-    private void addAction(Pane pane, MouseEvent event) {
-        OvalControl oval = new OvalControl();
-        System.out.printf("ADD x:%f, y::%f\n", event.getX(), event.getY());
-        oval.setLayoutX(event.getX());
-        oval.setLayoutY(event.getY());
-        pane.getChildren().add(oval);
-        this.adder.onAdded(oval);
-        this.clearSelect();
-    }
-
-    private void addNext(Pane pane, MouseEvent event) {
-        this.clearSelect();
+        return control;
     }
 
     private void clearSelect() {

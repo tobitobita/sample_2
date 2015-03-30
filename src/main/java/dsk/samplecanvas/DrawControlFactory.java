@@ -6,11 +6,11 @@ import dsk.samplecanvas.control.DrawControl;
  * @deprecated 実装がよくないね。
  */
 @Deprecated
-public interface ControlAdder {
+public interface DrawControlFactory {
 
     /**
      * @deprecated 実装がよくないね。
      */
     @Deprecated()
-    void onAdded(DrawControl control);
+    DrawControl createControl();
 }
