@@ -1,6 +1,7 @@
 package dsk.samplecanvas;
 
 import dsk.samplecanvas.control.DrawControl;
+import java.util.Optional;
 
 /**
  * @deprecated 実装がよくないね。
@@ -9,8 +10,9 @@ import dsk.samplecanvas.control.DrawControl;
 public interface DrawControlFactory {
 
     /**
+     * @return
      * @deprecated 実装がよくないね。
      */
     @Deprecated()
-    DrawControl createControl();
+    Optional<DrawControl> createControl();
 }

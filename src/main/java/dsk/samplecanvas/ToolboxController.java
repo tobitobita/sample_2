@@ -4,6 +4,7 @@ import dsk.samplecanvas.control.DrawControl;
 import dsk.samplecanvas.control.OvalControl;
 import dsk.samplecanvas.control.RectControl;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,7 +19,6 @@ public class ToolboxController implements Initializable, DrawControlFactory {
     private Pane titlebar;
 
     private double clickX;
-
     private double clickY;
 
     private int selected;
@@ -47,6 +47,7 @@ public class ToolboxController implements Initializable, DrawControlFactory {
         this.titlebar.setOnMousePressed((MouseEvent event) -> {
             clickX = event.getX();
             clickY = event.getY();
+
         });
         this.titlebar.setOnMouseDragged((MouseEvent event) -> {
             window.setX(event.getScreenX() - clickX);
@@ -59,7 +60,7 @@ public class ToolboxController implements Initializable, DrawControlFactory {
     }
 
     @Override
-    public DrawControl createControl() {
+    public Optional<DrawControl> createControl() {
         System.out.printf("onClickDiagram, %d\n", selected);
         DrawControl control = null;
         switch (selected) {
@@ -76,7 +77,7 @@ public class ToolboxController implements Initializable, DrawControlFactory {
                 break;
         }
         this.clearSelect();
-        return control;
+        return Optional.ofNullable(control);
     }
 
     private void clearSelect() {

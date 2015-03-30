@@ -2,7 +2,9 @@ package dsk.samplecanvas;
 
 import dsk.samplecanvas.control.DrawControl;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -25,6 +27,8 @@ public class CanvasController implements Initializable {
     private double draggedY;
     private double draggedW;
     private double draggedH;
+//    private DoubleProperty moveX = new SimpleDoubleProperty(this, "moveX");
+//    private DoubleProperty moveY = new SimpleDoubleProperty(this, "moveY");
 
     @FXML
     private AnchorPane anchorPane;
@@ -36,12 +40,13 @@ public class CanvasController implements Initializable {
     private static final double LINE_WIDTH = 0.5d;
 
     private List<DrawControl> selectedControls;
-    private boolean pressSelected;
+    private DrawControl pressSelected;
 
     private DrawControlFactory controlFactory;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        selectedControls = new ArrayList<>();
         ghostCanvas.widthProperty().bind(anchorPane.widthProperty());
         ghostCanvas.heightProperty().bind(anchorPane.heightProperty());
 
@@ -53,23 +58,26 @@ public class CanvasController implements Initializable {
 //            mainCanvas.fireEvent(event);
             x = event.getX();
             y = event.getY();
-            draggedX = x;
-            draggedY = y;
+            draggedX = event.getX();
+            draggedY = event.getY();
             draggedW = 1d;
             draggedH = 1d;
             // 
             Rectangle source = new Rectangle(draggedX, draggedY, draggedW, draggedH);
-            pressSelected = getDrawControlStream().anyMatch((DrawControl c) -> {
+            Optional<DrawControl> nowSelected = getDrawControlStream().filter((DrawControl c) -> {
                 return hitTest(
                         source,
                         new Rectangle(c.getCanvasX(), c.getCanvasY(), c.getCanvasWidth(), c.getCanvasHeight()));
-            });
-            if (pressSelected) {
+            }).findFirst();
+            if (nowSelected.isPresent()) {
                 System.out.println("HIT");
+                this.pressSelected = nowSelected.get();
             } else {
-                DrawControl control = controlFactory.createControl();
-                // 挿入
-                if (control != null) {
+                this.pressSelected = null;
+                Optional<DrawControl> opt = controlFactory.createControl();
+                if (opt.isPresent()) {
+                    DrawControl control = opt.get();
+                    // 挿入
                     control.setCanvasX(event.getX());
                     control.setCanvasY(event.getY());
                     mainCanvas.getChildren().add(control);
@@ -82,9 +90,17 @@ public class CanvasController implements Initializable {
             this.clearRect();
             // 選択
             Rectangle source = new Rectangle(draggedX, draggedY, draggedW, draggedH);
-            if (pressSelected && !selectedControls.isEmpty()) {
-
+            if (this.selectedControls.contains(this.pressSelected)) {
+//                this.selectedControls.forEach((DrawControl control) -> {
+//                    control.layoutXProperty().bind(this.moveX);
+//                    control.layoutYProperty().bind(this.moveY);
+//                });
             } else {
+//                this.selectedControls.forEach((DrawControl control) -> {
+//                    control.layoutXProperty().unbind();
+//                    control.layoutYProperty().unbind();
+//                });
+                System.out.println("SELECTED");
                 selectedControls = getDrawControlStream().map((DrawControl c) -> {
                     c.setSelected(hitTest(
                             source,
@@ -97,8 +113,10 @@ public class CanvasController implements Initializable {
         });
         ghostCanvas.setOnMouseDragged((MouseEvent event) -> {
             this.clearRect();
-            if (pressSelected) {
-
+            if (this.pressSelected != null || this.selectedControls.contains(this.pressSelected)) {
+                System.out.printf("MOVE, x: %f, y:%f\n", event.getX(), event.getY());
+//                moveX.set(event.getX() - x);
+//                moveY.set(event.getY() - y);
             } else {
                 if (this.x < event.getX()) {
                     draggedX = this.x;
