@@ -40,6 +40,7 @@ public class MainController implements Initializable {
             dialog.initStyle(StageStyle.DECORATED);
             CanvasController controller = loader.getController();
             controller.setDiagramHandler(toolboxController);
+            toolboxController.setModeChangeHandler(controller);
         } catch (IOException e) {
             e.printStackTrace();
         }

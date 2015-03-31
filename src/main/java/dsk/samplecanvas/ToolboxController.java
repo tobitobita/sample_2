@@ -23,6 +23,8 @@ public class ToolboxController implements Initializable, DrawControlFactory {
 
     private int selected;
 
+    private ModeChanged modeChangeHandler;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
     }
@@ -30,16 +32,19 @@ public class ToolboxController implements Initializable, DrawControlFactory {
     @FXML
     protected void handleSeeAction(ActionEvent event) {
         selected = 1;
+        this.modeChangeHandler.modeChanged(Mode.EDIT);
     }
 
     @FXML
     protected void handleActionAction(ActionEvent event) {
         selected = 2;
+        this.modeChangeHandler.modeChanged(Mode.EDIT);
     }
 
     @FXML
     protected void handleNextAction(ActionEvent event) {
         selected = 3;
+        this.modeChangeHandler.modeChanged(Mode.EDIT);
     }
 
     public void postInit() {
@@ -82,5 +87,9 @@ public class ToolboxController implements Initializable, DrawControlFactory {
 
     private void clearSelect() {
         selected = 0;
+    }
+
+    public void setModeChangeHandler(ModeChanged modeChangeHandler) {
+        this.modeChangeHandler = modeChangeHandler;
     }
 }
