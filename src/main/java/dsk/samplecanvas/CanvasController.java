@@ -69,21 +69,21 @@ public class CanvasController implements Initializable, ModeChanged {
         });
         ghostCanvas.setOnMouseDragged((MouseEvent event) -> {
             this.clearRect();
+            if (this.x < event.getX()) {
+                draggedX = this.x;
+                draggedW = event.getX() - this.x;
+            } else {
+                draggedX = event.getX();
+                draggedW = this.x - event.getX();
+            }
+            if (this.y < event.getY()) {
+                draggedY = this.y;
+                draggedH = event.getY() - this.y;
+            } else {
+                draggedY = event.getY();
+                draggedH = this.y - event.getY();
+            }
             if (mode == Mode.SELECT) {
-                if (this.x < event.getX()) {
-                    draggedX = this.x;
-                    draggedW = event.getX() - this.x;
-                } else {
-                    draggedX = event.getX();
-                    draggedW = this.x - event.getX();
-                }
-                if (this.y < event.getY()) {
-                    draggedY = this.y;
-                    draggedH = event.getY() - this.y;
-                } else {
-                    draggedY = event.getY();
-                    draggedH = this.y - event.getY();
-                }
                 context.strokeRect(draggedX, draggedY, draggedW, draggedH);
             }
             event.consume();
@@ -107,7 +107,7 @@ public class CanvasController implements Initializable, ModeChanged {
                     control.setCanvasY(event.getY());
                     mainCanvas.getChildren().add(control);
                 }
-                mode = Mode.SELECT;
+                //mode = Mode.SELECT;
                 event.consume();
                 return;
             }
@@ -158,21 +158,21 @@ public class CanvasController implements Initializable, ModeChanged {
                 });
                 if (this.pressSelected != null) {
                     this.pressSelected.unbindMove();
-                    this.pressSelected.setSelected(true);
+                    //this.pressSelected.setSelected(true);
                 }
             }
             // 選択
-            if (this.pressSelected == null) {
-                Rectangle source = new Rectangle(draggedX, draggedY, draggedW, draggedH);
-                selectedControls = getDrawControlStream().map((DrawControl c) -> {
-                    c.setSelected(hitTest(
-                            source,
-                            new Rectangle(c.getCanvasX(), c.getCanvasY(), c.getCanvasWidth(), c.getCanvasHeight())));
-                    return c;
-                }).filter((DrawControl c) -> {
-                    return c.isSelected();
-                }).collect(Collectors.toSet());
-            }
+//            if (this.pressSelected == null) {
+            Rectangle source = new Rectangle(draggedX, draggedY, draggedW, draggedH);
+            selectedControls = getDrawControlStream().map((DrawControl c) -> {
+                c.setSelected(hitTest(
+                        source,
+                        new Rectangle(c.getCanvasX(), c.getCanvasY(), c.getCanvasWidth(), c.getCanvasHeight())));
+                return c;
+            }).filter((DrawControl c) -> {
+                return c.isSelected();
+            }).collect(Collectors.toSet());
+//            }
             this.pressSelected = null;
             mode = Mode.SELECT;
             event.consume();
