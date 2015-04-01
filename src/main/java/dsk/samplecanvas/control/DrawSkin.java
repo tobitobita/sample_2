@@ -24,11 +24,9 @@ public abstract class DrawSkin<T extends DrawControl> implements Skin<T> {
         this.canvas = new Canvas(this.control.getWidth() - SELECTED_CORNER_DIAMETER, this.control.getHeight() - SELECTED_CORNER_DIAMETER);
         this.canvas.setLayoutX(OVERLAY_MARGIN);
         this.canvas.setLayoutY(OVERLAY_MARGIN);
-//        System.out.printf("CANVAS w:%f, h:%f\n", this.canvas.getWidth(), this.canvas.getHeight());
         this.overlayCanvas = new Canvas(this.control.getWidth(), this.control.getHeight());
         this.overlayCanvas.setLayoutX(0d);
         this.overlayCanvas.setLayoutY(0d);
-//        System.out.printf("OVERLAYCANVAS w:%f, h:%f\n", this.overlayCanvas.getWidth(), this.overlayCanvas.getHeight());
         pane = new Pane();
         pane.getChildren().addAll(this.canvas, this.overlayCanvas);
     }

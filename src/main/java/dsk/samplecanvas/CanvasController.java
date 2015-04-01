@@ -58,10 +58,10 @@ public class CanvasController implements Initializable, ModeChanged {
         context.setLineWidth(LINE_WIDTH);
         ghostCanvas.setOnMousePressed((MouseEvent event) -> {
             System.out.println("GHOST -> OnMousePressed: " + event);
-            x = event.getX();
-            y = event.getY();
-            draggedX = event.getX();
-            draggedY = event.getY();
+            x = event.getSceneX();
+            y = event.getSceneY();
+            draggedX = event.getSceneX();
+            draggedY = event.getSceneY();
             draggedW = 1d;
             draggedH = 1d;
             // 
@@ -69,19 +69,19 @@ public class CanvasController implements Initializable, ModeChanged {
         });
         ghostCanvas.setOnMouseDragged((MouseEvent event) -> {
             this.clearRect();
-            if (this.x < event.getX()) {
+            if (this.x < event.getSceneX()) {
                 draggedX = this.x;
-                draggedW = event.getX() - this.x;
+                draggedW = event.getSceneX() - this.x;
             } else {
-                draggedX = event.getX();
-                draggedW = this.x - event.getX();
+                draggedX = event.getSceneX();
+                draggedW = this.x - event.getSceneX();
             }
-            if (this.y < event.getY()) {
+            if (this.y < event.getSceneY()) {
                 draggedY = this.y;
-                draggedH = event.getY() - this.y;
+                draggedH = event.getSceneY() - this.y;
             } else {
-                draggedY = event.getY();
-                draggedH = this.y - event.getY();
+                draggedY = event.getSceneY();
+                draggedH = this.y - event.getSceneY();
             }
             if (mode == Mode.SELECT) {
                 context.strokeRect(draggedX, draggedY, draggedW, draggedH);
@@ -99,15 +99,7 @@ public class CanvasController implements Initializable, ModeChanged {
             System.out.printf("PANE -> OnMousePressed: %s\n", mode);
             ghostCanvas.fireEvent(event);
             if (mode == Mode.EDIT) {
-                Optional<DrawControl> opt = controlFactory.createControl();
-                if (opt.isPresent()) {
-                    DrawControl control = opt.get();
-                    // 挿入
-                    control.setCanvasX(event.getX());
-                    control.setCanvasY(event.getY());
-                    mainCanvas.getChildren().add(control);
-                }
-                //mode = Mode.SELECT;
+                controlFactory.setByPressed(event.getSceneX(), event.getSceneY());
                 event.consume();
                 return;
             }
@@ -120,22 +112,20 @@ public class CanvasController implements Initializable, ModeChanged {
             if (nowSelected.isPresent()) {
                 System.out.println("HIT");
                 this.pressSelected = nowSelected.get();
-            } else {
-                selectedControls.forEach((DrawControl control) -> {
-                    control.setSelected(false);
-                });
-                selectedControls = new HashSet<>();
-            }
-            moveX.set(event.getSceneX());
-            moveY.set(event.getSceneY());
-            selectedControls.forEach((DrawControl control) -> {
-                control.calcRelative(event.getSceneX(), event.getSceneY());
-                control.bindMove(moveX, moveY);
-                mode = Mode.MOVE;
-            });
-            if (this.pressSelected != null) {
+                if (!selectedControls.contains(this.pressSelected)) {
+                    selectedControls.forEach((DrawControl control) -> {
+                        control.setSelected(false);
+                    });
+                    selectedControls = new HashSet<>();
+                }
+                moveX.set(event.getSceneX());
+                moveY.set(event.getSceneY());
                 this.pressSelected.calcRelative(event.getSceneX(), event.getSceneY());
                 this.pressSelected.bindMove(moveX, moveY);
+                selectedControls.forEach((DrawControl control) -> {
+                    control.calcRelative(event.getSceneX(), event.getSceneY());
+                    control.bindMove(moveX, moveY);
+                });
                 mode = Mode.MOVE;
             }
             event.consume();
@@ -143,7 +133,6 @@ public class CanvasController implements Initializable, ModeChanged {
         mainCanvas.setOnMouseDragged((MouseEvent event) -> {
             ghostCanvas.fireEvent(event);
             if (mode == Mode.MOVE) {
-                System.out.printf("MOVE, x: %f, y:%f\n", event.getX(), event.getY());
                 this.moveX.set(event.getSceneX());
                 this.moveY.set(event.getSceneY());
             }
@@ -152,27 +141,39 @@ public class CanvasController implements Initializable, ModeChanged {
         mainCanvas.setOnMouseReleased((MouseEvent event) -> {
             System.out.println("PANE -> OnMouseReleased: " + event);
             ghostCanvas.fireEvent(event);
+            if (mode == Mode.EDIT) {
+                controlFactory.setByReleased(event.getSceneX(), event.getSceneY());
+                Optional<DrawControl> opt = controlFactory.getControl();
+                if (opt.isPresent()) {
+                    DrawControl control = opt.get();
+                    mainCanvas.getChildren().add(control);
+                }
+                mode = Mode.SELECT;
+            }
             if (mode == Mode.MOVE) {
                 this.selectedControls.forEach((DrawControl control) -> {
                     control.unbindMove();
                 });
                 if (this.pressSelected != null) {
                     this.pressSelected.unbindMove();
-                    //this.pressSelected.setSelected(true);
+                    this.pressSelected.setSelected(true);
                 }
+                draggedX = event.getSceneX();
+                draggedY = event.getSceneY();
+                draggedW = 1d;
+                draggedH = 1d;
             }
-            // 選択
-//            if (this.pressSelected == null) {
-            Rectangle source = new Rectangle(draggedX, draggedY, draggedW, draggedH);
-            selectedControls = getDrawControlStream().map((DrawControl c) -> {
-                c.setSelected(hitTest(
-                        source,
-                        new Rectangle(c.getCanvasX(), c.getCanvasY(), c.getCanvasWidth(), c.getCanvasHeight())));
-                return c;
-            }).filter((DrawControl c) -> {
-                return c.isSelected();
-            }).collect(Collectors.toSet());
-//            }
+            if (this.pressSelected == null || selectedControls.isEmpty()) {
+                Rectangle source = new Rectangle(draggedX, draggedY, draggedW, draggedH);
+                selectedControls = getDrawControlStream().map((DrawControl c) -> {
+                    c.setSelected(hitTest(
+                            source,
+                            new Rectangle(c.getCanvasX(), c.getCanvasY(), c.getCanvasWidth(), c.getCanvasHeight())));
+                    return c;
+                }).filter((DrawControl c) -> {
+                    return c.isSelected();
+                }).collect(Collectors.toSet());
+            }
             this.pressSelected = null;
             mode = Mode.SELECT;
             event.consume();

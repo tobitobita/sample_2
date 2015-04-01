@@ -7,8 +7,12 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
+import static javafx.event.EventType.ROOT;
 import javafx.scene.control.Control;
 import javafx.scene.control.Skinnable;
+import javafx.scene.input.MouseEvent;
 
 public abstract class DrawControl<T extends DrawSkin> extends Control implements Skinnable {
 
@@ -43,6 +47,12 @@ public abstract class DrawControl<T extends DrawSkin> extends Control implements
         calcX = Bindings.add(moveX, relativeX);
         calcY = Bindings.add(moveY, relativeY);
         this.setSkin(this.getDrawSkin());
+        this.addEventFilter(MouseEvent.MOUSE_PRESSED, (MouseEvent event) -> {
+            System.out.println("EventFilter(MouseEvent.MOUSE_PRESSED");
+        });
+        this.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent event) -> {
+            System.out.println("EventHandler(MouseEvent.MOUSE_PRESSED");
+        });
     }
 
     protected abstract T getDrawSkin();
@@ -101,4 +111,6 @@ public abstract class DrawControl<T extends DrawSkin> extends Control implements
         this.layoutXProperty().unbind();
         this.layoutYProperty().unbind();
     }
+    
+//    public void onMousePressedByCreating
 }

@@ -10,9 +10,20 @@ import java.util.Optional;
 public interface DrawControlFactory {
 
     /**
-     * @return
-     * @deprecated 実装がよくないね。
+     * @return @deprecated 実装がよくないね。
      */
     @Deprecated()
-    Optional<DrawControl> createControl();
+    void setByPressed(double pressedX, double pressedY);
+
+    /**
+     * @return @deprecated 実装がよくないね。
+     */
+    @Deprecated()
+    void setByReleased(double releasedX, double releasedY);
+
+    /**
+     * @return @deprecated 実装がよくないね。
+     */
+    @Deprecated()
+    Optional<DrawControl> getControl();
 }
