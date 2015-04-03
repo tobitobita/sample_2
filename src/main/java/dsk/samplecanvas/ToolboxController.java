@@ -1,9 +1,9 @@
 package dsk.samplecanvas;
 
-import dsk.samplecanvas.control.DrawControl;
-import dsk.samplecanvas.control.LineControl;
-import dsk.samplecanvas.control.OvalControl;
-import dsk.samplecanvas.control.RectControl;
+import dsk.samplecanvas.javafx.control.presentation.DrawControl;
+import dsk.samplecanvas.javafx.control.presentation.LineControl;
+import dsk.samplecanvas.javafx.control.presentation.OvalControl;
+import dsk.samplecanvas.javafx.control.presentation.RectControl;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;

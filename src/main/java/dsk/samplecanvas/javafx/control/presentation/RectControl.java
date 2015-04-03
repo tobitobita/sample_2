@@ -1,4 +1,4 @@
-package dsk.samplecanvas.control;
+package dsk.samplecanvas.javafx.control.presentation;
 
 public class RectControl extends DrawControl {
 

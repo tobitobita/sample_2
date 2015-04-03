@@ -1,4 +1,4 @@
-package dsk.samplecanvas.control;
+package dsk.samplecanvas.javafx.control.presentation;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
@@ -7,9 +7,6 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ObservableValue;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
-import static javafx.event.EventType.ROOT;
 import javafx.scene.control.Control;
 import javafx.scene.control.Skinnable;
 import javafx.scene.input.MouseEvent;
@@ -111,6 +108,6 @@ public abstract class DrawControl<T extends DrawSkin> extends Control implements
         this.layoutXProperty().unbind();
         this.layoutYProperty().unbind();
     }
-    
+
 //    public void onMousePressedByCreating
 }

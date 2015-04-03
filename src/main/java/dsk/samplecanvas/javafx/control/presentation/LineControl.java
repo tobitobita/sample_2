@@ -1,4 +1,4 @@
-package dsk.samplecanvas.control;
+package dsk.samplecanvas.javafx.control.presentation;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;

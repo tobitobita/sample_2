@@ -1,6 +1,6 @@
 package dsk.samplecanvas;
 
-import dsk.samplecanvas.control.DrawControl;
+import dsk.samplecanvas.javafx.control.presentation.DrawControl;
 import java.util.Optional;
 
 /**
