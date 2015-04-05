@@ -1,3 +1,4 @@
+
 package dsk.samplecanvas.javafx.control.diagram;
 
 import javafx.scene.control.Control;
