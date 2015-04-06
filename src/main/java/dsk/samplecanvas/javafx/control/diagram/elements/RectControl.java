@@ -1,6 +1,6 @@
-package dsk.samplecanvas.javafx.control.canvas.drawer;
+package dsk.samplecanvas.javafx.control.diagram.elements;
 
-public class RectControl extends DrawControl {
+public class RectControl extends ElementControl {
 
     public RectControl() {
         this(20d, 20d);

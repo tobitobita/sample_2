@@ -1,9 +1,9 @@
-package dsk.samplecanvas.javafx.control.canvas.drawer;
+package dsk.samplecanvas.javafx.control.diagram.elements;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-public class LineSkin extends DrawSkin<LineControl> {
+public class LineSkin extends ElementSkin<LineControl> {
 
     public LineSkin(LineControl skin) {
         super(skin);

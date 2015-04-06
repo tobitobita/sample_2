@@ -1,4 +1,4 @@
-package dsk.samplecanvas.javafx.control.canvas.drawer;
+package dsk.samplecanvas.javafx.control.diagram.elements;
 
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
@@ -7,7 +7,7 @@ import javafx.scene.control.Skin;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
-public abstract class DrawSkin<T extends DrawControl> implements Skin<T> {
+public abstract class ElementSkin<T extends ElementControl> implements Skin<T> {
 
     static final double OVERLAY_MARGIN = 3d;
     private static final double SELECTED_CORNER_DIAMETER = OVERLAY_MARGIN * 2;
@@ -19,7 +19,7 @@ public abstract class DrawSkin<T extends DrawControl> implements Skin<T> {
     private final Canvas canvas;
     private final Canvas overlayCanvas;
 
-    protected DrawSkin(T skin) {
+    protected ElementSkin(T skin) {
         this.control = skin;
         this.canvas = new Canvas(this.control.getWidth() - SELECTED_CORNER_DIAMETER, this.control.getHeight() - SELECTED_CORNER_DIAMETER);
         this.canvas.setLayoutX(OVERLAY_MARGIN);

@@ -1,9 +1,9 @@
 package dsk.samplecanvas;
 
-import dsk.samplecanvas.javafx.control.canvas.drawer.DrawControl;
-import dsk.samplecanvas.javafx.control.canvas.drawer.LineControl;
-import dsk.samplecanvas.javafx.control.canvas.drawer.OvalControl;
-import dsk.samplecanvas.javafx.control.canvas.drawer.RectControl;
+import dsk.samplecanvas.javafx.control.diagram.elements.ElementControl;
+import dsk.samplecanvas.javafx.control.diagram.elements.LineControl;
+import dsk.samplecanvas.javafx.control.diagram.elements.OvalControl;
+import dsk.samplecanvas.javafx.control.diagram.elements.RectControl;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -23,7 +23,7 @@ public class ToolboxController implements Initializable, MouseEventDispatcher {
     private double clickY;
 
     private int selected;
-    private DrawControl createdControl;
+    private ElementControl createdControl;
 
     private ModeChanged modeChangeHandler;
 
@@ -70,7 +70,7 @@ public class ToolboxController implements Initializable, MouseEventDispatcher {
     }
 
     @Override
-    public void setByPressed(double pressedX, double pressedY) {
+    public void mousePressed(double pressedX, double pressedY) {
         if (selected == 3) {
             LineControl.class.cast(createdControl).setBeginPoint(pressedX, pressedY);
             createdControl.setCanvasX(pressedX);
@@ -79,7 +79,7 @@ public class ToolboxController implements Initializable, MouseEventDispatcher {
     }
 
     @Override
-    public void setByReleased(double releasedX, double releasedY) {
+    public void mouseReleased(double releasedX, double releasedY) {
         if (selected == 3) {
             LineControl.class.cast(createdControl).setEndPoint(releasedX, releasedY);
         } else {
@@ -89,7 +89,7 @@ public class ToolboxController implements Initializable, MouseEventDispatcher {
     }
 
     @Override
-    public Optional<DrawControl> getControl() {
+    public Optional<ElementControl> getControl() {
         this.clearSelect();
         return Optional.ofNullable(this.createdControl);
     }

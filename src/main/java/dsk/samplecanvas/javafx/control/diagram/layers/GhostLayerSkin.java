@@ -1,4 +1,4 @@
-package dsk.samplecanvas.javafx.control.canvas.layer;
+package dsk.samplecanvas.javafx.control.diagram.layers;
 
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
@@ -21,6 +21,11 @@ public class GhostLayerSkin implements Skin<GhostLayerControl> {
 
     private Canvas ghostCanvas;
 
+    public Canvas getCanvas() {
+        return this.ghostCanvas;
+
+    }
+
     public GhostLayerSkin(GhostLayerControl control) {
         this.control = control;
         this.initialize();
@@ -34,7 +39,7 @@ public class GhostLayerSkin implements Skin<GhostLayerControl> {
         context.setLineWidth(LINE_WIDTH);
         this.ghostCanvas.widthProperty().bind(this.control.widthProperty());
         this.ghostCanvas.heightProperty().bind(this.control.heightProperty());
-        ghostCanvas.setOnMousePressed((MouseEvent event) -> {
+        this.ghostCanvas.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
             System.out.println("GHOST -> OnMousePressed: " + event);
             x = event.getSceneX();
             y = event.getSceneY();
@@ -42,9 +47,9 @@ public class GhostLayerSkin implements Skin<GhostLayerControl> {
             draggedY = event.getSceneY();
             draggedW = 1d;
             draggedH = 1d;
-
+            event.consume();
         });
-        ghostCanvas.setOnMouseDragged((MouseEvent event) -> {
+        this.ghostCanvas.addEventFilter(MouseEvent.MOUSE_DRAGGED, event -> {
             this.clearRect();
             if (this.x < event.getSceneX()) {
                 draggedX = this.x;
@@ -64,10 +69,12 @@ public class GhostLayerSkin implements Skin<GhostLayerControl> {
             context.fillRect(draggedX, draggedY, draggedW, draggedH);
             context.strokeRect(draggedX, draggedY, draggedW, draggedH);
 //            }
+            event.consume();
         });
-        ghostCanvas.setOnMouseReleased((MouseEvent event) -> {
+        this.ghostCanvas.addEventFilter(MouseEvent.MOUSE_RELEASED, event -> {
             System.out.println("GHOST -> OnMouseReleased: " + event);
             this.clearRect();
+            event.consume();
         });
     }
 

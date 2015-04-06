@@ -1,13 +1,13 @@
 package dsk.samplecanvas;
 
-import dsk.samplecanvas.javafx.control.canvas.drawer.DrawControl;
+import dsk.samplecanvas.javafx.control.diagram.elements.ElementControl;
 import java.util.Optional;
 
 public interface MouseEventDispatcher {
 
-    void MousePressed(double pressedX, double pressedY);
+    void mousePressed(double pressedX, double pressedY);
 
-    void MouseReleased(double releasedX, double releasedY);
+    void mouseReleased(double releasedX, double releasedY);
 
-    Optional<DrawControl> getControl();
+    Optional<ElementControl> getControl();
 }

@@ -1,4 +1,4 @@
-package dsk.samplecanvas.javafx.control.canvas.drawer;
+package dsk.samplecanvas.javafx.control.diagram.elements;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
@@ -11,7 +11,7 @@ import javafx.scene.control.Control;
 import javafx.scene.control.Skinnable;
 import javafx.scene.input.MouseEvent;
 
-public abstract class DrawControl<T extends DrawSkin> extends Control implements Skinnable {
+public abstract class ElementControl<T extends ElementSkin> extends Control implements Skinnable {
 
     private final double defaultWidth;
     private final double defaultHeight;
@@ -27,7 +27,7 @@ public abstract class DrawControl<T extends DrawSkin> extends Control implements
 
     private final BooleanProperty selected = new SimpleBooleanProperty(this, "selected");
 
-    public DrawControl(double defaultWidth, double defaultHeight) {
+    public ElementControl(double defaultWidth, double defaultHeight) {
         super();
         this.defaultWidth = defaultWidth;
         this.defaultHeight = defaultHeight;
@@ -35,8 +35,8 @@ public abstract class DrawControl<T extends DrawSkin> extends Control implements
     }
 
     private void initControl() {
-        this.setWidth(defaultWidth + (DrawSkin.OVERLAY_MARGIN * 2));
-        this.setHeight(defaultHeight + (DrawSkin.OVERLAY_MARGIN * 2));
+        this.setWidth(defaultWidth + (ElementSkin.OVERLAY_MARGIN * 2));
+        this.setHeight(defaultHeight + (ElementSkin.OVERLAY_MARGIN * 2));
         this.selected.set(false);
         this.selected.addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
             requestLayout();
@@ -55,19 +55,19 @@ public abstract class DrawControl<T extends DrawSkin> extends Control implements
     protected abstract T getDrawSkin();
 
     public double getCanvasX() {
-        return this.getLayoutX() + DrawSkin.OVERLAY_MARGIN;
+        return this.getLayoutX() + ElementSkin.OVERLAY_MARGIN;
     }
 
     public void setCanvasX(double x) {
-        this.setLayoutX(x - DrawSkin.OVERLAY_MARGIN);
+        this.setLayoutX(x - ElementSkin.OVERLAY_MARGIN);
     }
 
     public double getCanvasY() {
-        return this.getLayoutY() + DrawSkin.OVERLAY_MARGIN;
+        return this.getLayoutY() + ElementSkin.OVERLAY_MARGIN;
     }
 
     public void setCanvasY(double y) {
-        this.setLayoutY(y - DrawSkin.OVERLAY_MARGIN);
+        this.setLayoutY(y - ElementSkin.OVERLAY_MARGIN);
     }
 
     public double getCanvasWidth() {

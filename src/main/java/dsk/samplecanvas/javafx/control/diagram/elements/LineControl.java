@@ -1,9 +1,9 @@
-package dsk.samplecanvas.javafx.control.canvas.drawer;
+package dsk.samplecanvas.javafx.control.diagram.elements;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
-public class LineControl extends DrawControl {
+public class LineControl extends ElementControl {
 
     private final DoubleProperty beginX = new SimpleDoubleProperty(this, "beginX");
     private final DoubleProperty beginY = new SimpleDoubleProperty(this, "beginY");
