@@ -1,6 +1,6 @@
 package dsk.samplecanvas;
 
-import dsk.samplecanvas.javafx.control.diagram.DiagramControl;
+import dsk.samplecanvas.javafx.control.canvas.layer.GhostLayerControl;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
@@ -15,7 +15,7 @@ public class MainApp extends Application {
     public void start(Stage stage) throws Exception {
 //        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
 //        Scene scene = new Scene(loader.load());
-        DiagramControl c = new DiagramControl(320, 240);
+        GhostLayerControl c = new GhostLayerControl(320, 240);
         //c.set
         Scene scene = new Scene(c);
 //        scene.setFill(null);

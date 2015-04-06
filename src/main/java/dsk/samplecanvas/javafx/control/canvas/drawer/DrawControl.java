@@ -1,4 +1,4 @@
-package dsk.samplecanvas.javafx.control.presentation;
+package dsk.samplecanvas.javafx.control.canvas.drawer;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;

@@ -1,4 +1,4 @@
-package dsk.samplecanvas.javafx.control.diagram;
+package dsk.samplecanvas.javafx.control.canvas.layer;
 
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
@@ -7,7 +7,7 @@ import javafx.scene.control.Skin;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
-public class DiagramSkin implements Skin<DiagramControl> {
+public class GhostLayerSkin implements Skin<GhostLayerControl> {
 
     private static final double LINE_WIDTH = 1d;
     private double x;
@@ -17,11 +17,11 @@ public class DiagramSkin implements Skin<DiagramControl> {
     private double draggedW;
     private double draggedH;
 
-    private final DiagramControl control;
+    private final GhostLayerControl control;
 
     private Canvas ghostCanvas;
 
-    public DiagramSkin(DiagramControl control) {
+    public GhostLayerSkin(GhostLayerControl control) {
         this.control = control;
         this.initialize();
     }
@@ -82,7 +82,7 @@ public class DiagramSkin implements Skin<DiagramControl> {
     }
 
     @Override
-    public DiagramControl getSkinnable() {
+    public GhostLayerControl getSkinnable() {
         return this.control;
     }
 

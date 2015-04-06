@@ -1,105 +1,61 @@
-package dsk.samplecanvas;
+package dsk.samplecanvas.javafx.control.canvas.layer;
 
+import dsk.samplecanvas.Mode;
 import dsk.samplecanvas.javafx.control.canvas.drawer.DrawControl;
-import java.net.URL;
 import java.util.HashSet;
 import java.util.Optional;
-import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Skin;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class CanvasController implements Initializable, ModeChanged {
+public class LayerSkin implements Skin<LayerControl> {
 
-    // 共通
-    private double x;
-    private double y;
-    private Mode mode = Mode.SELECT;
-    // ghost
-    private static final double LINE_WIDTH = 0.5d;
+    private final LayerControl control;
+
+    private Canvas canvas;
+
     private double draggedX;
     private double draggedY;
     private double draggedW;
     private double draggedH;
-    @FXML
-    private Canvas ghostCanvas;
-    @FXML
-    private AnchorPane anchorPane;
-    // main
+
     private final DoubleProperty moveX = new SimpleDoubleProperty(this, "moveX");
     private final DoubleProperty moveY = new SimpleDoubleProperty(this, "moveY");
-    @FXML
+
     private Pane mainCanvas;
+
+    private Mode mode = Mode.SELECT;
 
     private Set<DrawControl> selectedControls;
     private DrawControl pressSelected;
 
-    private MouseEventDispatcher controlFactory;
+//    private DrawControlFactory controlFactory;
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // ghost
-        ghostCanvas.widthProperty().bind(anchorPane.widthProperty());
-        ghostCanvas.heightProperty().bind(anchorPane.heightProperty());
-        GraphicsContext context = ghostCanvas.getGraphicsContext2D();
-        context.setStroke(Color.LIGHTSEAGREEN);
-        context.setLineWidth(LINE_WIDTH);
-        ghostCanvas.setOnMousePressed((MouseEvent event) -> {
-            System.out.println("GHOST -> OnMousePressed: " + event);
-            x = event.getSceneX();
-            y = event.getSceneY();
-            draggedX = event.getSceneX();
-            draggedY = event.getSceneY();
-            draggedW = 1d;
-            draggedH = 1d;
-            // 
-            event.consume();
-        });
-        ghostCanvas.setOnMouseDragged((MouseEvent event) -> {
-            this.clearRect();
-            if (this.x < event.getSceneX()) {
-                draggedX = this.x;
-                draggedW = event.getSceneX() - this.x;
-            } else {
-                draggedX = event.getSceneX();
-                draggedW = this.x - event.getSceneX();
-            }
-            if (this.y < event.getSceneY()) {
-                draggedY = this.y;
-                draggedH = event.getSceneY() - this.y;
-            } else {
-                draggedY = event.getSceneY();
-                draggedH = this.y - event.getSceneY();
-            }
-            if (mode == Mode.SELECT) {
-                context.strokeRect(draggedX, draggedY, draggedW, draggedH);
-            }
-            event.consume();
-        });
-        ghostCanvas.setOnMouseReleased((MouseEvent event) -> {
-            System.out.println("GHOST -> OnMouseReleased: " + event);
-            this.clearRect();
-            event.consume();
-        });
-        // main
+    public LayerSkin(LayerControl control) {
+        this.control = control;
+        this.initializa();
+    }
+
+    private void initializa() {
+        this.canvas = new Canvas();
+        this.canvas.widthProperty().bind(this.control.widthProperty());
+        this.canvas.heightProperty().bind(this.control.heightProperty());
+
         selectedControls = new HashSet<>();
         mainCanvas.setOnMousePressed((MouseEvent event) -> {
-            System.out.printf("PANE -> OnMousePressed: %s\n", mode);
-            ghostCanvas.fireEvent(event);
+            System.out.printf("PANE -> OnMousePressed: \n");
+//            ghostCanvas.fireEvent(event);
             if (mode == Mode.EDIT) {
-                controlFactory.MousePressed(event.getSceneX(), event.getSceneY());
+//                controlFactory.setByPressed(event.getSceneX(), event.getSceneY());
                 event.consume();
                 return;
             }
@@ -131,23 +87,23 @@ public class CanvasController implements Initializable, ModeChanged {
             event.consume();
         });
         mainCanvas.setOnMouseDragged((MouseEvent event) -> {
-            ghostCanvas.fireEvent(event);
+//            ghostCanvas.fireEvent(event);
             if (mode == Mode.MOVE) {
                 this.moveX.set(event.getSceneX());
                 this.moveY.set(event.getSceneY());
             }
-            event.consume();
+//            event.consume();
         });
         mainCanvas.setOnMouseReleased((MouseEvent event) -> {
             System.out.println("PANE -> OnMouseReleased: " + event);
-            ghostCanvas.fireEvent(event);
+//            ghostCanvas.fireEvent(event);
             if (mode == Mode.EDIT) {
-                controlFactory.MouseReleased(event.getSceneX(), event.getSceneY());
-                Optional<DrawControl> opt = controlFactory.getControl();
-                if (opt.isPresent()) {
-                    DrawControl control = opt.get();
-                    mainCanvas.getChildren().add(control);
-                }
+//                controlFactory.setByReleased(event.getSceneX(), event.getSceneY());
+//                Optional<DrawControl> opt = controlFactory.getControl();
+//                if (opt.isPresent()) {
+//                    DrawControl control = opt.get();
+//                    mainCanvas.getChildren().add(control);
+//                }
                 mode = Mode.SELECT;
             }
             if (mode == Mode.MOVE) {
@@ -179,7 +135,6 @@ public class CanvasController implements Initializable, ModeChanged {
             event.consume();
         });
     }
-
     private boolean hitTest(Rectangle source, Rectangle target) {
         return ((source.getX() + source.getWidth() >= target.getX()) && (source.getX() <= target.getX() + target.getWidth())
                 && (source.getY() + source.getHeight() >= target.getY()) && (source.getY() <= target.getY() + target.getHeight()));
@@ -191,18 +146,17 @@ public class CanvasController implements Initializable, ModeChanged {
         }).map((Node node) -> (DrawControl) node);
     }
 
-    private void clearRect() {
-        GraphicsContext context = ghostCanvas.getGraphicsContext2D();
-        double halfLineWidth = LINE_WIDTH / 2;
-        context.clearRect(draggedX - halfLineWidth, draggedY - halfLineWidth, draggedW + LINE_WIDTH, draggedH + LINE_WIDTH);
-    }
-
-    public void setDiagramHandler(MouseEventDispatcher diagramHandler) {
-        this.controlFactory = diagramHandler;
+    @Override
+    public LayerControl getSkinnable() {
+        return this.control;
     }
 
     @Override
-    public void modeChanged(Mode mode) {
-        this.mode = mode;
+    public Node getNode() {
+        return this.canvas;
+    }
+
+    @Override
+    public void dispose() {
     }
 }

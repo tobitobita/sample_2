@@ -1,9 +1,9 @@
 package dsk.samplecanvas;
 
-import dsk.samplecanvas.javafx.control.presentation.DrawControl;
-import dsk.samplecanvas.javafx.control.presentation.LineControl;
-import dsk.samplecanvas.javafx.control.presentation.OvalControl;
-import dsk.samplecanvas.javafx.control.presentation.RectControl;
+import dsk.samplecanvas.javafx.control.canvas.drawer.DrawControl;
+import dsk.samplecanvas.javafx.control.canvas.drawer.LineControl;
+import dsk.samplecanvas.javafx.control.canvas.drawer.OvalControl;
+import dsk.samplecanvas.javafx.control.canvas.drawer.RectControl;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -14,7 +14,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Window;
 
-public class ToolboxController implements Initializable, DrawControlFactory {
+public class ToolboxController implements Initializable, MouseEventDispatcher {
 
     @FXML
     private Pane titlebar;
