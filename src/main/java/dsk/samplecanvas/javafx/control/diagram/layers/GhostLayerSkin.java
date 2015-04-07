@@ -1,5 +1,6 @@
 package dsk.samplecanvas.javafx.control.diagram.layers;
 
+import javafx.event.EventType;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -7,7 +8,7 @@ import javafx.scene.control.Skin;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
-public class GhostLayerSkin implements Skin<GhostLayerControl> {
+public class GhostLayerSkin implements Skin<GhostLayerControl>, LayerBehaviour {
 
     private static final double LINE_WIDTH = 1d;
     private double x;
@@ -41,7 +42,37 @@ public class GhostLayerSkin implements Skin<GhostLayerControl> {
         this.ghostCanvas.heightProperty().bind(this.control.heightProperty());
     }
 
-    public void mousePressed(MouseEvent event) {
+    @Override
+    public void dispose() {
+    }
+
+    @Override
+    public GhostLayerControl getSkinnable() {
+        return this.control;
+    }
+
+    @Override
+    public Node getNode() {
+        return ghostCanvas;
+    }
+
+    @Override
+    public LayerBehaviour getLayerBehaviour() {
+        return this;
+    }
+
+    @Override
+    public void mouseEvent(EventType<MouseEvent> eventType, MouseEvent event) {
+        if (eventType == MouseEvent.MOUSE_PRESSED) {
+            this.mousePressed(event);
+        } else if (eventType == MouseEvent.MOUSE_DRAGGED) {
+            this.mouseDragged(event);
+        } else if (eventType == MouseEvent.MOUSE_RELEASED) {
+            this.mouseReleased(event);
+        }
+    }
+
+    private void mousePressed(MouseEvent event) {
         System.out.println("GHOST -> OnMousePressed: " + event);
         x = event.getSceneX();
         y = event.getSceneY();
@@ -51,7 +82,7 @@ public class GhostLayerSkin implements Skin<GhostLayerControl> {
         draggedH = 1d;
     }
 
-    public void mouseDragged(MouseEvent event) {
+    private void mouseDragged(MouseEvent event) {
         this.clearRect();
         GraphicsContext context = ghostCanvas.getGraphicsContext2D();
         if (this.x < event.getSceneX()) {
@@ -74,7 +105,7 @@ public class GhostLayerSkin implements Skin<GhostLayerControl> {
 //            }
     }
 
-    public void mouseReleased(MouseEvent event) {
+    private void mouseReleased(MouseEvent event) {
         System.out.println("GHOST -> OnMouseReleased: " + event);
         this.clearRect();
     }
@@ -83,19 +114,5 @@ public class GhostLayerSkin implements Skin<GhostLayerControl> {
         GraphicsContext context = ghostCanvas.getGraphicsContext2D();
         double halfLineWidth = LINE_WIDTH / 2;
         context.clearRect(draggedX - halfLineWidth, draggedY - halfLineWidth, draggedW + LINE_WIDTH, draggedH + LINE_WIDTH);
-    }
-
-    @Override
-    public void dispose() {
-    }
-
-    @Override
-    public GhostLayerControl getSkinnable() {
-        return this.control;
-    }
-
-    @Override
-    public Node getNode() {
-        return ghostCanvas;
     }
 }

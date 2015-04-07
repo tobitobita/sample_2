@@ -1,6 +1,8 @@
 package dsk.samplecanvas.javafx.control.diagram.layers;
 
 import dsk.samplecanvas.Mode;
+import dsk.samplecanvas.ModeChangeable;
+import dsk.samplecanvas.MouseEventDispatcher;
 import dsk.samplecanvas.javafx.control.diagram.elements.ElementControl;
 import java.util.HashSet;
 import java.util.Optional;
@@ -8,14 +10,17 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.event.EventType;
 import javafx.scene.Node;
 import javafx.scene.control.Skin;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
-public class ElementLayerSkin implements Skin<ElementLayerControl> {
+public class ElementLayerSkin implements Skin<ElementLayerControl>, LayerBehaviour, ModeChangeable {
 
     private final ElementLayerControl control;
 
@@ -29,12 +34,13 @@ public class ElementLayerSkin implements Skin<ElementLayerControl> {
 
     private Pane mainCanvas;
 
-    private Mode mode = Mode.SELECT;
+    private final ObjectProperty<Mode> mode = new SimpleObjectProperty<>(this, "mode", Mode.SELECT);
 
     private Set<ElementControl> selectedControls;
     private ElementControl pressSelected;
 
-//    private DrawControlFactory controlFactory;
+    private MouseEventDispatcher dispatcher;
+
     public ElementLayerSkin(ElementLayerControl control) {
         this.control = control;
         this.initializa();
@@ -45,10 +51,40 @@ public class ElementLayerSkin implements Skin<ElementLayerControl> {
         selectedControls = new HashSet<>();
     }
 
-    public void mousePressed(MouseEvent event) {
+    @Override
+    public ElementLayerControl getSkinnable() {
+        return this.control;
+    }
+
+    @Override
+    public Node getNode() {
+        return this.mainCanvas;
+    }
+
+    @Override
+    public void dispose() {
+    }
+
+    @Override
+    public LayerBehaviour getLayerBehaviour() {
+        return this;
+    }
+
+    @Override
+    public void mouseEvent(EventType<MouseEvent> eventType, MouseEvent event) {
+        if (eventType == MouseEvent.MOUSE_PRESSED) {
+            this.mousePressed(event);
+        } else if (eventType == MouseEvent.MOUSE_DRAGGED) {
+            this.mouseDragged(event);
+        } else if (eventType == MouseEvent.MOUSE_RELEASED) {
+            this.mouseReleased(event);
+        }
+    }
+
+    private void mousePressed(MouseEvent event) {
         System.out.printf("PANE -> OnMousePressed: \n");
-        if (mode == Mode.EDIT) {
-//                controlFactory.setByPressed(event.getSceneX(), event.getSceneY());
+        if (this.getMode() == Mode.EDIT) {
+            this.dispatcher.mousePressed(event.getSceneX(), event.getSceneY());
             return;
         }
         Rectangle source = new Rectangle(draggedX, draggedY, draggedW, draggedH);
@@ -74,29 +110,28 @@ public class ElementLayerSkin implements Skin<ElementLayerControl> {
                 ctrl.calcRelative(event.getSceneX(), event.getSceneY());
                 ctrl.bindMove(moveX, moveY);
             });
-            mode = Mode.MOVE;
+            this.setMode(Mode.MOVE);
         }
     }
 
-    public void mouseDragged(MouseEvent event) {
-        if (mode == Mode.MOVE) {
+    private void mouseDragged(MouseEvent event) {
+        if (this.getMode() == Mode.MOVE) {
             this.moveX.set(event.getSceneX());
             this.moveY.set(event.getSceneY());
         }
     }
 
-    public void mouseReleased(MouseEvent event) {
+    private void mouseReleased(MouseEvent event) {
         System.out.println("PANE -> OnMouseReleased: " + event);
-        if (mode == Mode.EDIT) {
-//                controlFactory.setByReleased(event.getSceneX(), event.getSceneY());
-//                Optional<DrawControl> opt = controlFactory.getControl();
-//                if (opt.isPresent()) {
-//                    DrawControl control = opt.get();
-//                    mainCanvas.getChildren().add(control);
-//                }
-            mode = Mode.SELECT;
+        if (this.getMode() == Mode.EDIT) {
+            this.dispatcher.mouseReleased(event.getSceneX(), event.getSceneY());
+            Optional<ElementControl> opt = this.dispatcher.getControl();
+            if (opt.isPresent()) {
+                mainCanvas.getChildren().add(opt.get());
+            }
+            this.setMode(Mode.SELECT);
         }
-        if (mode == Mode.MOVE) {
+        if (this.getMode() == Mode.MOVE) {
             this.selectedControls.forEach((ElementControl ctrl) -> {
                 ctrl.unbindMove();
             });
@@ -121,7 +156,7 @@ public class ElementLayerSkin implements Skin<ElementLayerControl> {
             }).collect(Collectors.toSet());
         }
         this.pressSelected = null;
-        mode = Mode.SELECT;
+        this.setMode(Mode.SELECT);
     }
 
     private boolean hitTest(Rectangle source, Rectangle target) {
@@ -136,16 +171,20 @@ public class ElementLayerSkin implements Skin<ElementLayerControl> {
     }
 
     @Override
-    public ElementLayerControl getSkinnable() {
-        return this.control;
+    public ObjectProperty<Mode> modeProperty() {
+        return this.mode;
     }
 
     @Override
-    public Node getNode() {
-        return this.mainCanvas;
+    public void setMode(Mode mode) {
+        this.mode.set(mode);
     }
 
-    @Override
-    public void dispose() {
+    protected Mode getMode() {
+        return this.mode.get();
+    }
+
+    public void setMouseEventDispatcher(MouseEventDispatcher dispatcher) {
+        this.dispatcher = dispatcher;
     }
 }

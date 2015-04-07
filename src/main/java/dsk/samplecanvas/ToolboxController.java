@@ -7,6 +7,8 @@ import dsk.samplecanvas.javafx.control.diagram.elements.RectControl;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -14,7 +16,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Window;
 
-public class ToolboxController implements Initializable, MouseEventDispatcher {
+public class ToolboxController implements Initializable, MouseEventDispatcher, ModeChangeable {
 
     @FXML
     private Pane titlebar;
@@ -25,7 +27,7 @@ public class ToolboxController implements Initializable, MouseEventDispatcher {
     private int selected;
     private ElementControl createdControl;
 
-    private ModeChanged modeChangeHandler;
+    private final ObjectProperty<Mode> mode = new SimpleObjectProperty<>(this, "mode", Mode.SELECT);
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -35,21 +37,21 @@ public class ToolboxController implements Initializable, MouseEventDispatcher {
     protected void handleSeeAction(ActionEvent event) {
         selected = 1;
         createdControl = new RectControl();
-        this.modeChangeHandler.modeChanged(Mode.EDIT);
+        this.mode.set(Mode.EDIT);
     }
 
     @FXML
     protected void handleActionAction(ActionEvent event) {
         selected = 2;
         createdControl = new OvalControl();
-        this.modeChangeHandler.modeChanged(Mode.EDIT);
+        this.mode.set(Mode.EDIT);
     }
 
     @FXML
     protected void handleNextAction(ActionEvent event) {
         selected = 3;
         createdControl = new LineControl();
-        this.modeChangeHandler.modeChanged(Mode.EDIT);
+        this.mode.set(Mode.EDIT);
     }
 
     public void postInit() {
@@ -94,12 +96,17 @@ public class ToolboxController implements Initializable, MouseEventDispatcher {
         return Optional.ofNullable(this.createdControl);
     }
 
-    public void setModeChangeHandler(ModeChanged modeChangeHandler) {
-        this.modeChangeHandler = modeChangeHandler;
-    }
-
     private Window getWindow() {
         return this.titlebar.getScene().getWindow();
     }
 
+    @Override
+    public ObjectProperty<Mode> modeProperty() {
+        return this.mode;
+    }
+
+    @Override
+    public void setMode(Mode mode) {
+        this.mode.set(mode);
+    }
 }

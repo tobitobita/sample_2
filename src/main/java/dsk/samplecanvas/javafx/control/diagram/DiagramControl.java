@@ -7,4 +7,8 @@ public class DiagramControl extends Control {
     public DiagramControl() {
         this.setSkin(new DiagramSkin(this));
     }
+
+    public DiagramSkin getDiagramSkin() {
+        return (DiagramSkin) this.getSkin();
+    }
 }

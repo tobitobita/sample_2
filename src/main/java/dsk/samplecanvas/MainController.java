@@ -39,8 +39,9 @@ public class MainController implements Initializable {
             dialog.setScene(scene);
             dialog.initStyle(StageStyle.DECORATED);
             CanvasController controller = loader.getController();
-            //controller.setDiagramHandler(toolboxController);
-            //toolboxController.setModeChangeHandler(controller);
+            toolboxController.modeProperty().bindBidirectional(controller.getDiagramControl().getDiagramSkin().modeProperty());
+            // TODO 何かよい方法を。。
+            controller.getDiagramControl().getDiagramSkin().getElementLayerControl().getLayerSkin().setMouseEventDispatcher(toolboxController);
         } catch (IOException e) {
             e.printStackTrace();
         }

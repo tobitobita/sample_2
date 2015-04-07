@@ -1,15 +1,20 @@
 package dsk.samplecanvas.javafx.control.diagram;
 
+import dsk.samplecanvas.Mode;
+import dsk.samplecanvas.ModeChangeable;
 import dsk.samplecanvas.javafx.control.diagram.layers.ElementLayerControl;
-import dsk.samplecanvas.javafx.control.diagram.layers.ElementLayerSkin;
 import dsk.samplecanvas.javafx.control.diagram.layers.GhostLayerControl;
-import dsk.samplecanvas.javafx.control.diagram.layers.GhostLayerSkin;
+import dsk.samplecanvas.javafx.control.diagram.layers.LayerBehaviour;
+import java.util.Arrays;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.event.EventType;
 import javafx.scene.Node;
 import javafx.scene.control.Skin;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
-public class DiagramSkin implements Skin<DiagramControl> {
+public class DiagramSkin implements Skin<DiagramControl>, ModeChangeable {
 
     private final DiagramControl control;
 
@@ -17,6 +22,8 @@ public class DiagramSkin implements Skin<DiagramControl> {
 
     private GhostLayerControl ghostLayer;
     private ElementLayerControl elementLayer;
+
+    private final ObjectProperty<Mode> mode = new SimpleObjectProperty<>(this, "mode", Mode.SELECT);
 
     public DiagramSkin(DiagramControl control) {
         this.control = control;
@@ -26,6 +33,7 @@ public class DiagramSkin implements Skin<DiagramControl> {
     private void initialize() {
         this.ghostLayer = new GhostLayerControl();
         this.elementLayer = new ElementLayerControl();
+        this.mode.bindBidirectional(this.elementLayer.getLayerSkin().modeProperty());
         this.pane = new AnchorPane(this.elementLayer, this.ghostLayer);
         AnchorPane.setTopAnchor(this.ghostLayer, 0d);
         AnchorPane.setRightAnchor(this.ghostLayer, 0d);
@@ -37,21 +45,23 @@ public class DiagramSkin implements Skin<DiagramControl> {
         AnchorPane.setLeftAnchor(this.elementLayer, 0d);
         this.pane.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
             System.out.printf("Diagram, %s\n", event);
-            ((GhostLayerSkin) ghostLayer.getSkin()).mousePressed(event);
-            ((ElementLayerSkin) elementLayer.getSkin()).mousePressed(event);
+            this.mouseEvent(MouseEvent.MOUSE_PRESSED, event, ghostLayer.getLayerSkin().getLayerBehaviour(), elementLayer.getLayerSkin().getLayerBehaviour());
             event.consume();
         });
         this.pane.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> {
-            //System.out.printf("Diagram, %s\n", event);
-            ((GhostLayerSkin) ghostLayer.getSkin()).mouseDragged(event);
-            ((ElementLayerSkin) elementLayer.getSkin()).mouseDragged(event);
+            this.mouseEvent(MouseEvent.MOUSE_DRAGGED, event, ghostLayer.getLayerSkin().getLayerBehaviour(), elementLayer.getLayerSkin().getLayerBehaviour());
             event.consume();
         });
         this.pane.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> {
             System.out.printf("Diagram, %s\n", event);
-            ((GhostLayerSkin) ghostLayer.getSkin()).mouseReleased(event);
-            ((ElementLayerSkin) elementLayer.getSkin()).mouseReleased(event);
+            this.mouseEvent(MouseEvent.MOUSE_RELEASED, event, ghostLayer.getLayerSkin().getLayerBehaviour(), elementLayer.getLayerSkin().getLayerBehaviour());
             event.consume();
+        });
+    }
+
+    private void mouseEvent(EventType<MouseEvent> eventType, MouseEvent event, LayerBehaviour... behaviours) {
+        Arrays.stream(behaviours).forEach((LayerBehaviour behaviour) -> {
+            behaviour.mouseEvent(eventType, event);
         });
     }
 
@@ -67,5 +77,19 @@ public class DiagramSkin implements Skin<DiagramControl> {
 
     @Override
     public void dispose() {
+    }
+
+    @Override
+    public ObjectProperty<Mode> modeProperty() {
+        return this.mode;
+    }
+
+    @Override
+    public void setMode(Mode mode) {
+        this.mode.set(mode);
+    }
+
+    public ElementLayerControl getElementLayerControl() {
+        return this.elementLayer;
     }
 }

@@ -13,4 +13,8 @@ public class ElementLayerControl extends Control {
         this.setPrefHeight(height);
         this.setSkin(new ElementLayerSkin(this));
     }
+
+    public ElementLayerSkin getLayerSkin() {
+        return (ElementLayerSkin) this.getSkin();
+    }
 }

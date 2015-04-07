@@ -13,4 +13,8 @@ public class GhostLayerControl extends Control {
         this.setPrefHeight(height);
         this.setSkin(new GhostLayerSkin(this));
     }
+
+    public GhostLayerSkin getLayerSkin() {
+        return (GhostLayerSkin) this.getSkin();
+    }
 }
