@@ -43,89 +43,85 @@ public class ElementLayerSkin implements Skin<ElementLayerControl> {
     private void initializa() {
         mainCanvas = new Pane();
         selectedControls = new HashSet<>();
-        mainCanvas.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
-            System.out.printf("PANE -> OnMousePressed: \n");
-            this.control.fireLayerEvent(event);
-            if (mode == Mode.EDIT) {
+    }
+
+    public void mousePressed(MouseEvent event) {
+        System.out.printf("PANE -> OnMousePressed: \n");
+        if (mode == Mode.EDIT) {
 //                controlFactory.setByPressed(event.getSceneX(), event.getSceneY());
-                event.consume();
-                return;
-            }
-            Rectangle source = new Rectangle(draggedX, draggedY, draggedW, draggedH);
-            Optional<ElementControl> nowSelected = getDrawControlStream().filter((ElementControl c) -> {
-                return hitTest(
-                        source,
-                        new Rectangle(c.getCanvasX(), c.getCanvasY(), c.getCanvasWidth(), c.getCanvasHeight()));
-            }).findFirst();
-            if (nowSelected.isPresent()) {
-                System.out.println("HIT");
-                this.pressSelected = nowSelected.get();
-                if (!selectedControls.contains(this.pressSelected)) {
-                    selectedControls.forEach((ElementControl ctrl) -> {
-                        ctrl.setSelected(false);
-                    });
-                    selectedControls = new HashSet<>();
-                }
-                moveX.set(event.getSceneX());
-                moveY.set(event.getSceneY());
-                this.pressSelected.calcRelative(event.getSceneX(), event.getSceneY());
-                this.pressSelected.bindMove(moveX, moveY);
+            return;
+        }
+        Rectangle source = new Rectangle(draggedX, draggedY, draggedW, draggedH);
+        Optional<ElementControl> nowSelected = getDrawControlStream().filter((ElementControl c) -> {
+            return hitTest(
+                    source,
+                    new Rectangle(c.getCanvasX(), c.getCanvasY(), c.getCanvasWidth(), c.getCanvasHeight()));
+        }).findFirst();
+        if (nowSelected.isPresent()) {
+            System.out.println("HIT");
+            this.pressSelected = nowSelected.get();
+            if (!selectedControls.contains(this.pressSelected)) {
                 selectedControls.forEach((ElementControl ctrl) -> {
-                    ctrl.calcRelative(event.getSceneX(), event.getSceneY());
-                    ctrl.bindMove(moveX, moveY);
+                    ctrl.setSelected(false);
                 });
-                mode = Mode.MOVE;
+                selectedControls = new HashSet<>();
             }
-            event.consume();
-        });
-        mainCanvas.addEventFilter(MouseEvent.MOUSE_DRAGGED, event -> {
-            this.control.fireLayerEvent(event);
-            if (mode == Mode.MOVE) {
-                this.moveX.set(event.getSceneX());
-                this.moveY.set(event.getSceneY());
-            }
-            event.consume();
-        });
-        mainCanvas.addEventFilter(MouseEvent.MOUSE_RELEASED, event -> {
-            System.out.println("PANE -> OnMouseReleased: " + event);
-            this.control.fireLayerEvent(event);
-            if (mode == Mode.EDIT) {
+            moveX.set(event.getSceneX());
+            moveY.set(event.getSceneY());
+            this.pressSelected.calcRelative(event.getSceneX(), event.getSceneY());
+            this.pressSelected.bindMove(moveX, moveY);
+            selectedControls.forEach((ElementControl ctrl) -> {
+                ctrl.calcRelative(event.getSceneX(), event.getSceneY());
+                ctrl.bindMove(moveX, moveY);
+            });
+            mode = Mode.MOVE;
+        }
+    }
+
+    public void mouseDragged(MouseEvent event) {
+        if (mode == Mode.MOVE) {
+            this.moveX.set(event.getSceneX());
+            this.moveY.set(event.getSceneY());
+        }
+    }
+
+    public void mouseReleased(MouseEvent event) {
+        System.out.println("PANE -> OnMouseReleased: " + event);
+        if (mode == Mode.EDIT) {
 //                controlFactory.setByReleased(event.getSceneX(), event.getSceneY());
 //                Optional<DrawControl> opt = controlFactory.getControl();
 //                if (opt.isPresent()) {
 //                    DrawControl control = opt.get();
 //                    mainCanvas.getChildren().add(control);
 //                }
-                mode = Mode.SELECT;
-            }
-            if (mode == Mode.MOVE) {
-                this.selectedControls.forEach((ElementControl ctrl) -> {
-                    ctrl.unbindMove();
-                });
-                if (this.pressSelected != null) {
-                    this.pressSelected.unbindMove();
-                    this.pressSelected.setSelected(true);
-                }
-                draggedX = event.getSceneX();
-                draggedY = event.getSceneY();
-                draggedW = 1d;
-                draggedH = 1d;
-            }
-            if (this.pressSelected == null || selectedControls.isEmpty()) {
-                Rectangle source = new Rectangle(draggedX, draggedY, draggedW, draggedH);
-                selectedControls = getDrawControlStream().map((ElementControl c) -> {
-                    c.setSelected(hitTest(
-                            source,
-                            new Rectangle(c.getCanvasX(), c.getCanvasY(), c.getCanvasWidth(), c.getCanvasHeight())));
-                    return c;
-                }).filter((ElementControl c) -> {
-                    return c.isSelected();
-                }).collect(Collectors.toSet());
-            }
-            this.pressSelected = null;
             mode = Mode.SELECT;
-            event.consume();
-        });
+        }
+        if (mode == Mode.MOVE) {
+            this.selectedControls.forEach((ElementControl ctrl) -> {
+                ctrl.unbindMove();
+            });
+            if (this.pressSelected != null) {
+                this.pressSelected.unbindMove();
+                this.pressSelected.setSelected(true);
+            }
+            draggedX = event.getSceneX();
+            draggedY = event.getSceneY();
+            draggedW = 1d;
+            draggedH = 1d;
+        }
+        if (this.pressSelected == null || selectedControls.isEmpty()) {
+            Rectangle source = new Rectangle(draggedX, draggedY, draggedW, draggedH);
+            selectedControls = getDrawControlStream().map((ElementControl c) -> {
+                c.setSelected(hitTest(
+                        source,
+                        new Rectangle(c.getCanvasX(), c.getCanvasY(), c.getCanvasWidth(), c.getCanvasHeight())));
+                return c;
+            }).filter((ElementControl c) -> {
+                return c.isSelected();
+            }).collect(Collectors.toSet());
+        }
+        this.pressSelected = null;
+        mode = Mode.SELECT;
     }
 
     private boolean hitTest(Rectangle source, Rectangle target) {

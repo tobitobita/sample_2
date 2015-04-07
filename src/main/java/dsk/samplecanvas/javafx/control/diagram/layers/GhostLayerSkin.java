@@ -39,43 +39,44 @@ public class GhostLayerSkin implements Skin<GhostLayerControl> {
         context.setLineWidth(LINE_WIDTH);
         this.ghostCanvas.widthProperty().bind(this.control.widthProperty());
         this.ghostCanvas.heightProperty().bind(this.control.heightProperty());
-        this.ghostCanvas.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
-            System.out.println("GHOST -> OnMousePressed: " + event);
-            x = event.getSceneX();
-            y = event.getSceneY();
+    }
+
+    public void mousePressed(MouseEvent event) {
+        System.out.println("GHOST -> OnMousePressed: " + event);
+        x = event.getSceneX();
+        y = event.getSceneY();
+        draggedX = event.getSceneX();
+        draggedY = event.getSceneY();
+        draggedW = 1d;
+        draggedH = 1d;
+    }
+
+    public void mouseDragged(MouseEvent event) {
+        this.clearRect();
+        GraphicsContext context = ghostCanvas.getGraphicsContext2D();
+        if (this.x < event.getSceneX()) {
+            draggedX = this.x;
+            draggedW = event.getSceneX() - this.x;
+        } else {
             draggedX = event.getSceneX();
+            draggedW = this.x - event.getSceneX();
+        }
+        if (this.y < event.getSceneY()) {
+            draggedY = this.y;
+            draggedH = event.getSceneY() - this.y;
+        } else {
             draggedY = event.getSceneY();
-            draggedW = 1d;
-            draggedH = 1d;
-            event.consume();
-        });
-        this.ghostCanvas.addEventFilter(MouseEvent.MOUSE_DRAGGED, event -> {
-            this.clearRect();
-            if (this.x < event.getSceneX()) {
-                draggedX = this.x;
-                draggedW = event.getSceneX() - this.x;
-            } else {
-                draggedX = event.getSceneX();
-                draggedW = this.x - event.getSceneX();
-            }
-            if (this.y < event.getSceneY()) {
-                draggedY = this.y;
-                draggedH = event.getSceneY() - this.y;
-            } else {
-                draggedY = event.getSceneY();
-                draggedH = this.y - event.getSceneY();
-            }
+            draggedH = this.y - event.getSceneY();
+        }
 //            if (mode == Mode.SELECT) {
-            context.fillRect(draggedX, draggedY, draggedW, draggedH);
-            context.strokeRect(draggedX, draggedY, draggedW, draggedH);
+        context.fillRect(draggedX, draggedY, draggedW, draggedH);
+        context.strokeRect(draggedX, draggedY, draggedW, draggedH);
 //            }
-            event.consume();
-        });
-        this.ghostCanvas.addEventFilter(MouseEvent.MOUSE_RELEASED, event -> {
-            System.out.println("GHOST -> OnMouseReleased: " + event);
-            this.clearRect();
-            event.consume();
-        });
+    }
+
+    public void mouseReleased(MouseEvent event) {
+        System.out.println("GHOST -> OnMouseReleased: " + event);
+        this.clearRect();
     }
 
     private void clearRect() {
