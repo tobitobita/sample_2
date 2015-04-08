@@ -1,5 +1,6 @@
 package dsk.samplecanvas.javafx.control.diagram.layers;
 
+import dsk.samplecanvas.Mode;
 import javafx.event.EventType;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
@@ -10,7 +11,7 @@ import javafx.scene.paint.Color;
 
 public class GhostLayerSkin implements Skin<GhostLayerControl>, LayerBehaviour {
 
-    private static final double LINE_WIDTH = 1d;
+    private static final double LINE_WIDTH = 0.5d;
     private double x;
     private double y;
     private double draggedX;
@@ -99,10 +100,10 @@ public class GhostLayerSkin implements Skin<GhostLayerControl>, LayerBehaviour {
             draggedY = event.getSceneY();
             draggedH = this.y - event.getSceneY();
         }
-//            if (mode == Mode.SELECT) {
-        context.fillRect(draggedX, draggedY, draggedW, draggedH);
-        context.strokeRect(draggedX, draggedY, draggedW, draggedH);
-//            }
+        if (this.control.getMode() == Mode.SELECT) {
+            context.fillRect(draggedX, draggedY, draggedW, draggedH);
+            context.strokeRect(draggedX, draggedY, draggedW, draggedH);
+        }
     }
 
     private void mouseReleased(MouseEvent event) {
@@ -115,4 +116,5 @@ public class GhostLayerSkin implements Skin<GhostLayerControl>, LayerBehaviour {
         double halfLineWidth = LINE_WIDTH / 2;
         context.clearRect(draggedX - halfLineWidth, draggedY - halfLineWidth, draggedW + LINE_WIDTH, draggedH + LINE_WIDTH);
     }
+
 }

@@ -9,6 +9,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -31,6 +32,9 @@ public class ToolboxController implements Initializable, MouseEventDispatcher, M
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        mode.addListener((ObservableValue<? extends Mode> observable, Mode oldValue, Mode newValue) -> {
+            System.out.printf("ToolboxController: %s\n", newValue);
+        });
     }
 
     @FXML
@@ -108,5 +112,10 @@ public class ToolboxController implements Initializable, MouseEventDispatcher, M
     @Override
     public void setMode(Mode mode) {
         this.mode.set(mode);
+    }
+
+    @Override
+    public Mode getMode() {
+        return this.mode.get();
     }
 }

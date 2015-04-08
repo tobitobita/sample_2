@@ -1,20 +1,16 @@
 package dsk.samplecanvas.javafx.control.diagram;
 
-import dsk.samplecanvas.Mode;
-import dsk.samplecanvas.ModeChangeable;
 import dsk.samplecanvas.javafx.control.diagram.layers.ElementLayerControl;
 import dsk.samplecanvas.javafx.control.diagram.layers.GhostLayerControl;
 import dsk.samplecanvas.javafx.control.diagram.layers.LayerBehaviour;
 import java.util.Arrays;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.EventType;
 import javafx.scene.Node;
 import javafx.scene.control.Skin;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
-public class DiagramSkin implements Skin<DiagramControl>, ModeChangeable {
+public class DiagramSkin implements Skin<DiagramControl> {
 
     private final DiagramControl control;
 
@@ -22,8 +18,6 @@ public class DiagramSkin implements Skin<DiagramControl>, ModeChangeable {
 
     private GhostLayerControl ghostLayer;
     private ElementLayerControl elementLayer;
-
-    private final ObjectProperty<Mode> mode = new SimpleObjectProperty<>(this, "mode", Mode.SELECT);
 
     public DiagramSkin(DiagramControl control) {
         this.control = control;
@@ -33,7 +27,8 @@ public class DiagramSkin implements Skin<DiagramControl>, ModeChangeable {
     private void initialize() {
         this.ghostLayer = new GhostLayerControl();
         this.elementLayer = new ElementLayerControl();
-        this.mode.bindBidirectional(this.elementLayer.getLayerSkin().modeProperty());
+        this.control.modeProperty().bindBidirectional(this.ghostLayer.modeProperty());
+        this.control.modeProperty().bindBidirectional(this.elementLayer.modeProperty());
         this.pane = new AnchorPane(this.elementLayer, this.ghostLayer);
         AnchorPane.setTopAnchor(this.ghostLayer, 0d);
         AnchorPane.setRightAnchor(this.ghostLayer, 0d);
@@ -77,16 +72,6 @@ public class DiagramSkin implements Skin<DiagramControl>, ModeChangeable {
 
     @Override
     public void dispose() {
-    }
-
-    @Override
-    public ObjectProperty<Mode> modeProperty() {
-        return this.mode;
-    }
-
-    @Override
-    public void setMode(Mode mode) {
-        this.mode.set(mode);
     }
 
     public ElementLayerControl getElementLayerControl() {
