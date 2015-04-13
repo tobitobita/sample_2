@@ -11,6 +11,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.input.MouseEvent;
@@ -76,26 +77,26 @@ public class ToolboxController implements Initializable, MouseEventDispatcher, M
     }
 
     @Override
-    public void mousePressed(double pressedX, double pressedY) {
-        if (selected == 3) {
-            LineControl.class.cast(createdControl).setBeginPoint(pressedX, pressedY);
-            createdControl.setCanvasX(pressedX);
-            createdControl.setCanvasY(pressedY);
+    public void mouseEvent(EventType<MouseEvent> type, MouseEvent event) {
+        if (type == MouseEvent.MOUSE_PRESSED) {
+            if (selected == 3) {
+                LineControl.class.cast(createdControl).setBeginPoint(event.getSceneX(), event.getSceneY());
+                createdControl.setCanvasX(event.getSceneX());
+                createdControl.setCanvasY(event.getSceneY());
+            }
+        } else if (type == MouseEvent.MOUSE_RELEASED) {
+            if (selected == 3) {
+                LineControl.class
+                        .cast(createdControl).setEndPoint(event.getSceneX(), event.getSceneY());
+            } else {
+                createdControl.setCanvasX(event.getSceneX());
+                createdControl.setCanvasY(event.getSceneY());
+            }
         }
     }
 
     @Override
-    public void mouseReleased(double releasedX, double releasedY) {
-        if (selected == 3) {
-            LineControl.class.cast(createdControl).setEndPoint(releasedX, releasedY);
-        } else {
-            createdControl.setCanvasX(releasedX);
-            createdControl.setCanvasY(releasedY);
-        }
-    }
-
-    @Override
-    public Optional<ElementControl> getControl() {
+    public Optional<ElementControl> get() {
         this.clearSelect();
         return Optional.ofNullable(this.createdControl);
     }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.shape.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="468.0" prefWidth="517.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dsk.samplecanvas.javafx.control.diagram.DiagramController">
+   <children>
+      <Pane fx:id="elementsPane" onMouseDragged="#onElementsPaneMouseDragged" onMousePressed="#onElementsPaneMousePressed" onMouseReleased="#onElementsPaneMouseReleased" prefHeight="468.0" prefWidth="517.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <Canvas fx:id="ghostCanvas" height="468.0" onMouseDragged="#onGhostCanvasMouseDragged" onMousePressed="#onGhostCanvasMousePressed" onMouseReleased="#onGhostCanvasMouseReleased" width="517.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+   </children>
+</AnchorPane>

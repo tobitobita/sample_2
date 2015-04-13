@@ -1,13 +1,10 @@
 package dsk.samplecanvas;
 
 import dsk.samplecanvas.javafx.control.diagram.elements.ElementControl;
-import java.util.Optional;
+import javafx.event.EventType;
+import javafx.scene.input.MouseEvent;
 
-public interface MouseEventDispatcher {
+public interface MouseEventDispatcher extends Gettable<ElementControl> {
 
-    void mousePressed(double pressedX, double pressedY);
-
-    void mouseReleased(double releasedX, double releasedY);
-
-    Optional<ElementControl> getControl();
+    void mouseEvent(EventType<MouseEvent> type, MouseEvent event);
 }

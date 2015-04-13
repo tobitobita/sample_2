@@ -1,5 +1,6 @@
 package dsk.samplecanvas;
 
+import dsk.samplecanvas.javafx.control.diagram.DiagramController;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -33,15 +34,14 @@ public class MainController implements Initializable {
         }
         // dialog
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/canvas.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/diagram.fxml"));
             Scene scene = new Scene(loader.load());
             dialog = new Stage();
             dialog.setScene(scene);
             dialog.initStyle(StageStyle.DECORATED);
-            CanvasController controller = loader.getController();
-            toolboxController.modeProperty().bindBidirectional(controller.getDiagramControl().modeProperty());
-            // TODO 何かよい方法を。。
-            controller.getDiagramControl().getDiagramSkin().getElementLayerControl().getLayerSkin().setMouseEventDispatcher(toolboxController);
+            DiagramController controller = loader.getController();
+            toolboxController.modeProperty().bindBidirectional(controller.modeProperty());
+            controller.set(toolboxController);
         } catch (IOException e) {
             e.printStackTrace();
         }
