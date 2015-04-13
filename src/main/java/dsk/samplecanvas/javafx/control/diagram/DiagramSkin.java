@@ -7,6 +7,7 @@ import java.util.Arrays;
 import javafx.event.EventType;
 import javafx.scene.Node;
 import javafx.scene.control.Skin;
+import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
@@ -51,6 +52,9 @@ public class DiagramSkin implements Skin<DiagramControl> {
             System.out.printf("Diagram, %s\n", event);
             this.mouseEvent(MouseEvent.MOUSE_RELEASED, event, ghostLayer.getLayerSkin().getLayerBehaviour(), elementLayer.getLayerSkin().getLayerBehaviour());
             event.consume();
+        });
+        this.pane.addEventHandler(MouseDragEvent.MOUSE_DRAG_OVER, event -> {
+            
         });
     }
 

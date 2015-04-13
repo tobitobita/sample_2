@@ -7,8 +7,10 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventType;
 import javafx.scene.control.Control;
 import javafx.scene.control.Skinnable;
+import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 
 public abstract class ElementControl<T extends ElementSkin> extends Control implements Skinnable {
@@ -109,5 +111,9 @@ public abstract class ElementControl<T extends ElementSkin> extends Control impl
         this.layoutYProperty().unbind();
     }
 
-//    public void onMousePressedByCreating
+    public void mouseDragEvent(EventType<MouseDragEvent> eventType, MouseDragEvent event) {
+        if (eventType == MouseDragEvent.MOUSE_DRAG_OVER) {
+
+        }
+    }
 }

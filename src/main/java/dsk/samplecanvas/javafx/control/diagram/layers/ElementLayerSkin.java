@@ -13,6 +13,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.EventType;
 import javafx.scene.Node;
 import javafx.scene.control.Skin;
+import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
@@ -76,6 +77,11 @@ public class ElementLayerSkin implements Skin<ElementLayerControl>, LayerBehavio
         } else if (eventType == MouseEvent.MOUSE_RELEASED) {
             this.mouseReleased(event);
         }
+    }
+
+    @Override
+    public void mouseDragEvent(EventType<MouseDragEvent> eventType, MouseDragEvent event) {
+        this.mainCanvas.getChildren().forEach(node -> ((ElementControl) node).mouseDragEvent(eventType, event));
     }
 
     private void mousePressed(MouseEvent event) {

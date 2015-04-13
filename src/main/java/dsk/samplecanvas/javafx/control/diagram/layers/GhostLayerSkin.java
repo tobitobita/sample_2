@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Skin;
+import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
@@ -71,6 +72,10 @@ public class GhostLayerSkin implements Skin<GhostLayerControl>, LayerBehaviour {
         } else if (eventType == MouseEvent.MOUSE_RELEASED) {
             this.mouseReleased(event);
         }
+    }
+
+    @Override
+    public void mouseDragEvent(EventType<MouseDragEvent> eventType, MouseDragEvent event) {
     }
 
     private void mousePressed(MouseEvent event) {

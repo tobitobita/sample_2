@@ -4,6 +4,7 @@ import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Skin;
+import javafx.scene.input.MouseDragEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
@@ -27,8 +28,11 @@ public abstract class ElementSkin<T extends ElementControl> implements Skin<T> {
         this.overlayCanvas = new Canvas(this.control.getWidth(), this.control.getHeight());
         this.overlayCanvas.setLayoutX(0d);
         this.overlayCanvas.setLayoutY(0d);
-        pane = new Pane();
-        pane.getChildren().addAll(this.canvas, this.overlayCanvas);
+        this.pane = new Pane();
+        this.pane.getChildren().addAll(this.canvas, this.overlayCanvas);
+        this.pane.addEventHandler(MouseDragEvent.MOUSE_DRAG_OVER, (MouseDragEvent event) -> {
+            System.out.printf("ElementSkin: " + event);
+        });
     }
 
     @Override
