@@ -29,6 +29,8 @@ public abstract class ElementControl<T extends ElementSkin> extends Control impl
 
     private final BooleanProperty selected = new SimpleBooleanProperty(this, "selected");
 
+    protected int number;
+
     public ElementControl(double defaultWidth, double defaultHeight) {
         super();
         this.defaultWidth = defaultWidth;
@@ -115,5 +117,10 @@ public abstract class ElementControl<T extends ElementSkin> extends Control impl
         if (eventType == MouseDragEvent.MOUSE_DRAG_OVER) {
 
         }
+    }
+
+    @Override
+    public String toString() {
+        return Integer.toString(this.number);
     }
 }

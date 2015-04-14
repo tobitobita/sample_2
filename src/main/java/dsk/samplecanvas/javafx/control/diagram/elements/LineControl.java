@@ -10,6 +10,11 @@ public class LineControl extends ElementControl {
     private final DoubleProperty endX = new SimpleDoubleProperty(this, "endX");
     private final DoubleProperty endY = new SimpleDoubleProperty(this, "endY");
 
+    public LineControl(int number) {
+        this(1d, 1d);
+        this.number = number;
+    }
+
     public LineControl() {
         this(1d, 1d);
     }

@@ -31,6 +31,8 @@ public class ToolboxController implements Initializable, MouseEventDispatcher, M
 
     private final ObjectProperty<Mode> mode = new SimpleObjectProperty<>(this, "mode", Mode.SELECT);
 
+    private int count;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         mode.addListener((ObservableValue<? extends Mode> observable, Mode oldValue, Mode newValue) -> {
@@ -41,14 +43,14 @@ public class ToolboxController implements Initializable, MouseEventDispatcher, M
     @FXML
     protected void handleSeeAction(ActionEvent event) {
         selected = 1;
-        createdControl = new RectControl();
+        createdControl = new RectControl(++count);
         this.mode.set(Mode.EDIT);
     }
 
     @FXML
     protected void handleActionAction(ActionEvent event) {
         selected = 2;
-        createdControl = new OvalControl();
+        createdControl = new OvalControl(++count);
         this.mode.set(Mode.EDIT);
     }
 
