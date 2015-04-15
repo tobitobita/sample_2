@@ -1,5 +1,7 @@
 package dsk.samplecanvas.javafx.control.diagram.elements;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -20,6 +22,20 @@ public abstract class ElementSkin<T extends ElementControl> implements Skin<T> {
     private final Canvas canvas;
     private final Canvas overlayCanvas;
 
+    private final BooleanProperty mouseOver = new SimpleBooleanProperty(this, "mouseOver");
+
+    public boolean isMouseOver() {
+        return mouseOver.get();
+    }
+
+    public void setMouseOver(boolean value) {
+        mouseOver.set(value);
+    }
+
+    public BooleanProperty mouseOverProperty() {
+        return mouseOver;
+    }
+
     protected ElementSkin(T skin) {
         this.control = skin;
         this.canvas = new Canvas(this.control.getWidth() - SELECTED_CORNER_DIAMETER, this.control.getHeight() - SELECTED_CORNER_DIAMETER);
@@ -30,9 +46,6 @@ public abstract class ElementSkin<T extends ElementControl> implements Skin<T> {
         this.overlayCanvas.setLayoutY(0d);
         this.pane = new Pane();
         this.pane.getChildren().addAll(this.canvas, this.overlayCanvas);
-        this.pane.addEventHandler(MouseEvent.MOUSE_ENTERED_TARGET, event -> {
-            System.out.printf("ElementSkin: " + event);
-        });
     }
 
     @Override
@@ -75,5 +88,9 @@ public abstract class ElementSkin<T extends ElementControl> implements Skin<T> {
 
     @Override
     public void dispose() {
+    }
+
+    public void mouseOver(MouseEvent event) {
+        System.out.printf("x: %f, y: %f\n", event.getSceneX() - this.control.getLayoutX() - OVERLAY_MARGIN, event.getSceneY() - this.control.getLayoutY() - OVERLAY_MARGIN);
     }
 }

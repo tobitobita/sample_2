@@ -5,6 +5,8 @@ import dsk.samplecanvas.ModeChangeable;
 import dsk.samplecanvas.MouseEventDispatcher;
 import dsk.samplecanvas.Settable;
 import dsk.samplecanvas.javafx.control.diagram.elements.ElementControl;
+import dsk.samplecanvas.javafx.control.diagram.elements.ElementSkin;
+import dsk.samplecanvas.javafx.control.diagram.elements.RectControl;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -23,14 +25,12 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
 public class DiagramController implements Initializable, ModeChangeable, Settable<MouseEventDispatcher> {
 
@@ -77,19 +77,29 @@ public class DiagramController implements Initializable, ModeChangeable, Settabl
         this.ghostCanvas.widthProperty().bind(this.anchorPane.widthProperty());
         this.ghostCanvas.heightProperty().bind(this.anchorPane.heightProperty());
 
-        Rectangle source = new Rectangle(0d, 0d, 1d, 1d);
         this.ghostCanvas.addEventHandler(MouseEvent.MOUSE_MOVED, event -> {
-            source.setX(event.getSceneX());
-            source.setY(event.getSceneY());
             Optional<ElementControl> overControl = getDrawControlStream().filter((ElementControl c) -> {
-                return hitTest(
-                        source,
-                        new Rectangle(c.getCanvasX(), c.getCanvasY(), c.getCanvasWidth(), c.getCanvasHeight()));
+                return hitTest(event.getSceneX(), event.getSceneY(), 1d, 1d, c.getCanvasX() - 3d, c.getCanvasY() - 3d, c.getCanvasWidth() + 6d, c.getCanvasHeight() + 6d);
             }).findFirst();
             if (overControl.isPresent()) {
                 System.out.printf("OVER: %s\n", overControl.get().toString());
+                ((ElementSkin) overControl.get().getSkin()).mouseOver(event);
             }
         });
+
+        double xx = 0d;
+        double yy = 0d;
+        for (int i = 0; i < 500; ++i) {
+            RectControl rc = new RectControl(i);
+            rc.setLayoutX(xx);
+            rc.setLayoutY(yy);
+            this.elementsPane.getChildren().add(rc);
+            if (i % 25 == 0) {
+                yy += 25d;
+                xx = 0;
+            }
+            xx += 25d;
+        }
     }
 
     /* ModeChangeable */
@@ -174,11 +184,8 @@ public class DiagramController implements Initializable, ModeChangeable, Settabl
             this.dispatcher.mouseEvent(MouseEvent.MOUSE_PRESSED, event);
             return;
         }
-        Rectangle source = new Rectangle(draggedX, draggedY, draggedW, draggedH);
         Optional<ElementControl> nowSelected = getDrawControlStream().filter((ElementControl c) -> {
-            return hitTest(
-                    source,
-                    new Rectangle(c.getCanvasX(), c.getCanvasY(), c.getCanvasWidth(), c.getCanvasHeight()));
+            return hitTest(draggedX, draggedY, draggedW, draggedH, c.getCanvasX(), c.getCanvasY(), c.getCanvasWidth(), c.getCanvasHeight());
         }).findFirst();
         if (nowSelected.isPresent()) {
             System.out.println("HIT");
@@ -234,12 +241,9 @@ public class DiagramController implements Initializable, ModeChangeable, Settabl
             draggedH = 1d;
         }
         if (this.pressSelectedContorl == null || selectedControls.isEmpty()) {
-            Rectangle source = new Rectangle(draggedX, draggedY, draggedW, draggedH);
             if (selectType == SelectType.DRAG) {
                 this.selectedControls = getDrawControlStream().map((ElementControl c) -> {
-                    c.setSelected(hitTest(
-                            source,
-                            new Rectangle(c.getCanvasX(), c.getCanvasY(), c.getCanvasWidth(), c.getCanvasHeight())));
+                    c.setSelected(hitTest(draggedX, draggedY, draggedW, draggedH, c.getCanvasX(), c.getCanvasY(), c.getCanvasWidth(), c.getCanvasHeight()));
                     return c;
                 }).filter((ElementControl c) -> {
                     return c.isSelected();
@@ -249,9 +253,7 @@ public class DiagramController implements Initializable, ModeChangeable, Settabl
                     c.setSelected(false);
                 });
                 Optional<ElementControl> overControl = getDrawControlStream().filter((ElementControl c) -> {
-                    return hitTest(
-                            source,
-                            new Rectangle(c.getCanvasX(), c.getCanvasY(), c.getCanvasWidth(), c.getCanvasHeight()));
+                    return hitTest(draggedX, draggedY, draggedW, draggedH, c.getCanvasX(), c.getCanvasY(), c.getCanvasWidth(), c.getCanvasHeight());
                 }).findFirst();
                 if (overControl.isPresent()) {
                     this.selectedControls = new HashSet<>();
@@ -266,9 +268,9 @@ public class DiagramController implements Initializable, ModeChangeable, Settabl
         selectType = SelectType.CLICK;
     }
 
-    private boolean hitTest(Rectangle source, Rectangle target) {
-        return ((source.getX() + source.getWidth() >= target.getX()) && (source.getX() <= target.getX() + target.getWidth())
-                && (source.getY() + source.getHeight() >= target.getY()) && (source.getY() <= target.getY() + target.getHeight()));
+    private boolean hitTest(double sourceX, double sourceY, double sourceWidth, double sourceHeight, double targetX, double targetY, double targetWidth, double targetHeight) {
+        return ((sourceX + sourceWidth > targetX) && (sourceX <= targetX + targetWidth)
+                && (sourceY + sourceHeight > targetY) && (sourceY <= targetY + targetHeight));
     }
 
     private Stream<ElementControl> getDrawControlStream() {
