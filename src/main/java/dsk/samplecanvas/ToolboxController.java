@@ -1,7 +1,6 @@
 package dsk.samplecanvas;
 
 import dsk.samplecanvas.javafx.control.diagram.elements.ElementControl;
-import dsk.samplecanvas.javafx.control.diagram.elements.LineControl;
 import dsk.samplecanvas.javafx.control.diagram.elements.OvalControl;
 import dsk.samplecanvas.javafx.control.diagram.elements.RectControl;
 import java.net.URL;
@@ -56,9 +55,9 @@ public class ToolboxController implements Initializable, MouseEventDispatcher, M
 
     @FXML
     protected void handleNextAction(ActionEvent event) {
-        selected = 3;
-        createdControl = new LineControl();
-        this.mode.set(Mode.EDIT);
+//        selected = 3;
+//        createdControl = new LineControl();
+//        this.mode.set(Mode.EDIT);
     }
 
     public void postInit() {
@@ -81,19 +80,19 @@ public class ToolboxController implements Initializable, MouseEventDispatcher, M
     @Override
     public void mouseEvent(EventType<MouseEvent> type, MouseEvent event) {
         if (type == MouseEvent.MOUSE_PRESSED) {
-            if (selected == 3) {
-                LineControl.class.cast(createdControl).setBeginPoint(event.getSceneX(), event.getSceneY());
-                createdControl.setCanvasX(event.getSceneX());
-                createdControl.setCanvasY(event.getSceneY());
-            }
+//            if (selected == 3) {
+//                LineControl.class.cast(createdControl).setBeginPoint(event.getSceneX(), event.getSceneY());
+//                createdControl.setCanvasX(event.getSceneX());
+//                createdControl.setCanvasY(event.getSceneY());
+//            }
         } else if (type == MouseEvent.MOUSE_RELEASED) {
-            if (selected == 3) {
-                LineControl.class
-                        .cast(createdControl).setEndPoint(event.getSceneX(), event.getSceneY());
-            } else {
+//            if (selected == 3) {
+//                LineControl.class
+//                        .cast(createdControl).setEndPoint(event.getSceneX(), event.getSceneY());
+//            } else {
                 createdControl.setCanvasX(event.getSceneX());
                 createdControl.setCanvasY(event.getSceneY());
-            }
+//            }
         }
     }
 

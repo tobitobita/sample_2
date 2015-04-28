@@ -4,10 +4,10 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-public class RectSkin extends ElementSkin<RectControl> {
+public class RectSkin extends ElementSkin<RectControl, RectBehavior> {
 
-    public RectSkin(RectControl skin) {
-        super(skin);
+    public RectSkin(RectControl control) {
+        super(control, new RectBehavior(control));
     }
 
     @Override

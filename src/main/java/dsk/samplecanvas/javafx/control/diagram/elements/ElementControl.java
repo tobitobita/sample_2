@@ -8,10 +8,9 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Control;
-import javafx.scene.control.Skinnable;
 import javafx.scene.input.MouseEvent;
 
-public abstract class ElementControl<T extends ElementSkin> extends Control implements Skinnable {
+public abstract class ElementControl extends Control {
 
     private final double defaultWidth;
     private final double defaultHeight;
@@ -45,7 +44,7 @@ public abstract class ElementControl<T extends ElementSkin> extends Control impl
         });
         calcX = Bindings.add(moveX, relativeX);
         calcY = Bindings.add(moveY, relativeY);
-        this.setSkin(this.getDrawSkin());
+        //this.setSkin(this.getDrawSkin());
         this.addEventFilter(MouseEvent.MOUSE_PRESSED, (MouseEvent event) -> {
             System.out.println("EventFilter(MouseEvent.MOUSE_PRESSED");
         });
@@ -53,8 +52,6 @@ public abstract class ElementControl<T extends ElementSkin> extends Control impl
             System.out.println("EventHandler(MouseEvent.MOUSE_PRESSED");
         });
     }
-
-    protected abstract T getDrawSkin();
 
     public double getCanvasX() {
         return this.getLayoutX() + ElementSkin.OVERLAY_MARGIN;
@@ -73,11 +70,11 @@ public abstract class ElementControl<T extends ElementSkin> extends Control impl
     }
 
     public double getCanvasWidth() {
-        return this.getDrawSkin().getCanvas().getWidth();
+        return ((ElementSkin) this.getSkin()).getCanvas().getWidth();
     }
 
     public double getCanvasHeight() {
-        return this.getDrawSkin().getCanvas().getHeight();
+        return ((ElementSkin) this.getSkin()).getCanvas().getHeight();
     }
 
     public boolean isSelected() {

@@ -1,5 +1,7 @@
 package dsk.samplecanvas.javafx.control.diagram.elements;
 
+import javafx.scene.control.Skin;
+
 public class OvalControl extends ElementControl {
 
     public OvalControl(int number) {
@@ -16,8 +18,7 @@ public class OvalControl extends ElementControl {
     }
 
     @Override
-    protected OvalSkin getDrawSkin() {
+    protected Skin<?> createDefaultSkin() {
         return new OvalSkin(this);
     }
-
 }

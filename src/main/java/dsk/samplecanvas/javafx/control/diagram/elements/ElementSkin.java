@@ -1,22 +1,22 @@
 package dsk.samplecanvas.javafx.control.diagram.elements;
 
+import com.sun.javafx.scene.control.skin.BehaviorSkinBase;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Skin;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
-public abstract class ElementSkin<T extends ElementControl> implements Skin<T> {
+public abstract class ElementSkin<C extends ElementControl, BB extends ElementBehavior<C>> extends BehaviorSkinBase<C, BB> {
 
     static final double OVERLAY_MARGIN = 3d;
     private static final double SELECTED_CORNER_DIAMETER = OVERLAY_MARGIN * 2;
     private static final double SELECTED_CORNER_MARGIN = 0.5d;
 
-    private final T control;
+    private final C control;
 
     private final Pane pane;
     private final Canvas canvas;
@@ -36,8 +36,9 @@ public abstract class ElementSkin<T extends ElementControl> implements Skin<T> {
         return mouseOver;
     }
 
-    protected ElementSkin(T skin) {
-        this.control = skin;
+    public ElementSkin(C control, BB behavior) {
+        super(control, behavior);
+        this.control = control;
         this.canvas = new Canvas(this.control.getWidth() - SELECTED_CORNER_DIAMETER, this.control.getHeight() - SELECTED_CORNER_DIAMETER);
         this.canvas.setLayoutX(OVERLAY_MARGIN);
         this.canvas.setLayoutY(OVERLAY_MARGIN);
@@ -48,8 +49,12 @@ public abstract class ElementSkin<T extends ElementControl> implements Skin<T> {
         this.pane.getChildren().addAll(this.canvas, this.overlayCanvas);
     }
 
-    @Override
-    public Node getNode() {
+    /**
+     * TODO
+     *
+     * @return
+     */
+    public Node getNode2() {
         {
             GraphicsContext ctx = this.canvas.getGraphicsContext2D();
             ctx.clearRect(0, 0, this.canvas.getWidth(), this.canvas.getHeight());
@@ -80,11 +85,6 @@ public abstract class ElementSkin<T extends ElementControl> implements Skin<T> {
     }
 
     protected abstract void paintComponent(GraphicsContext ctx);
-
-    @Override
-    public T getSkinnable() {
-        return this.control;
-    }
 
     @Override
     public void dispose() {

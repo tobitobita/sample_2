@@ -1,5 +1,7 @@
 package dsk.samplecanvas.javafx.control.diagram.elements;
 
+import javafx.scene.control.Skin;
+
 public class RectControl extends ElementControl {
 
     public RectControl(int number) {
@@ -16,8 +18,7 @@ public class RectControl extends ElementControl {
     }
 
     @Override
-    protected RectSkin getDrawSkin() {
+    protected Skin<?> createDefaultSkin() {
         return new RectSkin(this);
     }
-
 }
