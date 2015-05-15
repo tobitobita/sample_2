@@ -31,4 +31,9 @@ public class SampleSkin extends BehaviorSkinBase<SampleControl, SampleBehavior> 
         gc.setFill(Color.BLACK);
         gc.fillRect(0d, 0d, control.getPrefWidth(), control.getPrefHeight());
     }
+
+    @Override
+    protected void layoutChildren(double contentX, double contentY, double contentWidth, double contentHeight) {
+        super.layoutChildren(contentX, contentY, contentWidth, contentHeight);
+    }    
 }
