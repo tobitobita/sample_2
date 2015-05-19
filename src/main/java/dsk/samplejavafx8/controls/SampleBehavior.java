@@ -21,10 +21,10 @@ public class SampleBehavior extends BehaviorBase<SampleControl> {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        System.out.println("mouseReleased");
-        this.getControl().setSelected(!this.getControl().isSelected());
+        //System.out.printf("mouseReleased, x:%f, y:%f, sceneX:%f, sceneY:%f, screenX:%f, screenY:%f\n", e.getX(), e.getY(), e.getSceneX(), e.getSceneY(), e.getScreenX(), e.getScreenY());
+        //this.getControl().setSelected(!this.getControl().isSelected());
         this.getControl().requestLayout();
-        e.consume();
+        //e.consume();
     }
 
     @Override
