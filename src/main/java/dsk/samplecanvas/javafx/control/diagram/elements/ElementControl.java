@@ -6,9 +6,7 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Control;
-import javafx.scene.input.MouseEvent;
 
 public abstract class ElementControl extends Control {
 
@@ -39,18 +37,8 @@ public abstract class ElementControl extends Control {
         this.setWidth(defaultWidth + (ElementSkin.OVERLAY_MARGIN * 2));
         this.setHeight(defaultHeight + (ElementSkin.OVERLAY_MARGIN * 2));
         this.selected.set(false);
-        this.selected.addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            requestLayout();
-        });
         calcX = Bindings.add(moveX, relativeX);
         calcY = Bindings.add(moveY, relativeY);
-        //this.setSkin(this.getDrawSkin());
-        this.addEventFilter(MouseEvent.MOUSE_PRESSED, (MouseEvent event) -> {
-            System.out.println("EventFilter(MouseEvent.MOUSE_PRESSED");
-        });
-        this.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent event) -> {
-            System.out.println("EventHandler(MouseEvent.MOUSE_PRESSED");
-        });
     }
 
     public double getCanvasX() {

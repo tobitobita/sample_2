@@ -5,7 +5,6 @@ import dsk.samplecanvas.ModeChangeable;
 import dsk.samplecanvas.MouseEventDispatcher;
 import dsk.samplecanvas.Settable;
 import dsk.samplecanvas.javafx.control.diagram.elements.ElementControl;
-import dsk.samplecanvas.javafx.control.diagram.elements.ElementSkin;
 import dsk.samplecanvas.javafx.control.diagram.elements.RectControl;
 import java.net.URL;
 import java.util.HashSet;
@@ -77,15 +76,15 @@ public class DiagramController implements Initializable, ModeChangeable, Settabl
         this.ghostCanvas.widthProperty().bind(this.anchorPane.widthProperty());
         this.ghostCanvas.heightProperty().bind(this.anchorPane.heightProperty());
 
-        this.ghostCanvas.addEventHandler(MouseEvent.MOUSE_MOVED, event -> {
-            Optional<ElementControl> overControl = getDrawControlStream().filter((ElementControl c) -> {
-                return hitTest(event.getSceneX(), event.getSceneY(), 1d, 1d, c.getCanvasX() - 3d, c.getCanvasY() - 3d, c.getCanvasWidth() + 6d, c.getCanvasHeight() + 6d);
-            }).findFirst();
-            if (overControl.isPresent()) {
-                System.out.printf("OVER: %s\n", overControl.get().toString());
-                ((ElementSkin) overControl.get().getSkin()).mouseOver(event);
-            }
-        });
+//        this.ghostCanvas.addEventHandler(MouseEvent.MOUSE_MOVED, event -> {
+//            Optional<ElementControl> overControl = getDrawControlStream().filter((ElementControl c) -> {
+//                return hitTest(event.getSceneX(), event.getSceneY(), 1d, 1d, c.getCanvasX() - 3d, c.getCanvasY() - 3d, c.getCanvasWidth() + 6d, c.getCanvasHeight() + 6d);
+//            }).findFirst();
+//            if (overControl.isPresent()) {
+//                System.out.printf("OVER: %s\n", overControl.get().toString());
+//                ((ElementSkin) overControl.get().getSkin()).mouseOver(event);
+//            }
+//        });
 
         double xx = 0d;
         double yy = 0d;
