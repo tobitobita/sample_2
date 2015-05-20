@@ -1,6 +1,5 @@
 package dsk.samplecanvas.javafx.control.diagram;
 
-import dsk.samplecanvas.Mode;
 import dsk.samplecanvas.ModeChangeable;
 import dsk.samplecanvas.MouseEventDispatcher;
 import dsk.samplecanvas.Settable;
@@ -60,7 +59,7 @@ public class DiagramController implements Initializable, ModeChangeable, Settabl
     private Set<ElementControl> selectedControls = new HashSet<>();
     private ElementControl pressSelectedContorl;
 
-    private final ObjectProperty<Mode> mode = new SimpleObjectProperty<>(this, "mode", Mode.SELECT);
+    private final ObjectProperty<DiagramState> mode = new SimpleObjectProperty<>(this, "mode", DiagramState.SELECT);
 
     private SelectType selectType = SelectType.CLICK;
 
@@ -103,17 +102,17 @@ public class DiagramController implements Initializable, ModeChangeable, Settabl
 
     /* ModeChangeable */
     @Override
-    public ObjectProperty<Mode> modeProperty() {
+    public ObjectProperty<DiagramState> modeProperty() {
         return this.mode;
     }
 
     @Override
-    public void setMode(Mode mode) {
+    public void setMode(DiagramState mode) {
         this.mode.set(mode);
     }
 
     @Override
-    public Mode getMode() {
+    public DiagramState getMode() {
         return this.mode.get();
     }
 
@@ -139,7 +138,6 @@ public class DiagramController implements Initializable, ModeChangeable, Settabl
     @FXML
     protected void onGhostCanvasMouseDragged(MouseEvent event) {
         this.clearRect();
-        GraphicsContext context = ghostCanvas.getGraphicsContext2D();
         if (this.x < event.getSceneX()) {
             draggedX = this.x;
             draggedW = event.getSceneX() - this.x;
@@ -154,7 +152,8 @@ public class DiagramController implements Initializable, ModeChangeable, Settabl
             draggedY = event.getSceneY();
             draggedH = this.y - event.getSceneY();
         }
-        if (this.getMode() == Mode.SELECT) {
+        GraphicsContext context = ghostCanvas.getGraphicsContext2D();
+        if (this.getMode() == DiagramState.SELECT) {
             context.fillRect(draggedX, draggedY, draggedW, draggedH);
             context.strokeRect(draggedX, draggedY, draggedW, draggedH);
             selectType = SelectType.DRAG;
@@ -179,7 +178,7 @@ public class DiagramController implements Initializable, ModeChangeable, Settabl
     @FXML
     protected void onElementsPaneMousePressed(MouseEvent event) {
         System.out.printf("PANE -> OnMousePressed: \n");
-        if (this.getMode() == Mode.EDIT) {
+        if (this.getMode() == DiagramState.EDIT) {
             this.dispatcher.mouseEvent(MouseEvent.MOUSE_PRESSED, event);
             return;
         }
@@ -203,13 +202,13 @@ public class DiagramController implements Initializable, ModeChangeable, Settabl
                 ctrl.calcRelative(event.getSceneX(), event.getSceneY());
                 ctrl.bindMove(moveX, moveY);
             });
-            this.setMode(Mode.MOVE);
+            this.setMode(DiagramState.MOVE);
         }
     }
 
     @FXML
     protected void onElementsPaneMouseDragged(MouseEvent event) {
-        if (this.getMode() == Mode.MOVE) {
+        if (this.getMode() == DiagramState.MOVE) {
             this.moveX.set(event.getSceneX());
             this.moveY.set(event.getSceneY());
         }
@@ -218,15 +217,15 @@ public class DiagramController implements Initializable, ModeChangeable, Settabl
     @FXML
     protected void onElementsPaneMouseReleased(MouseEvent event) {
         System.out.println("PANE -> OnMouseReleased: " + event);
-        if (this.getMode() == Mode.EDIT) {
+        if (this.getMode() == DiagramState.EDIT) {
             this.dispatcher.mouseEvent(MouseEvent.MOUSE_RELEASED, event);
             Optional<ElementControl> elementContorl = this.dispatcher.get();
             if (elementContorl.isPresent()) {
                 elementsPane.getChildren().add(elementContorl.get());
             }
-            this.setMode(Mode.SELECT);
+            this.setMode(DiagramState.SELECT);
         }
-        if (this.getMode() == Mode.MOVE) {
+        if (this.getMode() == DiagramState.MOVE) {
             this.selectedControls.forEach((ElementControl ctrl) -> {
                 ctrl.unbindMove();
             });
@@ -263,7 +262,7 @@ public class DiagramController implements Initializable, ModeChangeable, Settabl
             }
         }
         this.pressSelectedContorl = null;
-        this.setMode(Mode.SELECT);
+        this.setMode(DiagramState.SELECT);
         selectType = SelectType.CLICK;
     }
 

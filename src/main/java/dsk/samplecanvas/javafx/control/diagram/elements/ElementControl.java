@@ -6,6 +6,7 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Control;
 
 public abstract class ElementControl extends Control {
@@ -36,6 +37,9 @@ public abstract class ElementControl extends Control {
     private void initControl() {
         this.setWidth(defaultWidth + (ElementSkin.OVERLAY_MARGIN * 2));
         this.setHeight(defaultHeight + (ElementSkin.OVERLAY_MARGIN * 2));
+        this.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            requestLayout();
+        });
         this.selected.set(false);
         calcX = Bindings.add(moveX, relativeX);
         calcY = Bindings.add(moveY, relativeY);

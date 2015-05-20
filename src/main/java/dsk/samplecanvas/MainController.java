@@ -34,14 +34,15 @@ public class MainController implements Initializable {
         }
         // dialog
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/diagram.fxml"));
+            //FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/diagram.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/diagram2.fxml"));
             Scene scene = new Scene(loader.load());
             dialog = new Stage();
             dialog.setScene(scene);
             dialog.initStyle(StageStyle.DECORATED);
-            DiagramController controller = loader.getController();
-            toolboxController.modeProperty().bindBidirectional(controller.modeProperty());
-            controller.set(toolboxController);
+            //DiagramController controller = loader.getController();
+            //toolboxController.modeProperty().bindBidirectional(controller.modeProperty());
+            //controller.set(toolboxController);
         } catch (IOException e) {
             e.printStackTrace();
         }

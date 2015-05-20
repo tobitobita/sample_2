@@ -1,5 +1,6 @@
 package dsk.samplecanvas;
 
+import dsk.samplecanvas.javafx.control.diagram.DiagramState;
 import dsk.samplecanvas.javafx.control.diagram.elements.ElementControl;
 import dsk.samplecanvas.javafx.control.diagram.elements.OvalControl;
 import dsk.samplecanvas.javafx.control.diagram.elements.RectControl;
@@ -28,13 +29,13 @@ public class ToolboxController implements Initializable, MouseEventDispatcher, M
     private int selected;
     private ElementControl createdControl;
 
-    private final ObjectProperty<Mode> mode = new SimpleObjectProperty<>(this, "mode", Mode.SELECT);
+    private final ObjectProperty<DiagramState> mode = new SimpleObjectProperty<>(this, "mode", DiagramState.SELECT);
 
     private int count;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        mode.addListener((ObservableValue<? extends Mode> observable, Mode oldValue, Mode newValue) -> {
+        mode.addListener((ObservableValue<? extends DiagramState> observable, DiagramState oldValue, DiagramState newValue) -> {
             System.out.printf("ToolboxController: %s\n", newValue);
         });
     }
@@ -43,14 +44,14 @@ public class ToolboxController implements Initializable, MouseEventDispatcher, M
     protected void handleSeeAction(ActionEvent event) {
         selected = 1;
         createdControl = new RectControl(++count);
-        this.mode.set(Mode.EDIT);
+        this.mode.set(DiagramState.EDIT);
     }
 
     @FXML
     protected void handleActionAction(ActionEvent event) {
         selected = 2;
         createdControl = new OvalControl(++count);
-        this.mode.set(Mode.EDIT);
+        this.mode.set(DiagramState.EDIT);
     }
 
     @FXML
@@ -107,17 +108,17 @@ public class ToolboxController implements Initializable, MouseEventDispatcher, M
     }
 
     @Override
-    public ObjectProperty<Mode> modeProperty() {
+    public ObjectProperty<DiagramState> modeProperty() {
         return this.mode;
     }
 
     @Override
-    public void setMode(Mode mode) {
+    public void setMode(DiagramState mode) {
         this.mode.set(mode);
     }
 
     @Override
-    public Mode getMode() {
+    public DiagramState getMode() {
         return this.mode.get();
     }
 }

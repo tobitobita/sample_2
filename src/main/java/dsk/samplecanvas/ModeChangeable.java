@@ -1,12 +1,13 @@
 package dsk.samplecanvas;
 
+import dsk.samplecanvas.javafx.control.diagram.DiagramState;
 import javafx.beans.property.ObjectProperty;
 
 public interface ModeChangeable {
 
-    public ObjectProperty<Mode> modeProperty();
+    public ObjectProperty<DiagramState> modeProperty();
 
-    void setMode(Mode mode);
+    void setMode(DiagramState mode);
 
-    Mode getMode();
+    DiagramState getMode();
 }
