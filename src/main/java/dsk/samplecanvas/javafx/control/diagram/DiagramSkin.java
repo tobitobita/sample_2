@@ -1,6 +1,14 @@
 package dsk.samplecanvas.javafx.control.diagram;
 
 import com.sun.javafx.scene.control.skin.BehaviorSkinBase;
+import dsk.samplecanvas.javafx.control.diagram.elements.ElementControl;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Spliterator;
+import java.util.Spliterators;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
@@ -45,5 +53,13 @@ public class DiagramSkin extends BehaviorSkinBase<DiagramControl, DiagramBehavio
         GraphicsContext context = ghostCanvas.getGraphicsContext2D();
         double halfLineWidth = LINE_WIDTH / 2;
         context.clearRect(x - halfLineWidth, y - halfLineWidth, width + LINE_WIDTH, height + LINE_WIDTH);
+    }
+
+    Stream<ElementControl> getDrawControlStream() {
+        Iterator<?> it = this.getChildren().stream().collect(Collectors.toCollection(LinkedList::new)).descendingIterator();
+        Spliterator<?> spliterator = Spliterators.spliteratorUnknownSize(it, Spliterator.IMMUTABLE);
+        return StreamSupport.stream(spliterator, false).filter((Object node) -> {
+            return node instanceof ElementControl;
+        }).map((Object node) -> (ElementControl) node);
     }
 }

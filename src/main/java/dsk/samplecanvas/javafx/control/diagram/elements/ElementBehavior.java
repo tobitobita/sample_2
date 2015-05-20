@@ -6,7 +6,6 @@ import java.util.List;
 import javafx.scene.input.MouseEvent;
 
 public abstract class ElementBehavior<C extends ElementControl> extends BehaviorBase<C> {
-
     public ElementBehavior(final C control, final List<KeyBinding> keyBindings) {
         super(control, keyBindings);
     }
@@ -24,9 +23,6 @@ public abstract class ElementBehavior<C extends ElementControl> extends Behavior
     @Override
     public void mouseReleased(MouseEvent e) {
         System.out.printf("mouseReleased, x:%f, y:%f, sceneX:%f, sceneY:%f, screenX:%f, screenY:%f\n", e.getX(), e.getY(), e.getSceneX(), e.getSceneY(), e.getScreenX(), e.getScreenY());
-        this.getControl().setSelected(!this.getControl().isSelected());
-        this.getControl().requestLayout();
-        e.consume();
     }
 
     @Override

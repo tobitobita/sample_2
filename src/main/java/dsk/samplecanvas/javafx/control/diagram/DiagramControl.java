@@ -1,5 +1,6 @@
 package dsk.samplecanvas.javafx.control.diagram;
 
+import dsk.samplecanvas.javafx.control.diagram.elements.ElementControl;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.Control;
@@ -22,6 +23,10 @@ public class DiagramControl extends Control {
     }
 
     public DiagramControl() {
+    }
+
+    public void addElement(ElementControl element) {
+        this.getChildren().add(element);
     }
 
     @Override
