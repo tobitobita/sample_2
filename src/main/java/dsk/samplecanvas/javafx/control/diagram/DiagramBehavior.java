@@ -2,6 +2,7 @@ package dsk.samplecanvas.javafx.control.diagram;
 
 import com.sun.javafx.scene.control.behavior.BehaviorBase;
 import dsk.samplecanvas.javafx.control.diagram.elements.ElementControl;
+import static dsk.samplecanvas.javafx.control.diagram.utilities.DiagramUtility.hitTest;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -38,6 +39,9 @@ public class DiagramBehavior extends BehaviorBase<DiagramControl> {
 
     public DiagramBehavior(DiagramControl control) {
         super(control, TRAVERSAL_BINDINGS);
+        control.addEventFilter(MouseEvent.MOUSE_MOVED, e -> {
+            control.setMouseMove(e.getSceneX(), e.getSceneY());
+        });
     }
 
     @Override
@@ -93,7 +97,7 @@ public class DiagramBehavior extends BehaviorBase<DiagramControl> {
 
     @Override
     public void mouseDragged(MouseEvent event) {
-        System.out.printf("mouseDragged, sceneX:%f, sceneY:%f\n", event.getSceneX(), event.getSceneY());
+        //System.out.printf("mouseDragged, sceneX:%f, sceneY:%f\n", event.getSceneX(), event.getSceneY());
         {
             // Drag状態にする。
             selectType = SelectType.DRAG;
@@ -187,10 +191,5 @@ public class DiagramBehavior extends BehaviorBase<DiagramControl> {
         }
         // 再描画リクエスト。
         this.getControl().requestLayout();
-    }
-
-    private boolean hitTest(double sourceX, double sourceY, double sourceWidth, double sourceHeight, double targetX, double targetY, double targetWidth, double targetHeight) {
-        return ((sourceX + sourceWidth > targetX) && (sourceX <= targetX + targetWidth)
-                && (sourceY + sourceHeight > targetY) && (sourceY <= targetY + targetHeight));
     }
 }

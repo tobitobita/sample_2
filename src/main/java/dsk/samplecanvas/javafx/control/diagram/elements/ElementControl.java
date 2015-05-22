@@ -8,11 +8,25 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Control;
+import static dsk.samplecanvas.javafx.control.diagram.utilities.DiagramUtility.hitTest;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 
 public abstract class ElementControl extends Control {
 
     private final double defaultWidth;
     private final double defaultHeight;
+
+    private final DoubleProperty ownerMouseMoveX = new SimpleDoubleProperty(this, "ownerMouseMoveX");
+    private final DoubleProperty ownerMouseMoveY = new SimpleDoubleProperty(this, "ownerMouseMoveY");
+
+    public DoubleProperty ownerMouseMoveXProperty() {
+        return this.ownerMouseMoveX;
+    }
+
+    public DoubleProperty ownerMouseMoveYProperty() {
+        return this.ownerMouseMoveY;
+    }
 
     private final DoubleProperty relativeX = new SimpleDoubleProperty(this, "relativeX");
     private final DoubleProperty relativeY = new SimpleDoubleProperty(this, "relativeY");
@@ -43,6 +57,28 @@ public abstract class ElementControl extends Control {
         this.selected.set(false);
         calcX = Bindings.add(moveX, relativeX);
         calcY = Bindings.add(moveY, relativeY);
+
+        this.ownerMouseMoveX.addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
+            validateMouseEntered();
+        });
+        this.ownerMouseMoveY.addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
+            validateMouseEntered();
+        });
+    }
+
+    private void validateMouseEntered() {
+        double sceneX = ownerMouseMoveX.get();
+        double sceneY = ownerMouseMoveY.get();
+        double layoutX = this.getLayoutX();
+        double layoutY = this.getLayoutY();
+        //System.out.printf("validateMouseEntered, layoutX:%f, layoutY:%f\n", layoutX, layoutY);        
+        if (hitTest(sceneX, sceneY, 1d, 1d, layoutX, layoutX, this.getWidth(), this.getHeight())) {
+            this.mouseEntered(new MouseEvent(MouseEvent.MOUSE_ENTERED, sceneX - layoutX, sceneY - layoutY, sceneX, sceneY, MouseButton.NONE, 0, false, false, false, false, false, false, false, false, false, false, null));
+        }
+    }
+
+    void mouseEntered(MouseEvent event) {
+        System.out.printf("mouseEntered!, x:%f, y:%f\n", event.getX(), event.getY());
     }
 
     public double getCanvasX() {

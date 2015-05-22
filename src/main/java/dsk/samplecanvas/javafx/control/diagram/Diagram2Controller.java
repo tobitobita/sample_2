@@ -22,7 +22,7 @@ public class Diagram2Controller implements Initializable {
 
         double xx = 50d;
         double yy = 50d;
-        for (int i = 1; i <= 500; ++i) {
+        for (int i = 1; i <= 1; ++i) {
             RectControl rc = new RectControl(i);
             rc.setLayoutX(xx);
             rc.setLayoutY(yy);
