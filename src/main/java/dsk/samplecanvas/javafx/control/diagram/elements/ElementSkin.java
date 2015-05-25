@@ -13,22 +13,9 @@ public abstract class ElementSkin<C extends ElementControl, BB extends ElementBe
 
     private final C control;
 
-//    private final Pane pane;
     private final Canvas canvas;
     private final Canvas overlayCanvas;
 
-//    private final BooleanProperty mouseOver = new SimpleBooleanProperty(this, "mouseOver");
-//    public boolean isMouseOver() {
-//        return mouseOver.get();
-//    }
-//
-//    public void setMouseOver(boolean value) {
-//        mouseOver.set(value);
-//    }
-//
-//    public BooleanProperty mouseOverProperty() {
-//        return mouseOver;
-//    }
     public ElementSkin(C control, BB behavior) {
         super(control, behavior);
         this.control = control;
@@ -51,7 +38,7 @@ public abstract class ElementSkin<C extends ElementControl, BB extends ElementBe
         {
             GraphicsContext ctx = this.overlayCanvas.getGraphicsContext2D();
             ctx.clearRect(0, 0, this.overlayCanvas.getWidth(), this.overlayCanvas.getHeight());
-            if (control.isSelected()) {
+            if (control.isSelected() && !control.isDragged()) {
                 ctx.setFill(Color.WHITE);
                 ctx.fillOval(SELECTED_CORNER_MARGIN, SELECTED_CORNER_MARGIN, SELECTED_CORNER_DIAMETER, SELECTED_CORNER_DIAMETER);
                 ctx.fillOval(canvas.getWidth() - SELECTED_CORNER_MARGIN, SELECTED_CORNER_MARGIN, SELECTED_CORNER_DIAMETER, SELECTED_CORNER_DIAMETER);
@@ -77,7 +64,4 @@ public abstract class ElementSkin<C extends ElementControl, BB extends ElementBe
         return this.canvas;
     }
 
-//    public void mouseOver(MouseEvent event) {
-//        System.out.printf("x: %f, y: %f\n", event.getSceneX() - this.control.getLayoutX() - OVERLAY_MARGIN, event.getSceneY() - this.control.getLayoutY() - OVERLAY_MARGIN);
-//    }
 }

@@ -88,7 +88,7 @@ public class DiagramController implements Initializable, ModeChangeable, Settabl
         double xx = 0d;
         double yy = 0d;
         for (int i = 0; i < 500; ++i) {
-            RectControl rc = new RectControl(i);
+            RectControl rc = new RectControl();
             rc.setLayoutX(xx);
             rc.setLayoutY(yy);
             this.elementsPane.getChildren().add(rc);

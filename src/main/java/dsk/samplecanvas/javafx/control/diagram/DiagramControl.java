@@ -36,8 +36,8 @@ public class DiagramControl extends Control {
     }
 
     public void addElement(ElementControl element) {
-        element.ownerMouseMoveXProperty().bind(this.mouseMoveX);
-        element.ownerMouseMoveYProperty().bind(this.mouseMoveY);
+        element.diagramMouseMoveXProperty().bind(this.mouseMoveX);
+        element.diagramMouseMoveYProperty().bind(this.mouseMoveY);
         this.getChildren().add(element);
     }
 

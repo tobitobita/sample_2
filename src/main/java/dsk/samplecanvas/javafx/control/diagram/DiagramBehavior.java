@@ -60,7 +60,7 @@ public class DiagramBehavior extends BehaviorBase<DiagramControl> {
         {
             // Click状態にする。
             selectType = SelectType.CLICK;
-            // Draggedがない場合もあるので、そのときのRect用座標を保持する。
+            // ドラッグがしない場合もあるので、そのときのRect座標を保持する。
             x = event.getSceneX();
             y = event.getSceneY();
             draggedX = event.getSceneX();

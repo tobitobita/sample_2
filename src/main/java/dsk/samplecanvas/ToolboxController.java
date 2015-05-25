@@ -31,8 +31,6 @@ public class ToolboxController implements Initializable, MouseEventDispatcher, M
 
     private final ObjectProperty<DiagramState> mode = new SimpleObjectProperty<>(this, "mode", DiagramState.SELECT);
 
-    private int count;
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         mode.addListener((ObservableValue<? extends DiagramState> observable, DiagramState oldValue, DiagramState newValue) -> {
@@ -42,15 +40,13 @@ public class ToolboxController implements Initializable, MouseEventDispatcher, M
 
     @FXML
     protected void handleSeeAction(ActionEvent event) {
-        selected = 1;
-        createdControl = new RectControl(++count);
+        createdControl = new RectControl();
         this.mode.set(DiagramState.EDIT);
     }
 
     @FXML
     protected void handleActionAction(ActionEvent event) {
-        selected = 2;
-        createdControl = new OvalControl(++count);
+        createdControl = new OvalControl();
         this.mode.set(DiagramState.EDIT);
     }
 
@@ -91,8 +87,8 @@ public class ToolboxController implements Initializable, MouseEventDispatcher, M
 //                LineControl.class
 //                        .cast(createdControl).setEndPoint(event.getSceneX(), event.getSceneY());
 //            } else {
-                createdControl.setCanvasX(event.getSceneX());
-                createdControl.setCanvasY(event.getSceneY());
+            createdControl.setCanvasX(event.getSceneX());
+            createdControl.setCanvasY(event.getSceneY());
 //            }
         }
     }
