@@ -87,8 +87,8 @@ public class ToolboxController implements Initializable, MouseEventDispatcher, M
 //                LineControl.class
 //                        .cast(createdControl).setEndPoint(event.getSceneX(), event.getSceneY());
 //            } else {
-            createdControl.setCanvasX(event.getSceneX());
-            createdControl.setCanvasY(event.getSceneY());
+            //createdControl.setCanvasX(event.getSceneX());
+            //createdControl.setCanvasY(event.getSceneY());
 //            }
         }
     }

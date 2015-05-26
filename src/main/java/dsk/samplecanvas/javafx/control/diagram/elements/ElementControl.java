@@ -8,9 +8,6 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Control;
-import static dsk.samplecanvas.javafx.control.diagram.utilities.DiagramUtility.hitTest;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 
 /**
  * ダイアグラム要素を表すコントロールの基底クラス。<br>
@@ -36,24 +33,6 @@ public abstract class ElementControl extends Control {
      * ダイアグラムのMouseMoveY。
      */
     private final DoubleProperty diagramMouseMoveY = new SimpleDoubleProperty(this, "diagramMouseMoveY");
-
-    /**
-     * ダイアグラムのMouseMoveXプロパティ。
-     *
-     * @return DoubleProperty
-     */
-    public DoubleProperty diagramMouseMoveXProperty() {
-        return this.diagramMouseMoveX;
-    }
-
-    /**
-     * ダイアグラムのMouseMoveYプロパティ。
-     *
-     * @return DoubleProperty
-     */
-    public DoubleProperty diagramMouseMoveYProperty() {
-        return this.diagramMouseMoveY;
-    }
 
     private final DoubleProperty relativeX = new SimpleDoubleProperty(this, "relativeX");
     private final DoubleProperty relativeY = new SimpleDoubleProperty(this, "relativeY");
@@ -107,67 +86,6 @@ public abstract class ElementControl extends Control {
         this.dragMoveY.addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
             dragged.set(true);
         });
-
-        this.diagramMouseMoveX.addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
-            validateMouseEntered();
-        });
-        this.diagramMouseMoveY.addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
-            validateMouseEntered();
-        });
-    }
-
-    private void validateMouseEntered() {
-        double sceneX = diagramMouseMoveX.get();
-        double sceneY = diagramMouseMoveY.get();
-        double layoutX = this.getLayoutX();
-        double layoutY = this.getLayoutY();
-        if (hitTest(sceneX, sceneY, 1d, 1d, layoutX, layoutX, this.getWidth(), this.getHeight())) {
-            this.mouseEntered(new MouseEvent(MouseEvent.MOUSE_ENTERED, sceneX - layoutX, sceneY - layoutY, sceneX, sceneY, MouseButton.NONE, 0, false, false, false, false, false, false, false, false, false, false, null));
-        }
-    }
-
-    void mouseEntered(MouseEvent event) {
-        //System.out.printf("mouseEntered!, x:%f, y:%f\n", event.getX(), event.getY());
-    }
-
-    public double getCanvasX() {
-        return this.getLayoutX() + ElementSkin.OVERLAY_MARGIN;
-    }
-
-    public void setCanvasX(double x) {
-        this.setLayoutX(x - ElementSkin.OVERLAY_MARGIN);
-    }
-
-    public double getCanvasY() {
-        return this.getLayoutY() + ElementSkin.OVERLAY_MARGIN;
-    }
-
-    public void setCanvasY(double y) {
-        this.setLayoutY(y - ElementSkin.OVERLAY_MARGIN);
-    }
-
-    public double getCanvasWidth() {
-        return ((ElementSkin) this.getSkin()).getCanvas().getWidth();
-    }
-
-    public double getCanvasHeight() {
-        return ((ElementSkin) this.getSkin()).getCanvas().getHeight();
-    }
-
-    public boolean isSelected() {
-        return selected.get();
-    }
-
-    public void setSelected(boolean seledted) {
-        selected.set(seledted);
-    }
-
-    public BooleanProperty selectedProperty() {
-        return selected;
-    }
-
-    boolean isDragged() {
-        return dragged.get();
     }
 
     public void calcRelative(double sceneX, double sceneY) {
@@ -189,4 +107,63 @@ public abstract class ElementControl extends Control {
         this.layoutYProperty().unbind();
         this.dragged.set(false);
     }
+
+    public double getCanvasX() {
+        return this.getLayoutX() + ElementSkin.OVERLAY_MARGIN;
+    }
+
+    public double getCanvasY() {
+        return this.getLayoutY() + ElementSkin.OVERLAY_MARGIN;
+    }
+
+    public double getCanvasWidth() {
+        return ((ElementSkin) this.getSkin()).getCanvas().getWidth();
+    }
+
+    public double getCanvasHeight() {
+        return ((ElementSkin) this.getSkin()).getCanvas().getHeight();
+    }
+
+    public boolean isSelected() {
+        return this.selected.get();
+    }
+
+    public void setSelected(boolean seledted) {
+        this.selected.set(seledted);
+    }
+
+    boolean isDragged() {
+        return this.dragged.get();
+    }
+
+    double getDiagramMouseMovedX() {
+        return this.diagramMouseMoveX.get();
+    }
+
+    double getDiagramMouseMovedY() {
+        return this.diagramMouseMoveY.get();
+    }
+
+    public BooleanProperty selectedProperty() {
+        return this.selected;
+    }
+
+    /**
+     * ダイアグラムのMouseMoveXプロパティ。
+     *
+     * @return DoubleProperty
+     */
+    public DoubleProperty diagramMouseMoveXProperty() {
+        return this.diagramMouseMoveX;
+    }
+
+    /**
+     * ダイアグラムのMouseMoveYプロパティ。
+     *
+     * @return DoubleProperty
+     */
+    public DoubleProperty diagramMouseMoveYProperty() {
+        return this.diagramMouseMoveY;
+    }
+
 }
