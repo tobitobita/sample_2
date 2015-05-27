@@ -32,8 +32,8 @@ public abstract class ElementBehavior<C extends ElementControl> extends Behavior
         ElementControl control = this.getControl();
         double sceneX = control.getDiagramMouseMovedX();
         double sceneY = control.getDiagramMouseMovedY();
-        double layoutX = control.getLayoutX();
-        double layoutY = control.getLayoutY();
+        double layoutX = control.getCanvasX() + 1d;
+        double layoutY = control.getCanvasY() + 1d;
         mouseExited(new MouseEvent(MouseEvent.MOUSE_EXITED, sceneX - layoutX, sceneY - layoutY, sceneX, sceneY, MouseButton.NONE, 0, false, false, false, false, false, false, false, false, false, false, null));
     }
 
@@ -41,9 +41,9 @@ public abstract class ElementBehavior<C extends ElementControl> extends Behavior
         ElementControl control = this.getControl();
         double sceneX = control.getDiagramMouseMovedX();
         double sceneY = control.getDiagramMouseMovedY();
-        double layoutX = control.getLayoutX();
-        double layoutY = control.getLayoutY();
-        if (hitTest(sceneX, sceneY, 1d, 1d, layoutX, layoutX, control.getWidth(), control.getHeight())) {
+        double layoutX = control.getCanvasX() + 1d;
+        double layoutY = control.getCanvasY() + 1d;
+        if (hitTest(sceneX, sceneY, 1d, 1d, layoutX, layoutY, control.getCanvasWidth(), control.getCanvasHeight())) {
             exited.set(true);
             this.mouseEntered(new MouseEvent(MouseEvent.MOUSE_ENTERED, sceneX - layoutX, sceneY - layoutY, sceneX, sceneY, MouseButton.NONE, 0, false, false, false, false, false, false, false, false, false, false, null));
         } else {
@@ -53,14 +53,24 @@ public abstract class ElementBehavior<C extends ElementControl> extends Behavior
 
     @Override
     public void mouseExited(MouseEvent e) {
-        //System.out.println("mouseExited");
+        System.out.println("ElementBehavior.mouseExited");
         this.getControl().getScene().setCursor(Cursor.DEFAULT);
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        //System.out.println("mouseEntered");
-        this.getControl().getScene().setCursor(Cursor.SW_RESIZE);
+        ElementControl control = this.getControl();
+        double sceneX = control.getDiagramMouseMovedX();
+        double sceneY = control.getDiagramMouseMovedY();
+        double layoutX = control.getCanvasX();
+        double layoutY = control.getCanvasY();
+        if (hitTest(sceneX, sceneY, 1d, 1d, layoutX, layoutY, 2d, control.getHeight())) {
+            control.getScene().setCursor(Cursor.H_RESIZE);
+//        } else if (hitTest(sceneX, sceneY, 1d, 1d, layoutX, layoutX, control.getWidth(), control.getHeight())) {
+        } else {
+            this.getControl().getScene().setCursor(Cursor.DEFAULT);
+        }
+
     }
 
     @Override
