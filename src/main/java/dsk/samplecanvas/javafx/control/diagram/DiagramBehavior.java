@@ -42,6 +42,9 @@ public class DiagramBehavior extends BehaviorBase<DiagramControl> {
         control.addEventFilter(MouseEvent.MOUSE_MOVED, e -> {
             control.setMouseMove(e.getSceneX(), e.getSceneY());
         });
+        control.addEventFilter(MouseEvent.MOUSE_DRAGGED, e -> {
+            control.setMouseMove(e.getSceneX(), e.getSceneY());
+        });
     }
 
     @Override
@@ -84,11 +87,11 @@ public class DiagramBehavior extends BehaviorBase<DiagramControl> {
                 }
                 draggingX.set(event.getSceneX());
                 draggingY.set(event.getSceneY());
-                this.pressSelectedContorl.calcRelative(event.getSceneX(), event.getSceneY());
-                this.pressSelectedContorl.bindMove(draggingX, draggingY);
+                //this.pressSelectedContorl.calcRelative(event.getSceneX(), event.getSceneY());
+                this.pressSelectedContorl.bindMove();
                 selectedControls.forEach((ElementControl ctrl) -> {
-                    ctrl.calcRelative(event.getSceneX(), event.getSceneY());
-                    ctrl.bindMove(draggingX, draggingY);
+                    //ctrl.calcRelative(event.getSceneX(), event.getSceneY());
+                    ctrl.bindMove();
                 });
                 this.getControl().setStatus(DiagramState.MOVE);
             }

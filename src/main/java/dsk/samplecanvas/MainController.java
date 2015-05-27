@@ -1,6 +1,5 @@
 package dsk.samplecanvas;
 
-import dsk.samplecanvas.javafx.control.diagram.DiagramController;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;

@@ -6,6 +6,7 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Control;
 
@@ -37,9 +38,6 @@ public abstract class ElementControl extends Control {
     private final DoubleProperty relativeX = new SimpleDoubleProperty(this, "relativeX");
     private final DoubleProperty relativeY = new SimpleDoubleProperty(this, "relativeY");
 
-    private final DoubleProperty dragMoveX = new SimpleDoubleProperty(this, "dragMoveX");
-    private final DoubleProperty dragMoveY = new SimpleDoubleProperty(this, "dragMoveY");
-
     private NumberBinding calcX;
     private NumberBinding calcY;
 
@@ -47,13 +45,20 @@ public abstract class ElementControl extends Control {
      * コントロールの状態。<br>
      * 選択状態の場合はtrueとなる。
      */
-    private final BooleanProperty selected = new SimpleBooleanProperty(this, "selected");
+    private final BooleanProperty selected = new SimpleBooleanProperty(this, "selected", false);
 
     /**
      * コントロールの状態。<br>
      * ドラッグ中の場合はtrueとなる。
      */
     private final BooleanProperty dragged = new SimpleBooleanProperty(this, "dragged");
+
+    /**
+     * 移動中に呼ばれるリスナー
+     */
+    private final ChangeListener<Number> layoutChangeListener = (ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
+        dragged.set(true);
+    };
 
     public ElementControl(double defaultWidth, double defaultHeight) {
         super();
@@ -66,45 +71,29 @@ public abstract class ElementControl extends Control {
         this.setWidth(defaultWidth + (ElementSkin.OVERLAY_MARGIN * 2));
         this.setHeight(defaultHeight + (ElementSkin.OVERLAY_MARGIN * 2));
         this.selected.addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            if (!oldValue.equals(newValue)) {
-                requestLayout();
-            }
+            requestLayout();
         });
-        this.selected.set(false);
         this.dragged.addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            System.out.println(newValue);
-            if (!oldValue.equals(newValue)) {
-                requestLayout();
-            }
+            requestLayout();
         });
-        calcX = Bindings.add(dragMoveX, relativeX);
-        calcY = Bindings.add(dragMoveY, relativeY);
-
-        this.dragMoveX.addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
-            dragged.set(true);
-        });
-        this.dragMoveY.addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
-            dragged.set(true);
-        });
+        calcX = Bindings.add(diagramMouseMoveX, relativeX);
+        calcY = Bindings.add(diagramMouseMoveY, relativeY);
     }
 
-    public void calcRelative(double sceneX, double sceneY) {
-        this.relativeX.set(this.getLayoutX() - sceneX);
-        this.relativeY.set(this.getLayoutY() - sceneY);
-    }
-
-    public void bindMove(DoubleProperty sceneX, DoubleProperty sceneY) {
-        this.dragMoveX.bind(sceneX);
-        this.dragMoveY.bind(sceneY);
+    public void bindMove() {
+        this.relativeX.set(this.getLayoutX() - this.diagramMouseMoveX.get());
+        this.relativeY.set(this.getLayoutY() - this.diagramMouseMoveY.get());
         this.layoutXProperty().bind(calcX);
         this.layoutYProperty().bind(calcY);
+        this.layoutXProperty().addListener(layoutChangeListener);
+        this.layoutYProperty().addListener(layoutChangeListener);
     }
 
     public void unbindMove() {
-        this.dragMoveX.unbind();
-        this.dragMoveY.unbind();
         this.layoutXProperty().unbind();
         this.layoutYProperty().unbind();
+        this.layoutXProperty().removeListener(layoutChangeListener);
+        this.layoutYProperty().removeListener(layoutChangeListener);
         this.dragged.set(false);
     }
 
