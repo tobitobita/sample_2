@@ -97,12 +97,20 @@ public abstract class ElementControl extends Control {
         this.dragged.set(false);
     }
 
-    public double getCanvasX() {
+    public double getCanvasLayoutX() {
         return this.getLayoutX() + ElementSkin.OVERLAY_MARGIN;
     }
 
-    public double getCanvasY() {
+    public double getCanvasLayoutY() {
         return this.getLayoutY() + ElementSkin.OVERLAY_MARGIN;
+    }
+
+    public void setCanvasLayoutX(double layoutX) {
+        this.setLayoutX(layoutX - ElementSkin.OVERLAY_MARGIN);
+    }
+
+    public void setCanvasLayoutY(double layoutY) {
+        this.setLayoutY(layoutY - ElementSkin.OVERLAY_MARGIN);
     }
 
     public double getCanvasWidth() {
