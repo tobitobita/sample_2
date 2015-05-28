@@ -51,7 +51,9 @@ public abstract class ElementControl extends Control {
      * コントロールの状態。<br>
      * ドラッグ中の場合はtrueとなる。
      */
-    private final BooleanProperty dragged = new SimpleBooleanProperty(this, "dragged");
+    private final BooleanProperty dragged = new SimpleBooleanProperty(this, "dragged", false);
+
+    private final BooleanProperty resize = new SimpleBooleanProperty(this, "resize", false);
 
     /**
      * 移動中に呼ばれるリスナー
@@ -75,6 +77,13 @@ public abstract class ElementControl extends Control {
         });
         this.dragged.addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
             requestLayout();
+        });
+        this.resize.addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            if (newValue) {
+                unbindMove();
+//            } else {
+//                bindMove();
+            }
         });
         calcX = Bindings.add(diagramMouseMoveX, relativeX);
         calcY = Bindings.add(diagramMouseMoveY, relativeY);
@@ -131,6 +140,10 @@ public abstract class ElementControl extends Control {
 
     boolean isDragged() {
         return this.dragged.get();
+    }
+
+    void setResize(boolean resize) {
+        this.resize.set(resize);
     }
 
     double getDiagramMouseMovedX() {
