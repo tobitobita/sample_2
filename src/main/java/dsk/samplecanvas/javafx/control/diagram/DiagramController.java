@@ -24,8 +24,8 @@ public class DiagramController implements Initializable {
         double yy = 50d;
         for (int i = 1; i <= 10; ++i) {
             RectControl rc = new RectControl();
-            rc.setLayoutX(xx);
-            rc.setLayoutY(yy);
+            rc.setCanvasLayoutX(xx);
+            rc.setCanvasLayoutY(yy);
             this.diagram.addElement(rc);
             xx += 25d;
             if (i % 25 == 0) {

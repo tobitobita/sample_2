@@ -74,7 +74,7 @@ public class DiagramBehavior extends BehaviorBase<DiagramControl> {
         {
             DiagramSkin skin = (DiagramSkin) this.getControl().getSkin();
             Optional<ElementControl> nowSelected = skin.getDrawControlStream().filter((ElementControl c) -> {
-                return hitTest(draggedX, draggedY, draggedW, draggedH, c.getCanvasX(), c.getCanvasY(), c.getCanvasWidth(), c.getCanvasHeight());
+                return hitTest(draggedX, draggedY, draggedW, draggedH, c.getCanvasLayoutX(), c.getCanvasLayoutY(), c.getCanvasWidth(), c.getCanvasHeight());
             }).findFirst();
             if (nowSelected.isPresent()) {
                 System.out.println("HIT");
@@ -169,7 +169,7 @@ public class DiagramBehavior extends BehaviorBase<DiagramControl> {
             if (this.pressSelectedContorl == null || selectedControls.isEmpty()) {
                 if (selectType == SelectType.DRAG) {
                     this.selectedControls = skin.getDrawControlStream().map((ElementControl c) -> {
-                        c.setSelected(hitTest(draggedX, draggedY, draggedW, draggedH, c.getCanvasX(), c.getCanvasY(), c.getCanvasWidth(), c.getCanvasHeight()));
+                        c.setSelected(hitTest(draggedX, draggedY, draggedW, draggedH, c.getCanvasLayoutX(), c.getCanvasLayoutY(), c.getCanvasWidth(), c.getCanvasHeight()));
                         return c;
                     }).filter((ElementControl c) -> {
                         return c.isSelected();
@@ -179,7 +179,7 @@ public class DiagramBehavior extends BehaviorBase<DiagramControl> {
                         c.setSelected(false);
                     });
                     Optional<ElementControl> overControl = skin.getDrawControlStream().filter((ElementControl c) -> {
-                        return hitTest(draggedX, draggedY, draggedW, draggedH, c.getCanvasX(), c.getCanvasY(), c.getCanvasWidth(), c.getCanvasHeight());
+                        return hitTest(draggedX, draggedY, draggedW, draggedH, c.getCanvasLayoutX(), c.getCanvasLayoutY(), c.getCanvasWidth(), c.getCanvasHeight());
                     }).findFirst();
                     if (overControl.isPresent()) {
                         this.selectedControls = new HashSet<>();

@@ -20,8 +20,8 @@ public abstract class ElementBehavior<C extends ElementControl> extends Behavior
         ElementControl control = this.getControl();
         double sceneX = control.getDiagramMouseMovedX();
         double sceneY = control.getDiagramMouseMovedY();
-        double layoutX = control.getCanvasX() + 1d;
-        double layoutY = control.getCanvasY() + 1d;
+        double layoutX = control.getCanvasLayoutX();
+        double layoutY = control.getCanvasLayoutY();
         if (hitTest(sceneX, sceneY, 1d, 1d, layoutX, layoutY, control.getCanvasWidth(), control.getCanvasHeight())) {
             exited.set(true);
             this.mouseEntered(new MouseEvent(MouseEvent.MOUSE_ENTERED, sceneX - layoutX, sceneY - layoutY, sceneX, sceneY, MouseButton.NONE, 0, false, false, false, false, false, false, false, false, false, false, null));
@@ -34,8 +34,8 @@ public abstract class ElementBehavior<C extends ElementControl> extends Behavior
         ElementControl control = this.getControl();
         double sceneX = control.getDiagramMouseMovedX();
         double sceneY = control.getDiagramMouseMovedY();
-        double layoutX = control.getCanvasX() + 1d;
-        double layoutY = control.getCanvasY() + 1d;
+        double layoutX = control.getCanvasLayoutX();
+        double layoutY = control.getCanvasLayoutY();
         mouseExited(new MouseEvent(MouseEvent.MOUSE_EXITED, sceneX - layoutX, sceneY - layoutY, sceneX, sceneY, MouseButton.NONE, 0, false, false, false, false, false, false, false, false, false, false, null));
     };
 
@@ -55,13 +55,19 @@ public abstract class ElementBehavior<C extends ElementControl> extends Behavior
     @Override
     public void mouseEntered(MouseEvent e) {
         ElementControl control = this.getControl();
+        if (!control.isSelected()) {
+            return;
+        }
         double sceneX = control.getDiagramMouseMovedX();
         double sceneY = control.getDiagramMouseMovedY();
-        double layoutX = control.getCanvasX() - 1d;
-        double layoutY = control.getCanvasY() - 1d;
-        if (hitTest(sceneX, sceneY, 1d, 1d, layoutX, layoutY, 2d, control.getHeight())) {
+        double layoutX = control.getCanvasLayoutX();
+        double layoutY = control.getCanvasLayoutY();
+        if (hitTest(sceneX, sceneY, 1d, 1d, layoutX, layoutY, 1d, control.getCanvasHeight())
+                || hitTest(sceneX, sceneY, 1d, 1d, layoutX + control.getCanvasWidth(), layoutY, 1d, control.getCanvasHeight())) {
             control.getScene().setCursor(Cursor.H_RESIZE);
-//        } else if (hitTest(sceneX, sceneY, 1d, 1d, layoutX, layoutX, control.getWidth(), control.getHeight())) {
+        } else if (hitTest(sceneX, sceneY, 1d, 1d, layoutX, layoutY, control.getCanvasWidth(), 1d)
+                || hitTest(sceneX, sceneY, 1d, 1d, layoutX, layoutY + control.getCanvasHeight(), control.getCanvasWidth(), 1d)) {
+            control.getScene().setCursor(Cursor.V_RESIZE);
         } else {
             this.getControl().getScene().setCursor(Cursor.DEFAULT);
         }
