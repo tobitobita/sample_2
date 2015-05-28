@@ -18,6 +18,8 @@ import javafx.scene.control.Control;
  */
 public abstract class ElementControl extends Control {
 
+    private static int count = 0;
+
     /**
      * 幅のデフォルト値。
      */
@@ -53,7 +55,7 @@ public abstract class ElementControl extends Control {
      */
     private final BooleanProperty dragged = new SimpleBooleanProperty(this, "dragged", false);
 
-    private final BooleanProperty resize = new SimpleBooleanProperty(this, "resize", false);
+    private final BooleanProperty resized = new SimpleBooleanProperty(this, "resized", false);
 
     /**
      * 移動中に呼ばれるリスナー
@@ -62,11 +64,24 @@ public abstract class ElementControl extends Control {
         dragged.set(true);
     };
 
+    /**
+     * デバッグ用
+     */
+    private int number;
+
+    /**
+     * デバッグ用
+     */
+    int getNumber() {
+        return number;
+    }
+
     public ElementControl(double defaultWidth, double defaultHeight) {
         super();
         this.defaultWidth = defaultWidth;
         this.defaultHeight = defaultHeight;
         this.initControl();
+        number = ++count;
     }
 
     private void initControl() {
@@ -78,32 +93,29 @@ public abstract class ElementControl extends Control {
         this.dragged.addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
             requestLayout();
         });
-        this.resize.addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            if (newValue) {
-                unbindMove();
-//            } else {
-//                bindMove();
-            }
-        });
         calcX = Bindings.add(diagramMouseMoveX, relativeX);
         calcY = Bindings.add(diagramMouseMoveY, relativeY);
     }
 
-    public void bindMove() {
+    public void bindLayout() {
         this.relativeX.set(this.getLayoutX() - this.diagramMouseMoveX.get());
         this.relativeY.set(this.getLayoutY() - this.diagramMouseMoveY.get());
-        this.layoutXProperty().bind(calcX);
-        this.layoutYProperty().bind(calcY);
         this.layoutXProperty().addListener(layoutChangeListener);
         this.layoutYProperty().addListener(layoutChangeListener);
+        if (this.resized.get()) {
+        } else {
+            this.layoutXProperty().bind(calcX);
+            this.layoutYProperty().bind(calcY);
+        }
     }
 
-    public void unbindMove() {
-        this.layoutXProperty().unbind();
-        this.layoutYProperty().unbind();
+    public void unbindLayout() {
         this.layoutXProperty().removeListener(layoutChangeListener);
         this.layoutYProperty().removeListener(layoutChangeListener);
         this.dragged.set(false);
+        this.resized.set(false);
+        this.layoutXProperty().unbind();
+        this.layoutYProperty().unbind();
     }
 
     public double getCanvasLayoutX() {
@@ -142,8 +154,8 @@ public abstract class ElementControl extends Control {
         return this.dragged.get();
     }
 
-    void setResize(boolean resize) {
-        this.resize.set(resize);
+    void setResized(boolean resize) {
+        this.resized.set(resize);
     }
 
     double getDiagramMouseMovedX() {
