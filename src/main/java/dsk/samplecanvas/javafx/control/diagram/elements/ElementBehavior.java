@@ -13,47 +13,44 @@ import javafx.scene.input.MouseEvent;
 
 public abstract class ElementBehavior<C extends ElementControl> extends BehaviorBase<C> {
 
-    private final BooleanProperty exited = new SimpleBooleanProperty(this, "exited", false);
+    private final BooleanProperty onMouse = new SimpleBooleanProperty(this, "onMouseCursor", false);
 
-    private final ChangeListener<Number> ｍouseEntered = (ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
-        ((ElementSkin) getControl().getSkin()).changeResizeCursor();
+    private final ChangeListener<Number> ｍouseMovedListener = (ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
         ElementControl control = this.getControl();
-        double sceneX = control.getDiagramMouseMovedX();
-        double sceneY = control.getDiagramMouseMovedY();
-        double layoutX = control.getCanvasLayoutX();
-        double layoutY = control.getCanvasLayoutY();
-        double width = control.getCanvasWidth();
-        double height = control.getCanvasHeight();
-        if (hitTest(sceneX, sceneY, 1d, 1d, layoutX, layoutY, width, height)) {
-            exited.set(true);
-            this.mouseEntered(new MouseEvent(MouseEvent.MOUSE_ENTERED, sceneX - layoutX, sceneY - layoutY, sceneX, sceneY, MouseButton.NONE, 0, false, false, false, false, false, false, false, false, false, false, null));
-        } else {
-            exited.set(false);
-        }
+        onMouse.set(hitTest(control.getDiagramMouseMovedX(), control.getDiagramMouseMovedY(), 1d, 1d,
+                control.getCanvasLayoutX(), control.getCanvasLayoutY(), control.getCanvasWidth(), control.getCanvasHeight()));
     };
-
-    private final ChangeListener<Boolean> mouseExited = (ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+    private final ChangeListener<Boolean> onMouseListener = (ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+//        if (oldValue.equals(newValue)) {
+//            return;
+//        }
         ElementControl control = this.getControl();
         double sceneX = control.getDiagramMouseMovedX();
         double sceneY = control.getDiagramMouseMovedY();
         double layoutX = control.getCanvasLayoutX();
         double layoutY = control.getCanvasLayoutY();
-        mouseExited(new MouseEvent(MouseEvent.MOUSE_EXITED, sceneX - layoutX, sceneY - layoutY, sceneX, sceneY, MouseButton.NONE, 0, false, false, false, false, false, false, false, false, false, false, null));
+        if (newValue) {
+            mouseEntered(new MouseEvent(MouseEvent.MOUSE_ENTERED, sceneX - layoutX, sceneY - layoutY, sceneX, sceneY, MouseButton.NONE, 0, false, false, false, false, false, false, false, false, false, false, null));
+        } else {
+            mouseExited(new MouseEvent(MouseEvent.MOUSE_EXITED, sceneX - layoutX, sceneY - layoutY, sceneX, sceneY, MouseButton.NONE, 0, false, false, false, false, false, false, false, false, false, false, null));
+        }
     };
 
     public ElementBehavior(final C control, final List<KeyBinding> keyBindings) {
         super(control, keyBindings);
-        control.diagramMouseMoveXProperty().addListener(ｍouseEntered);
-        control.diagramMouseMoveYProperty().addListener(ｍouseEntered);
-        this.exited.addListener(mouseExited);
+        control.diagramMouseMoveXProperty().addListener(ｍouseMovedListener);
+        control.diagramMouseMoveYProperty().addListener(ｍouseMovedListener);
+        this.onMouse.addListener(onMouseListener);
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
+        ((ElementSkin) getControl().getSkin()).clearResizeCursor();
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
+        ((ElementSkin) getControl().getSkin()).changeResizeCursor();
     }
 
     @Override

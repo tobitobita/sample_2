@@ -60,7 +60,7 @@ public abstract class ElementSkin<C extends ElementControl, BB extends ElementBe
 
     void changeResizeCursor() {
         if (!control.isSelected()) {
-            control.getScene().setCursor(Cursor.DEFAULT);
+            clearResizeCursor();
             return;
         }
         double sceneX = control.getDiagramMouseMovedX();
@@ -69,32 +69,34 @@ public abstract class ElementSkin<C extends ElementControl, BB extends ElementBe
         double layoutY = control.getCanvasLayoutY();
         double width = control.getCanvasWidth();
         double height = control.getCanvasHeight();
-        if (control.isSelected()) {
-            if (hitTest(sceneX, sceneY, 1d, 1d, layoutX - 1d, layoutY - 1d, 4d, 4d)) {
-                control.getScene().setCursor(Cursor.NW_RESIZE);
-                control.setResize(true);
-            } else if (hitTest(sceneX, sceneY, 1d, 1d, layoutX + width - 1d, layoutY - 1d, 4d, 4d)) {
-                control.getScene().setCursor(Cursor.NE_RESIZE);
-                control.setResize(true);
-            } else if (hitTest(sceneX, sceneY, 1d, 1d, layoutX - 1d, layoutY + height - 1d, 4d, 4d)) {
-                control.getScene().setCursor(Cursor.SW_RESIZE);
-                control.setResize(true);
-            } else if (hitTest(sceneX, sceneY, 1d, 1d, layoutX + width - 1d, layoutY + height - 1d, 4d, 4d)) {
-                control.getScene().setCursor(Cursor.SE_RESIZE);
-                control.setResize(true);
-            } else if (hitTest(sceneX, sceneY, 1d, 1d, layoutX, layoutY, 1d, height)
-                    || hitTest(sceneX, sceneY, 1d, 1d, layoutX + width, layoutY, 1d, height)) {
-                control.getScene().setCursor(Cursor.H_RESIZE);
-                control.setResize(true);
-            } else if (hitTest(sceneX, sceneY, 1d, 1d, layoutX, layoutY, height, 1d)
-                    || hitTest(sceneX, sceneY, 1d, 1d, layoutX, layoutY + height, height, 1d)) {
-                control.getScene().setCursor(Cursor.V_RESIZE);
-                control.setResize(true);
-            } else {
-                control.getScene().setCursor(Cursor.DEFAULT);
-                control.setResize(false);
-            }
+        if (hitTest(sceneX, sceneY, 1d, 1d, layoutX - 1d, layoutY - 1d, 4d, 4d)) {
+            control.getScene().setCursor(Cursor.NW_RESIZE);
+            control.setResized(true);
+        } else if (hitTest(sceneX, sceneY, 1d, 1d, layoutX + width - 1d, layoutY - 1d, 4d, 4d)) {
+            control.getScene().setCursor(Cursor.NE_RESIZE);
+            control.setResized(true);
+        } else if (hitTest(sceneX, sceneY, 1d, 1d, layoutX - 1d, layoutY + height - 1d, 4d, 4d)) {
+            control.getScene().setCursor(Cursor.SW_RESIZE);
+            control.setResized(true);
+        } else if (hitTest(sceneX, sceneY, 1d, 1d, layoutX + width - 1d, layoutY + height - 1d, 4d, 4d)) {
+            control.getScene().setCursor(Cursor.SE_RESIZE);
+            control.setResized(true);
+        } else if (hitTest(sceneX, sceneY, 1d, 1d, layoutX, layoutY, 1d, height)
+                || hitTest(sceneX, sceneY, 1d, 1d, layoutX + width, layoutY, 1d, height)) {
+            control.getScene().setCursor(Cursor.H_RESIZE);
+            control.setResized(true);
+        } else if (hitTest(sceneX, sceneY, 1d, 1d, layoutX, layoutY, height, 1d)
+                || hitTest(sceneX, sceneY, 1d, 1d, layoutX, layoutY + height, height, 1d)) {
+            control.getScene().setCursor(Cursor.V_RESIZE);
+            control.setResized(true);
+        } else {
+            clearResizeCursor();
         }
+    }
+
+    void clearResizeCursor() {
+        control.getScene().setCursor(Cursor.DEFAULT);
+        control.setResized(false);
     }
 
     @Override

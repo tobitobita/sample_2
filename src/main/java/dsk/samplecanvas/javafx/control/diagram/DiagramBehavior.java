@@ -2,11 +2,8 @@ package dsk.samplecanvas.javafx.control.diagram;
 
 import com.sun.javafx.scene.control.behavior.BehaviorBase;
 import dsk.samplecanvas.javafx.control.diagram.elements.ElementControl;
-import static dsk.samplecanvas.javafx.control.diagram.utilities.DiagramUtility.hitTest;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.EventHandler;
@@ -57,12 +54,10 @@ public class DiagramBehavior extends BehaviorBase<DiagramControl> {
 
     @Override
     public void mouseExited(MouseEvent event) {
-        System.out.println("mouseExited");
     }
 
     @Override
     public void mouseEntered(MouseEvent event) {
-        System.out.println("mouseEntered");
     }
 
     @Override
