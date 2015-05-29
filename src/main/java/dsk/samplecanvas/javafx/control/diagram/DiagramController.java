@@ -26,7 +26,7 @@ public class DiagramController implements Initializable {
             RectControl rc = new RectControl();
             rc.setCanvasLayoutX(xx);
             rc.setCanvasLayoutY(yy);
-            this.diagram.addElement(rc);
+//            this.diagram.addElement(rc);
             xx += 25d;
             if (i % 25 == 0) {
                 yy += 25d;

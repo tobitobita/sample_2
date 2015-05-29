@@ -33,8 +33,7 @@ public class MainController implements Initializable {
         }
         // dialog
         try {
-            //FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/diagram.fxml"));
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/diagram2.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/diagram.fxml"));
             Scene scene = new Scene(loader.load());
             dialog = new Stage();
             dialog.setScene(scene);

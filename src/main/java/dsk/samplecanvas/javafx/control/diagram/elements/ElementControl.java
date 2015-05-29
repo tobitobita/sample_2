@@ -34,6 +34,24 @@ public abstract class ElementControl extends Control {
      * ダイアグラムのMouseMoveY。
      */
     private final DoubleProperty diagramMouseMoveY = new SimpleDoubleProperty(this, "diagramMouseMoveY");
+    /**
+     * ダイアグラムのClickX。<br>
+     * Pressed、Releasedで更新される。
+     */
+    private final DoubleProperty diagramClickX = new SimpleDoubleProperty(this, "diagramClickX");
+    /**
+     * ダイアグラムのClickY。<br>
+     * Pressed、Releasedで更新される。
+     */
+    private final DoubleProperty diagramClickY = new SimpleDoubleProperty(this, "diagramClickY");
+    /**
+     * ダイアグラムでドラッグした場所のwidth。<br>
+     */
+    private final DoubleProperty diagramDraggedWidth = new SimpleDoubleProperty(this, "diagramDraggedWidth");
+    /**
+     * ダイアグラムでドラッグした場所のheight。
+     */
+    private final DoubleProperty diagramDraggedHeight = new SimpleDoubleProperty(this, "diagramDraggedHeight");
 
     private final DoubleProperty relativeX = new SimpleDoubleProperty(this, "relativeX");
     private final DoubleProperty relativeY = new SimpleDoubleProperty(this, "relativeY");
@@ -146,6 +164,10 @@ public abstract class ElementControl extends Control {
         this.resize.set(resize);
     }
 
+    public BooleanProperty selectedProperty() {
+        return this.selected;
+    }
+
     double getDiagramMouseMovedX() {
         return this.diagramMouseMoveX.get();
     }
@@ -154,8 +176,12 @@ public abstract class ElementControl extends Control {
         return this.diagramMouseMoveY.get();
     }
 
-    public BooleanProperty selectedProperty() {
-        return this.selected;
+    double getDiagramClickX() {
+        return this.diagramClickX.get();
+    }
+
+    double getDiagramClickY() {
+        return this.diagramClickY.get();
     }
 
     /**
@@ -176,4 +202,39 @@ public abstract class ElementControl extends Control {
         return this.diagramMouseMoveY;
     }
 
+    /**
+     * ダイアグラムのClickXプロパティ。
+     *
+     * @return DoubleProperty
+     */
+    public DoubleProperty diagramClickXProperty() {
+        return this.diagramClickX;
+    }
+
+    /**
+     * ダイアグラムのClickYプロパティ。
+     *
+     * @return DoubleProperty
+     */
+    public DoubleProperty diagramClickYProperty() {
+        return this.diagramClickY;
+    }
+
+    /**
+     * ダイアグラムでドラッグした場所のwidthプロパティ。
+     *
+     * @return DoubleProperty
+     */
+    public DoubleProperty diagramDraggedWidthProperty() {
+        return this.diagramDraggedWidth;
+    }
+
+    /**
+     * ダイアグラムでドラッグした場所のheightプロパティ。
+     *
+     * @return DoubleProperty
+     */
+    public DoubleProperty diagramDraggedHeightProperty() {
+        return this.diagramDraggedHeight;
+    }
 }
