@@ -1,0 +1,21 @@
+{
+  "name": "sample_reactjs",
+  "version": "0.0.0",
+  "authors": [
+    "tobitobita <tobitobita.jp@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4"
+  },
+  "devDependencies": {
+    "react": "~0.13.3"
+  }
+}
