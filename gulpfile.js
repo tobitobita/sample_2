@@ -44,8 +44,26 @@ gulp.task('js', ['concat'], function () {
         ;
 });
 // ファイルコピー
-gulp.task('copy', ['js'], function () {
-    return gulp.src([SRC_DIR + '**/*.html', SRC_DIR + 'css/**'], {base: SRC_DIR})
+gulp.task('bower-copy', ['js'], function () {
+    return gulp.src(
+        [
+            'bower_components/jquery/dist/jquery.min.js',
+            'bower_components/react/JSXTransformer.js',
+            'bower_components/react/react.min.js',
+        ])
+        .pipe(plumber())
+        .pipe(gulp.dest(DEST_DIR + '/js'))
+        ;
+});
+gulp.task('copy', ['bower-copy'], function () {
+    return gulp.src(
+        [
+            SRC_DIR + '**/*.html',
+            SRC_DIR + 'css/**',
+            'bower_components/jquery/dist/jquery.min.js',
+            'bower_components/react/JSXTransformer.js',
+            'bower_components/react/react.min.js',
+        ], {base: SRC_DIR})
         .pipe(plumber())
         .pipe(gulp.dest(DEST_DIR))
         ;

@@ -1,2 +1,8 @@
-.idea/
+#共通
 bower_components/
+node_modules/
+build/
+tmp/
+
+#IDE
+.idea/
