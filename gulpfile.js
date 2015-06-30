@@ -7,6 +7,9 @@ var plumber = require('gulp-plumber');
 var del = require('del');
 var express = require('express');
 var serveStatic = require('serve-static');
+var browserify = require('browserify');
+var source = require("vinyl-source-stream");
+var reactify = require('reactify');
 // 文字色変更
 var black = '\u001b[30m';
 var red = '\u001b[31m';
@@ -25,59 +28,61 @@ var DEST_DIR = 'build/';
 var TEMP_DIR = 'tmp/';
 // フォルダ削除。
 gulp.task('clean', del.bind(null, [TEMP_DIR, DEST_DIR]));
-
-// ファイル結合。
+// jsxを結合し、TEMPへ出力。
 gulp.task('concat', ['clean'], function () {
-    return gulp.src([SRC_DIR + 'js/*.js'])
-        .pipe(plumber())
-        .pipe(concat('sample.js'))
-        .pipe(gulp.dest(TEMP_DIR + 'js'))
-        ;
-});
-// jsを最小化。
-gulp.task('js', ['concat'], function () {
-    return gulp.src([TEMP_DIR + '/js/sample.js'])
-        .pipe(plumber())
-//        .pipe(uglify())
-        .pipe(rename('sample.min.js'))
-        .pipe(gulp.dest(TEMP_DIR + 'js'))
-        ;
-});
-// ファイルコピー
-gulp.task('bower-copy', ['js'], function () {
     return gulp.src(
         [
-            'bower_components/jquery/dist/jquery.min.js',
-            'bower_components/react/JSXTransformer.js',
-            'bower_components/react/react.min.js',
+            SRC_DIR + 'jsx/**/*.jsx',
+            SRC_DIR + 'js/**/*.js'
         ])
         .pipe(plumber())
-        .pipe(gulp.dest(DEST_DIR + '/js'))
-        ;
+        .pipe(concat('app.jsx'))
+        .pipe(gulp.dest(TEMP_DIR + '/jsx'));
 });
-gulp.task('copy', ['bower-copy'], function () {
+// jsxをコンパイルしてTEMPへ出力
+gulp.task('browserify', ['concat'], function () {
+    var b = browserify({
+        entries: [TEMP_DIR + 'jsx/app.jsx'],
+        transform: [reactify]
+    });
+    return b.bundle()
+        .pipe(source('dev-app.js'))
+        .pipe(gulp.dest(TEMP_DIR + 'js'));
+});
+// jsを最小化。
+gulp.task('js-uglify', ['browserify'], function () {
+    return gulp.src([TEMP_DIR + 'js/dev-app.js'])
+        .pipe(plumber())
+//        .pipe(uglify())
+        .pipe(rename('dev-app.min.js'))
+        .pipe(gulp.dest(TEMP_DIR + 'js'));
+});
+// jsを結合し出力フォルダへ。
+gulp.task('bower-concat', ['js-uglify'], function () {
+    return gulp.src(
+        // 依存順となるので注意。
+        [
+            'bower_components/jquery/dist/jquery.min.js',
+            'bower_components/react/react.min.js',
+            TEMP_DIR + 'js/dev-app.min.js'
+        ])
+        .pipe(plumber())
+        .pipe(concat('app.min.js'))
+        .pipe(gulp.dest(DEST_DIR + '/js'));
+});
+// srcコンテンツのを出力フォルダへ。
+gulp.task('src-publish', ['bower-concat'], function () {
     return gulp.src(
         [
-            SRC_DIR + '**/*.html',
-            SRC_DIR + 'css/**',
-            'bower_components/jquery/dist/jquery.min.js',
-            'bower_components/react/JSXTransformer.js',
-            'bower_components/react/react.min.js',
+            '**/*.html',
+            'css/**'
         ], {base: SRC_DIR})
         .pipe(plumber())
-        .pipe(gulp.dest(DEST_DIR))
-        ;
-});
-// jsのコピー
-gulp.task('copy-js', ['copy'], function () {
-    return gulp.src([TEMP_DIR + 'js/**/*.min.js'], {base: TEMP_DIR})
-        .pipe(plumber())
-        .pipe(gulp.dest(DEST_DIR))
-        ;
+        .pipe(gulp.dest(DEST_DIR));
 });
 
 // サーバーの起動。
-gulp.task('server', ['copy-js'], function () {
+gulp.task('server', ['src-publish'], function () {
     console.log(__dirname + '/' + DEST_DIR);
     console.log();
     console.log(red + 'http://localhost:3000' + reset);
@@ -91,5 +96,9 @@ gulp.task('server', ['copy-js'], function () {
 // defaultのタスク。
 gulp.task('default', ['server'], function () {
     // ファイル監視
-    gulp.watch([SRC_DIR + 'js/**/*.js', SRC_DIR + '**/*.html'], ['copy-js']);
+    gulp.watch([
+        SRC_DIR + 'js/**/*.js',
+        SRC_DIR + 'jsx/**/*.jsx',
+        SRC_DIR + '**/*.html'
+    ], ['src-publish']);
 });
