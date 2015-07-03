@@ -58,7 +58,7 @@ gulp.task('js-uglify', ['browserify'], function () {
         .pipe(gulp.dest(TEMP_DIR + 'js'));
 });
 // jsを結合し出力フォルダへ。
-gulp.task('bower-concat', ['js-uglify'], function () {
+gulp.task('bower-js-concat', ['js-uglify'], function () {
     return gulp.src(
         // 依存順となるので注意。
         [
@@ -70,12 +70,23 @@ gulp.task('bower-concat', ['js-uglify'], function () {
         .pipe(concat('app.min.js'))
         .pipe(gulp.dest(DEST_DIR + '/js'));
 });
-// srcコンテンツのを出力フォルダへ。
-gulp.task('src-publish', ['bower-concat'], function () {
+// cssを結合し出力フォルダへ。
+gulp.task('bower-css-concat', ['bower-js-concat'], function () {
+    return gulp.src(
+        // 依存順となるので注意。
+        [
+            'bower_components/bootstrap/dist/css/bootstrap.min.css',
+            SRC_DIR + '/css/**/*.css'
+        ])
+        .pipe(plumber())
+        .pipe(concat('app.css'))
+        .pipe(gulp.dest(DEST_DIR + '/css'));
+});
+// srcコンテンツを出力フォルダへ。
+gulp.task('src-publish', ['bower-css-concat'], function () {
     return gulp.src(
         [
-            '**/*.html',
-            'css/**'
+            '**/*.html'
         ], {base: SRC_DIR})
         .pipe(plumber())
         .pipe(gulp.dest(DEST_DIR));
@@ -99,6 +110,7 @@ gulp.task('default', ['server'], function () {
     gulp.watch([
         SRC_DIR + 'js/**/*.js',
         SRC_DIR + 'jsx/**/*.jsx',
+        SRC_DIR + 'css/**/*.css',
         SRC_DIR + '**/*.html'
     ], ['src-publish']);
 });
