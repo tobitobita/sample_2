@@ -3,8 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <title>新規作成</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="css/material.light_green-lime.min.css"/>
 </head>
 <body>
-<h1>新規作成</h1>
+<!-- Simple header with scrollable tabs. -->
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+            <!-- Title -->
+            <span class="mdl-layout-title">新規作成</span>
+
+            <div class="mdl-layout-spacer"></div>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
+                  mdl-textfield--floating-label mdl-textfield--align-right">
+                <label class="mdl-button mdl-js-button mdl-button--icon"
+                       for="waterfall-exp">
+                    <i class="material-icons">search</i>
+                </label>
+
+                <div class="mdl-textfield__expandable-holder">
+                    <input class="mdl-textfield__input" type="text" name="sample"
+                           id="waterfall-exp"/>
+                </div>
+            </div>
+        </div>
+        <!-- Tabs -->
+        <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+            <a href="#scroll-tab-1" class="mdl-layout__tab is-active">Tab 1</a>
+            <a href="#scroll-tab-2" class="mdl-layout__tab">Tab 2</a>
+            <a href="#scroll-tab-3" class="mdl-layout__tab">Tab 3</a>
+            <a href="#scroll-tab-4" class="mdl-layout__tab">Tab 4</a>
+            <a href="#scroll-tab-5" class="mdl-layout__tab">Tab 5</a>
+            <a href="#scroll-tab-6" class="mdl-layout__tab">Tab 6</a>
+        </div>
+    </header>
+    <div class="mdl-layout__drawer">
+        <span class="mdl-layout-title">Title</span>
+    </div>
+    <main class="mdl-layout__content">
+        <section class="mdl-layout__tab-panel is-active" id="scroll-tab-1">
+            <div class="page-content">
+                <!-- Floating Multiline Textfield -->
+                <form action="#">
+                    <div class="mdl-textfield mdl-js-textfield textfield-demo">
+                        <textarea class="mdl-textfield__input" type="text" rows="3" id="sample5"></textarea>
+                        <label class="mdl-textfield__label" for="sample5">Text lines...</label>
+                    </div>
+                </form>
+            </div>
+        </section>
+        <section class="mdl-layout__tab-panel" id="scroll-tab-2">
+            <div class="page-content"><!-- Your content goes here --></div>
+        </section>
+        <section class="mdl-layout__tab-panel" id="scroll-tab-3">
+            <div class="page-content"><!-- Your content goes here --></div>
+        </section>
+        <section class="mdl-layout__tab-panel" id="scroll-tab-4">
+            <div class="page-content"><!-- Your content goes here --></div>
+        </section>
+        <section class="mdl-layout__tab-panel" id="scroll-tab-5">
+            <div class="page-content"><!-- Your content goes here --></div>
+        </section>
+        <section class="mdl-layout__tab-panel" id="scroll-tab-6">
+            <div class="page-content"><!-- Your content goes here --></div>
+        </section>
+    </main>
+    <footer class="mdl-mini-footer">
+        <div class="mdl-mini-footer--left-section">
+            <div class="mdl-logo">Title</div>
+            <ul class="mdl-mini-footer--link-list">
+                <li><a href="#">Help</a></li>
+                <li><a href="#">Privacy & Terms</a></li>
+            </ul>
+        </div>
+    </footer>
+</div>
+<script src="https://storage.googleapis.com/code.getmdl.io/1.0.0/material.min.js"></script>
 </body>
 </html>
