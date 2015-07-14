@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet" type="text/css">
+    <meta charset="UTF-8">
+    <title>追加</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <!--
+    <link rel="stylesheet" href="css/material.lime-light_green.min.css"/>
+    <link rel="stylesheet" href="css/material.green-amber.min.css"/>
+    -->
+    <link rel="stylesheet" href="css/material.light_green-amber.min.css"/>
+    <style>
+        .action-area {
+            text-align: right;
+        }
+
+        #edit-grid {
+            height: 60%;
+        }
+
+        #edit-cell, #scroll-tab-edit, #txtarea, #edit-form, #edit-page-content {
+            height: 100%;
+        }
+
+        #testcase-title-area {
+            width: 99%;
+        }
+
+        #testcase-edit-area {
+            height: 100%;
+            width: 99%;
+        }
+    </style>
+</head>
+<body>
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+            <div class="mdl-cell mdl-cell--1-col">
+                <a href=""><i class="material-icons">arrow_back</i></a>
+            </div>
+            <div class="mdl-cell mdl-cell--11-col">
+                <!-- Title -->
+                <span class="mdl-layout-title">owner / repository</span>
+            </div>
+        </div>
+        <!-- Tabs -->
+        <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+            <a href="#scroll-tab-edit" class="mdl-layout__tab is-active">編集</a>
+            <a href="#scroll-tab-preview" class="mdl-layout__tab" onclick="updatePreview();">プレビュー</a>
+        </div>
+    </header>
+    <main class="mdl-layout__content">
+        <div class="mdl-grid">
+            <div class="mdl-cell mdl-cell--12-col">
+                <h2>何かしらの機能を追加する。<span>#123</span></h2>
+            </div>
+        </div>
+        <div class="mdl-grid" id="edit-grid">
+            <div class="mdl-cell mdl-cell--12-col" id="edit-cell">
+                <section class="mdl-layout__tab-panel is-active" id="scroll-tab-edit">
+                    <div class="page-content" id="edit-page-content">
+                        <!-- Floating Multiline Textfield -->
+                        <form action="#" id="edit-form">
+                            <div class="mdl-textfield mdl-js-textfield" id="testcase-title-area">
+                                <input class="mdl-textfield__input" type="text" id="testcase-title">
+                                <label class="mdl-textfield__label" for="testcase-title">タイトル</label>
+                            </div>
+                            <div class="mdl-textfield mdl-js-textfield" id="testcase-edit-area">
+                                <textarea class="mdl-textfield__input" type="text" id="txtarea"></textarea>
+                                <label class="mdl-textfield__label" for="txtarea">テストケースを記述します。</label>
+                            </div>
+                            <div class="action-area">
+                                <!-- Accent-colored raised button with ripple -->
+                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent mdl-js-ripple-effect">
+                                    保存
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+                <section class="mdl-layout__tab-panel" id="scroll-tab-preview">
+                    <div class="page-content">
+                        <h1 id="preview-title"></h1>
+
+                        <div id="preview-body"></div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+    <footer class="mdl-mini-footer">
+        <div class="mdl-mini-footer--left-section">
+            <div class="mdl-logo">cotest</div>
+            <ul class="mdl-mini-footer--link-list">
+                <li><a href="#">Help</a></li>
+                <li><a href="#">Privacy & Terms</a></li>
+            </ul>
+        </div>
+    </footer>
+</div>
+<script src="js/material.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/marked.min.js"></script>
+<script>
+    function updatePreview() {
+        var rawText = $('#txtarea').val();
+        var trimedText = rawText.replace(/(^\s+)|(\s+$)/g, '');
+        $('#preview-title').text($('#testcase-title').val());
+        $('#preview-body').html(marked(trimedText));
+    }
+</script>
+</body>
+</html>
