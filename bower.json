@@ -1,0 +1,21 @@
+{
+  "name": "testing-design",
+  "version": "1",
+  "homepage": "",
+  "authors": [
+    "Change Vision Inc."
+  ],
+  "license": "Change Vision Inc.",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "jquery": "~2.1.4",
+    "react": "~0.13.3",
+    "bootstrap": "~3.3.5"
+  }
+}

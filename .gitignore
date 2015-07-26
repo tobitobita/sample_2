@@ -1,0 +1,11 @@
+# app
+tmp/
+build/
+
+# components
+node_modules/
+bower_components/
+
+#ide
+.idea/
+
