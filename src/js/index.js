@@ -1,4 +1,7 @@
 "use strict";
+
+var common = require('./common.js');
+
 /**
  * サンプル。
  */
@@ -7,6 +10,6 @@
 	 * ロード時の処理。
 	 */
 	window.addEventListener('load', function () {
-		console.log(`start.`);
+		common.printStart();
 	});
 })();
