@@ -10,6 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/ChangeVision-Biz-Dev/testing.git"
   },
+  "private": true,
   "keywords": [],
   "author": "Change Vision Inc.",
   "license": "Change Vision License.",
