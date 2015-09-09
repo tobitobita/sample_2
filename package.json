@@ -1,0 +1,40 @@
+{
+  "name": "sample-react-test",
+  "version": "0.0.0",
+  "description": "",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "oreore",
+  "private": true,
+  "devDependencies": {
+    "browserify": "^10.2.4",
+    "del": "^1.2.0",
+    "express": "^4.12.4",
+    "gulp": "^3.9.0",
+    "gulp-concat": "^2.5.2",
+    "gulp-data": "^1.2.0",
+    "gulp-jade": "^1.0.1",
+    "gulp-plumber": "^1.0.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^1.2.0",
+    "jasmine": "^2.3.2",
+    "jasmine-core": "^2.3.4",
+    "jasmine-react-helpers": "^0.2.2",
+    "karma": "^0.13.9",
+    "karma-browserify": "^4.3.0",
+    "karma-chrome-launcher": "^0.2.0",
+    "karma-firefox-launcher": "^0.1.6",
+    "karma-jasmine": "^0.3.6",
+    "karma-safari-launcher": "^0.1.1",
+    "react": "^0.13.3",
+    "reactify": "^1.1.1",
+    "require-dir": "^0.3.0",
+    "rewireify": "^0.2.3",
+    "run-sequence": "^1.1.0",
+    "serve-static": "^1.9.3",
+    "vinyl-source-stream": "^1.1.0"
+  }
+}
