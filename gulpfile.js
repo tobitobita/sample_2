@@ -32,27 +32,37 @@ var TEMP_DIR = 'tmp';
 gulp.task('clean', del.bind(null, [TEMP_DIR, DEST_DIR]));
 // js、jsxをコンパイルしてTEMPへ出力
 gulp.task('browserify', ['clean'], function () {
-	var b = browserify({
-		entries: [
-			// js
-			`${SOURCE_DIR}/js/common.js`,
-			// jsx
-			`${SOURCE_DIR}/jsx/index.jsx`,
-			`${SOURCE_DIR}/js/index.js`
-		],
-		transform: [reactify]
-	});
+	var b = browserify(
+//		{
+		//entries: [
+		//	// js
+		//	SOURCE_DIR + '/js/common.js',
+		//	// jsx
+		//	SOURCE_DIR + '/jsx/index.jsx',
+		//	SOURCE_DIR + '/js/index.js'
+		//],
+	//	transform: [reactify],
+	//	debug: false
+	//}
+	);
+	b.add(SOURCE_DIR + '/js/common.js');
+	b.add(SOURCE_DIR + '/jsx/index.jsx');
+	b.add(SOURCE_DIR + '/js/index.js');
+	b.transform(reactify);
+	b.require('./' + SOURCE_DIR + '/js/common.js', {expose: 'dsk/js/common.js'});
+	b.require(SOURCE_DIR + '/jsx/index.jsx', {expose: 'dsk/jsx/index.jsx'});
+	b.require(SOURCE_DIR + '/js/index.js', {expose: 'dsk/js/index.js'});
 	return b.bundle()
 		.pipe(source('dev-app.js'))
-		.pipe(gulp.dest(`${TEMP_DIR}/js`));
+		.pipe(gulp.dest(TEMP_DIR + '/js'));
 });
 // jsを最小化。
 gulp.task('uglify-js', ['browserify'], function () {
-	return gulp.src([`${TEMP_DIR}/js/dev-app.js`])
+	return gulp.src([TEMP_DIR + '/js/dev-app.js'])
 		.pipe(plumber())
 //        .pipe(uglify())
 		.pipe(rename('dev-app.min.js'))
-		.pipe(gulp.dest(`${TEMP_DIR}/js`))
+		.pipe(gulp.dest(TEMP_DIR + '/js'))
 		;
 });
 // bower_components, jsファイル結合。
@@ -64,116 +74,116 @@ gulp.task('concat-bower_components-js', ['uglify-js'], function () {
 			//`bower_components/jquery/dist/jquery.min.js`,
 			//`bower_components/bootstrap/dist/js/bootstrap.min.js`,
 			//`bower_components/react/react.min.js`,
-			`bower_components/jquery/dist/jquery.js`,
-			`bower_components/bootstrap/dist/js/bootstrap.js`,
-			`bower_components/react/react.js`,
+			'bower_components/jquery/dist/jquery.js',
+			'bower_components/bootstrap/dist/js/bootstrap.js',
+			'bower_components/react/react.js',
 			// js
-			`${TEMP_DIR}/js/dev-app.min.js`
+			TEMP_DIR + '/js/dev-app.min.js'
 		])
 		.pipe(plumber())
 		.pipe(concat('app.min.js'))
-		.pipe(gulp.dest(`${TEMP_DIR}/js`))
+		.pipe(gulp.dest(TEMP_DIR + '/js'))
 		;
 });
 // jsをbuildへ出力。
 gulp.task('publish-js', ['concat-bower_components-js'], function () {
-	return gulp.src([`${TEMP_DIR}/js/app.min.js`])
+	return gulp.src([TEMP_DIR + '/js/app.min.js'])
 		.pipe(plumber())
-		.pipe(gulp.dest(`${DEST_DIR}/js`))
+		.pipe(gulp.dest(DEST_DIR + '/js'))
 		;
 });
 // cssファイル結合前処理。
 gulp.task('concat-css-prepare', ['publish-js'], function () {
 	return gulp.src(
 		[
-			`${SOURCE_DIR}/css/common.css`
+			SOURCE_DIR + '/css/common.css'
 		])
 		.pipe(plumber())
 		.pipe(concat('prepare-dev-app.css'))
-		.pipe(gulp.dest(`${TEMP_DIR}/css`))
+		.pipe(gulp.dest(TEMP_DIR + '/css'))
 		;
 });
 // cssファイル結合。
 gulp.task('concat-css', ['concat-css-prepare'], function () {
 	return gulp.src(
 		[
-			`${TEMP_DIR}/css/prepare-dev-app.css`,
-			`${SOURCE_DIR}/css/**/*.css`,
-			`!${SOURCE_DIR}/css/common.css`
+			TEMP_DIR + '/css/prepare-dev-app.css',
+			SOURCE_DIR + '/css/**/*.css',
+			'!' + SOURCE_DIR + '/css/common.css'
 		])
 		.pipe(plumber())
 		.pipe(concat('dev-app.css'))
-		.pipe(gulp.dest(`${TEMP_DIR}/css`))
+		.pipe(gulp.dest(TEMP_DIR + '/css'))
 		;
 });
 // cssを最小化。
 gulp.task('uglify-css', ['concat-css'], function () {
-	return gulp.src([`${TEMP_DIR}/css/dev-app.css`])
+	return gulp.src([TEMP_DIR + '/css/dev-app.css'])
 		.pipe(plumber())
 //        .pipe(uglify())
 		.pipe(rename('dev-app.min.css'))
-		.pipe(gulp.dest(`${TEMP_DIR}/css`))
+		.pipe(gulp.dest(TEMP_DIR + '/css'))
 		;
 });
 // bower_components, cssファイル結合。
 gulp.task('concat-bower_components-css', ['uglify-css'], function () {
 	return gulp.src(
 		[
-			`bower_components/bootstrap/dist/css/bootstrap.min.css`,
-			`${TEMP_DIR}/css/dev-app.min.css`
+			'bower_components/bootstrap/dist/css/bootstrap.min.css',
+			TEMP_DIR + '/css/dev-app.min.css'
 		])
 		.pipe(plumber())
 		.pipe(concat('app.min.css'))
-		.pipe(gulp.dest(`${TEMP_DIR}/css`))
+		.pipe(gulp.dest(TEMP_DIR + '/css'))
 		;
 });
 // cssをbuildへ出力。
 gulp.task('publish-css', ['concat-bower_components-css'], function () {
-	return gulp.src([`${TEMP_DIR}/css/app.min.css`])
+	return gulp.src([TEMP_DIR + '/css/app.min.css'])
 		.pipe(plumber())
-		.pipe(gulp.dest(`${DEST_DIR}/css`))
+		.pipe(gulp.dest(DEST_DIR + '/css'))
 		;
 });
 // jade -> html変換。
 gulp.task('transfer-jade-html', ['publish-css'], function () {
 	return gulp.src(
 		[
-			`${SOURCE_DIR}/**/*.jade`,
+			SOURCE_DIR + '/**/*.jade',
 			// 除外
-			`!${SOURCE_DIR}/_jade_template/**/*.jade`
+			'!' + SOURCE_DIR + '/_jade_template/**/*.jade'
 		])
 		.pipe(plumber())
 		.pipe(jade())
-		.pipe(gulp.dest(`${TEMP_DIR}`))
+		.pipe(gulp.dest(TEMP_DIR))
 		;
 });
 // htmlをbuildへ出力。
 gulp.task('publish-html', ['transfer-jade-html'], function () {
-	return gulp.src(`${TEMP_DIR}/**/*.html`)
+	return gulp.src(TEMP_DIR + '/**/*.html')
 		.pipe(plumber())
-		.pipe(gulp.dest(`${DEST_DIR}`))
+		.pipe(gulp.dest(DEST_DIR))
 		;
 });
 // cssをbuildへ出力。
 gulp.task('copy-resources', ['publish-html'], function () {
 	return gulp.src(
 		[
-			`bower_components/bootstrap/dist/fonts/**/*.*`
+			'bower_components/bootstrap/dist/fonts/**/*.*'
 		])
 		.pipe(plumber())
-		.pipe(gulp.dest(`${DEST_DIR}/fonts`))
+		.pipe(gulp.dest(DEST_DIR + '/fonts'))
 		;
 });
 // サーバーの起動。
 gulp.task('server', ['copy-resources'], function () {
-	var localServerHome = `${__dirname}/${DEST_DIR}`;
+	var localServerHome = __dirname + '/' + DEST_DIR;
 	console.log();
-	console.log(`ローカルサーバーホームディレクトリ: ${localServerHome}`);
+	console.log('ローカルサーバーホームディレクトリ: ' + localServerHome);
 	console.log(red + 'http://localhost:3001' + reset);
 	console.log('で起動します。');
 	console.log();
 	var app = express();
-	app.use(serveStatic(`${localServerHome}`));
+	app.use(serveStatic(localServerHome));
 	app.listen(3001);
 });
 
@@ -182,10 +192,10 @@ gulp.task('default', ['server'], function () {
 	// ファイル監視
 	gulp.watch(
 		[
-			`${SOURCE_DIR}/css/**/*.css`,
-			`${SOURCE_DIR}/js/**/*.js`,
-			`${SOURCE_DIR}/jsx/**/*.jsx`,
-			`${SOURCE_DIR}/**/*.jade`
+			SOURCE_DIR + '/css/**/*.css',
+			SOURCE_DIR + '/js/**/*.js',
+			SOURCE_DIR + '/jsx/**/*.jsx',
+			SOURCE_DIR + '/**/*.jade'
 		],
 		['copy-resources']
 	);
