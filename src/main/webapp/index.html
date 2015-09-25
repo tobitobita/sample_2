@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Start Page</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body>
+        <h1>Hello World!</h1>
+        <form onsubmit="return false;">
+            <input type="text" id="theme" placeholder="テーマを入力してください。" autofocus />
+            <button type="submit" onclick="create();">登録</button>
+        </form>
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script>
+                function create() {
+                    console.log('create');
+                    var theme = $('#theme').val();
+                    if (theme === null || theme === '') {
+                        return console.log('empty.');
+                    }
+                    $.ajax({
+                        url: 'api/theme/create',
+                        method: 'post',
+                        data: JSON.stringify({
+                            theme: theme
+                        }),
+                        contentType: 'application/json',
+                        dataType: 'json'
+                    }).done(function (res) {
+                        console.log('success.');
+                        console.log(res);
+                    }).fail(function (xhr, textStatus, err) {
+                        console.error(textStatus);
+                        console.error(xhr.status);
+                        console.error(err.message);
+                    });
+                }
+
+                $(document).ready(function () {
+                    console.log('start');
+                });
+        </script>
+    </body>
+</html>
