@@ -12,6 +12,10 @@
         </form>
         <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
         <script>
+                function callback() {
+                    console.log('callback');
+                }
+
                 function create() {
                     console.log('create');
                     var theme = $('#theme').val();
@@ -19,13 +23,13 @@
                         return console.log('empty.');
                     }
                     $.ajax({
-                        url: 'api/theme/create',
+                        url: 'http://samplejsonp-env.elasticbeanstalk.com/api/theme/create',
+                        //url: 'http://localhost:8080/SampleJsonp/api/theme/create',
                         method: 'post',
                         data: JSON.stringify({
                             theme: theme
                         }),
-                        contentType: 'application/json',
-                        dataType: 'json'
+                        contentType: 'application/json'
                     }).done(function (res) {
                         console.log('success.');
                         console.log(res);

@@ -8,7 +8,8 @@ import org.glassfish.jersey.server.ResourceConfig;
 public class Config extends ResourceConfig {
 
 	public Config() {
-		System.out.printf("Config\n");
+		int version = 11;
+		System.out.printf("Config:SampleJsonp-1.0-SNAPSHOT%d\n", version);
 		this.packages("dsk.samplejsonp.api.resource")
 				// jsonp
 				.register(JacksonFeature.class);
