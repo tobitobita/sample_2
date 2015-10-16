@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hello World!</title>
+</head>
+<body>
+<h1>Hello World!</h1>
+We are using io.js
+<script>document.write(process.version)</script>
+and Electron
+<script>document.write(process.versions['electron'])</script>
+<canvas id="canvas" width="500" height="300"></canvas>
+<script src="./js/easeljs-0.8.1.min.js"></script>
+<!--<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>-->
+<script>
+    if(window.$ === undefined && window.jQuery === undefined) {
+        window.jQuery = window.$ = require('./js/jquery.min');
+    }
+
+    $(document).ready(function () {
+        console.log('start.');
+        var stage = new createjs.Stage("canvas");
+        createjs.Ticker.setFPS(30);
+        createjs.Ticker.addEventListener("tick", function () {
+            stage.update();
+        });
+
+        var circle = new createjs.Shape();
+        circle.graphics.beginFill("DeepSkyBlue").drawCircle(0, 0, 50);
+        circle.x = 100;
+        circle.y = 100;
+        stage.addChild(circle);
+    });
+</script>
+</body>
+</html>
