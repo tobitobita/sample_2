@@ -16,6 +16,10 @@ import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.oauth2.TokenResult;
 import org.glassfish.jersey.jackson.JacksonFeature;
 
+/**
+ * githubログイン後のコールバック処理サーブレット。<br>
+ * ※ここではユーザーを取得して表示するjspへリダイレクトしている。
+ */
 @WebServlet(name = "Callback", urlPatterns = {"/callback"})
 public class CallbackServlet extends HttpServlet {
 
