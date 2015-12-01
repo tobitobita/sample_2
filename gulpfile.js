@@ -62,8 +62,9 @@ gulp.task('bower-js-concat', ['js-uglify'], function () {
     return gulp.src(
         // 依存順となるので注意。
         [
-            'bower_components/jquery/dist/jquery.min.js',
-            'bower_components/react/react.min.js',
+            'bower_components/jquery/dist/jquery.js',
+            'bower_components/react/react.js',
+            'bower_components/react/react-dom.js',
             TEMP_DIR + 'js/dev-app.min.js'
         ])
         .pipe(plumber())
