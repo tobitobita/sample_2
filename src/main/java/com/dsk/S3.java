@@ -1,7 +1,7 @@
 package com.dsk;
 
+import static ch.qos.logback.core.util.OptionHelper.getEnv;
 import com.amazonaws.AmazonClientException;
-import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.transfer.MultipleFileUpload;
@@ -12,7 +12,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import static java.lang.String.format;
 import static java.nio.charset.Charset.forName;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -22,8 +21,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.io.FileUtils;
+import static java.lang.String.format;
+import static java.lang.System.getProperty;
+import lombok.extern.slf4j.Slf4j;
 
-public class MainClass {
+@Slf4j
+public class S3 {
 
 	private static final String BUCKET_NAME = "tobi_temp";
 
@@ -66,9 +69,9 @@ public class MainClass {
 			}
 			list.add(path.toFile());
 		}
-		final String virtualDirPath = format("%s%s%s", FORMATTER_PATH.format(now), getEnv(SEPARATOR), dir.getFileName());
+		final String virtualDirPath = format("%s%s%s", FORMATTER_PATH.format(now), getProperty(SEPARATOR), dir.getFileName());
 		System.out.println(virtualDirPath);
-		final AmazonS3 s3 = new AmazonS3Client(new BasicAWSCredentials(getEnv("SAMPLE_AWS_KEY"), getEnv("SAMPLE_AWS_SEC")));
+		final AmazonS3 s3 = new AmazonS3Client();
 		s3.setEndpoint("https://s3.amazonaws.com");
 		TransferManager tm = null;
 		try {
@@ -87,7 +90,7 @@ public class MainClass {
 			upload.waitForCompletion();
 			System.out.println("uploaded.");
 		} catch (AmazonClientException | InterruptedException e) {
-			e.printStackTrace();
+			log.error(e.getLocalizedMessage(), e);
 		} finally {
 			if (tm != null) {
 				tm.shutdownNow();
@@ -95,21 +98,5 @@ public class MainClass {
 		}
 
 		FileUtils.forceDelete(dir.toFile());
-	}
-
-	/**
-	 * 環境変数から値を取得する。
-	 *
-	 * @param key 環境変数のキー。
-	 * @return 環境変数の値。
-	 */
-	public static String getEnv(final String key) {
-		// OSによって取得の仕方が違うので2段階でとる。
-		String value = System.getenv(key);
-		if (value == null) {
-			value = System.getProperty(key);
-		}
-		System.out.printf("key:%s, value:%s\n", key, value);
-		return value;
 	}
 }
