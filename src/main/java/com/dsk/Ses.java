@@ -1,7 +1,8 @@
 package com.dsk;
 
-import static com.amazonaws.regions.Region.getRegion;
-import static com.amazonaws.regions.Regions.US_WEST_2;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClient;
 import com.amazonaws.services.simpleemail.model.Body;
@@ -18,9 +19,10 @@ public class Ses {
 	private static final String TO = "makoto.tobita@change-vision.com";
 
 	public static void main(String[] args) {
-		AmazonSimpleEmailService client = new AmazonSimpleEmailServiceClient();
+		AmazonSimpleEmailService client
+				= new AmazonSimpleEmailServiceClient();
 		client.setEndpoint("https://email.us-west-2.amazonaws.com");
-		client.setRegion(getRegion(US_WEST_2));
+		client.setRegion(Region.getRegion(Regions.US_WEST_2));
 
 		// リクエスト作成。
 		SendEmailRequest request = new SendEmailRequest()
@@ -28,9 +30,7 @@ public class Ses {
 				.withSource(FROM)
 				// 送信先。
 				.withDestination(new Destination()
-						.withToAddresses(new String[]{
-					TO
-				}))
+						.withToAddresses(new String[]{TO}))
 				// メッセージ。
 				.withMessage(new Message()
 						// 件名。
