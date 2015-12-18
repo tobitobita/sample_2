@@ -1,6 +1,6 @@
 package dsk.samplecanvas2.diagram;
 
-import dsk.samplecanvas2.diagram.element.RectViewElement;
+import dsk.samplecanvas2.diagram.viewElement.RectViewElement;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;

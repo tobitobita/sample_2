@@ -1,4 +1,4 @@
-package dsk.samplecanvas2.diagram.element;
+package dsk.samplecanvas2.diagram.viewElement;
 
 import lombok.extern.slf4j.Slf4j;
 

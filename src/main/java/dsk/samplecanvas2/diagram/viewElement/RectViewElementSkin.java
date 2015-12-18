@@ -1,4 +1,4 @@
-package dsk.samplecanvas2.diagram.element;
+package dsk.samplecanvas2.diagram.viewElement;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
