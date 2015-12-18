@@ -17,7 +17,7 @@ public class MainJavaBean {
 		});
 
 		JavaBeanIntegerProperty idProperty = JavaBeanIntegerPropertyBuilder.create().bean(bean).name("id").build();
-				
+
 		idProperty.addListener(observable -> {
 			System.out.printf("JavaBeanIntegerProperty %s \n", observable);
 		});
@@ -26,15 +26,17 @@ public class MainJavaBean {
 			System.out.printf("JavaBeanStringProperty %s \n", observable);
 		});
 
-		bean.setId(10);
-		bean.setName("AAA");
-		bean.setId(10);
-		bean.setName("BBB");
+		SampleJavaFxBean fxBean = new SampleJavaFxBean();
+		fxBean.idProperty().bindBidirectional(idProperty);
+		fxBean.nameProperty().bindBidirectional(nameProperty);
 
-//		idProperty.fireValueChangedEvent();
-		System.out.println(idProperty.get());
-//		nameProperty.fireValueChangedEvent();
-		System.out.println(nameProperty.get());
+		idProperty.set(10);
+		nameProperty.set("AAA");
+		System.out.printf("fxbean, id:%d, name:%s\n", fxBean.getId(), fxBean.getName());
+
+		idProperty.set(10);
+		nameProperty.set("BBB");
+
+		System.out.printf("fxbean, id:%d, name:%s\n", fxBean.getId(), fxBean.getName());
 	}
-
 }
