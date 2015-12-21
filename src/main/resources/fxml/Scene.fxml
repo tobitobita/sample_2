@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import dsk.samplecanvas2.diagram.*?>
+<?import dsk.samplecanvas2.*?>
 <?import javafx.scene.canvas.*?>
 <?import javafx.scene.shape.*?>
 <?import java.lang.*?>
@@ -9,8 +9,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="468.0" prefWidth="517.0" style="-fx-background-color: #ffcccc;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dsk.samplecanvas2.diagram.DiagramController">
+<AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="468.0" prefWidth="517.0" style="-fx-background-color: #ffcccc;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dsk.samplecanvas2.SimpleDiagramController">
    <children>
-      <DiagramPane fx:id="diagram" layoutX="0" />
+      <SimpleDiagram fx:id="diagram" layoutX="0" />
    </children>
 </AnchorPane>
