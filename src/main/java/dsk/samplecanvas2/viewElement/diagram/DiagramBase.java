@@ -1,7 +1,6 @@
 package dsk.samplecanvas2.viewElement.diagram;
 
 import dsk.samplecanvas2.viewElement.OperationMode;
-import static dsk.samplecanvas2.viewElement.OperationMode.MOVE;
 import static dsk.samplecanvas2.viewElement.OperationMode.SELECT;
 import dsk.samplecanvas2.viewElement.ViewElement;
 import dsk.samplecanvas2.viewElement.ViewElementBase;
@@ -22,23 +21,27 @@ public class DiagramBase extends Pane implements ViewElement {
 			System.out.printf("FILTER, %s\n", e);
 			getChildren().stream().map(ViewElementBase.class::cast).forEach(viewElement -> {
 				viewElement.setSelected(false);
+//				viewElement.setMouseTransparent(false);
 			});
 			mode.set(SELECT);
 		});
-		this.addEventFilter(MouseEvent.MOUSE_DRAGGED, e -> {
-			System.out.printf("FILTER, %s\n", e);
-			mode.set(MOVE);
-		});
-		this.addEventFilter(MouseEvent.MOUSE_RELEASED, e -> {
-			System.out.printf("FILTER, %s\n", e);
-			mode.set(SELECT);
-			requestLayout();
-		});
+//		this.addEventFilter(MouseEvent.MOUSE_DRAGGED, e -> {
+//			System.out.printf("FILTER, %s\n", e);
+//			mode.set(MOVE);
+//		});
+//		this.addEventFilter(MouseEvent.MOUSE_RELEASED, e -> {
+//			System.out.printf("FILTER, %s\n", e);
+//			mode.set(SELECT);
+//			requestLayout();
+//		});
 //		this.addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
 //			System.out.printf("HANDLER, %s\n", e);
 //		});
 //		this.addEventHandler(MouseEvent.MOUSE_RELEASED, e -> {
 //			System.out.printf("HANDLER, %s\n", e);
+//			getChildren().stream().map(ViewElementBase.class::cast).forEach(viewElement -> {
+//				viewElement.setMouseTransparent(false);
+//			});
 //		});
 	}
 

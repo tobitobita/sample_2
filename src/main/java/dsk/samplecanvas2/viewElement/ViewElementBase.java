@@ -11,6 +11,8 @@ import javafx.scene.control.Control;
  */
 public abstract class ViewElementBase<S extends ViewElementSkinBase> extends Control implements ViewElement {
 
+	static final double PADDING = 6d;
+
 	private final BooleanProperty selected = new SimpleBooleanProperty(this, "selected");
 
 	public ViewElementBase() {
@@ -32,8 +34,13 @@ public abstract class ViewElementBase<S extends ViewElementSkinBase> extends Con
 		return selected;
 	}
 
-	S getViewElementSkin() {
-		return (S) super.getSkin();
+	@Override
+	public void setPrefSize(double prefWidth, double prefHeight) {
+		super.setPrefSize(prefWidth + PADDING * 2, prefHeight + PADDING * 2);
+	}
+
+	ViewElementSkinBase getViewElementSkin() {
+		return (ViewElementSkinBase) super.getSkin();
 	}
 
 	/**
