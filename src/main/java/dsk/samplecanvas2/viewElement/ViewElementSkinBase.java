@@ -1,7 +1,6 @@
 package dsk.samplecanvas2.viewElement;
 
 import com.sun.javafx.scene.control.skin.BehaviorSkinBase;
-import static dsk.samplecanvas2.viewElement.ViewElementBase.PADDING;
 import static java.lang.String.format;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -87,9 +86,9 @@ public abstract class ViewElementSkinBase<VE extends ViewElementBase, B extends 
 
 	private void initVirtualViewElement() {
 		this.virtualViewElement = new Pane();
-		this.virtualViewElement.setPrefSize(this.viewElement.getPrefWidth() - PADDING * 2, this.viewElement.getPrefHeight() - PADDING * 2);
-		this.virtualViewElement.setLayoutX(PADDING);
-		this.virtualViewElement.setLayoutY(PADDING);
+		this.virtualViewElement.setPrefSize(this.viewElement.getVirtualPrefWidth(), this.viewElement.getVirtualPrefHeight());
+		this.virtualViewElement.setLayoutX(this.viewElement.getVirtualPadding());
+		this.virtualViewElement.setLayoutY(this.viewElement.getVirtualPadding());
 		this.getChildren().add(this.virtualViewElement);
 	}
 }

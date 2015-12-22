@@ -5,7 +5,6 @@ import static dsk.samplecanvas2.utilities.ViewElementUtility.hitTest;
 import static dsk.samplecanvas2.viewElement.ViewElementSkinBase.BACKGROUND_ID_PREFIX;
 import java.util.List;
 import javafx.scene.Node;
-import javafx.scene.control.Control;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 
@@ -23,39 +22,33 @@ public abstract class ViewElementBehaviorBase<VE extends ViewElementBase> extend
 	 */
 	public ViewElementBehaviorBase(final VE viewElement) {
 		super(viewElement, TRAVERSAL_BINDINGS);
-		viewElement.addEventFilter(MouseEvent.MOUSE_PRESSED, e -> {
-			if (isBackground(e)) {
-				getControl().setMouseTransparent(true);
-				List<Node> list = getControl().getParent().getChildrenUnmodifiable();
-				final int index = list.indexOf(viewElement);
-				if (index - 1 >= 0) {
-					Control nextNode = (Control) list.get(index - 1);
-					if (hitTest(e.getSceneX(), e.getSceneY(), 1d, 1d,
-							nextNode.getLayoutX(), nextNode.getLayoutY(), nextNode.getPrefWidth(), nextNode.getPrefHeight())) {
-						nextNode.fireEvent(e.copyFor(nextNode, e.getTarget()));
-					}
-				}
-				return;
-			}
-			System.out.printf("FILTER, %s\n", e);
-//			viewElement.setSelected(true);
-		});
-//		viewElement.addEventFilter(MouseEvent.MOUSE_RELEASED, e -> {
-//			if (isBackground(e.getTarget())) {
-//				return;
-//			}
-//			System.out.printf("FILTER, %s\n", e);
-//		});
-//		viewElement.addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
-//			System.out.printf("HANDLER, %s\n", e);
-//		});
-//		viewElement.addEventHandler(MouseEvent.MOUSE_RELEASED, e -> {
-//			System.out.printf("HANDLER, %s\n", e);
-//		});
+	}
+
+	protected ViewElementBase getViewElement() {
+		return (ViewElementBase) this.getControl();
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		if (isBackground(e)) {
+			List<Node> list = getControl().getParent().getChildrenUnmodifiable();
+			final int index = list.indexOf(getControl());
+			if (index - 1 >= 0) {
+				ViewElementBase nextNode = (ViewElementBase) list.get(index - 1);
+				if (hitTest(e.getSceneX() - nextNode.getVirtualLayoutX(), e.getSceneY() - nextNode.getVirtualLayoutY(), 1d, 1d,
+						nextNode.getVirtualLayoutX(), nextNode.getVirtualLayoutY(), nextNode.getVirtualPrefWidth(), nextNode.getVirtualPrefHeight())) {
+					nextNode.fireEvent(e.copyFor(nextNode, e.getTarget()));
+				} else {
+					final Node parent = getControl().getParent();
+					parent.fireEvent(e.copyFor(parent, e.getTarget()));
+				}
+			} else {
+				final Node parent = getControl().getParent();
+				parent.fireEvent(e.copyFor(parent, e.getTarget()));
+			}
+//				e.consume();
+			return;
+		}
 //		if (isBackground(e)) {
 //			this.getControl().setMouseTransparent(true);
 //			((Rectangle) e.getTarget()).setMouseTransparent(true);
