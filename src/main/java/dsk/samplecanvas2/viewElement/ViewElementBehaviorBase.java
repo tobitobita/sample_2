@@ -3,16 +3,17 @@ package dsk.samplecanvas2.viewElement;
 import com.sun.javafx.scene.control.behavior.BehaviorBase;
 import static dsk.samplecanvas2.utilities.ViewElementUtility.hitTest;
 import static dsk.samplecanvas2.viewElement.ViewElementSkinBase.BACKGROUND_ID_PREFIX;
-import java.util.List;
-import javafx.scene.Node;
+import java.util.Optional;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * ViewElementが持つ振る舞いのベース。
  *
  * @param <VE> ViewElementBase
  */
+@Slf4j
 public abstract class ViewElementBehaviorBase<VE extends ViewElementBase> extends BehaviorBase<VE> {
 
 	/**
@@ -24,37 +25,16 @@ public abstract class ViewElementBehaviorBase<VE extends ViewElementBase> extend
 		super(viewElement, TRAVERSAL_BINDINGS);
 	}
 
-	protected ViewElementBase getViewElement() {
-		return (ViewElementBase) this.getControl();
+	protected ViewElement getParentViewElement() {
+		return (ViewElement) this.getControl().getParent();
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		if (isBackground(e)) {
-			List<Node> list = getControl().getParent().getChildrenUnmodifiable();
-			final int index = list.indexOf(getControl());
-			if (index - 1 >= 0) {
-				ViewElementBase nextNode = (ViewElementBase) list.get(index - 1);
-				if (hitTest(e.getSceneX() - nextNode.getVirtualLayoutX(), e.getSceneY() - nextNode.getVirtualLayoutY(), 1d, 1d,
-						nextNode.getVirtualLayoutX(), nextNode.getVirtualLayoutY(), nextNode.getVirtualPrefWidth(), nextNode.getVirtualPrefHeight())) {
-					nextNode.fireEvent(e.copyFor(nextNode, e.getTarget()));
-				} else {
-					final Node parent = getControl().getParent();
-					parent.fireEvent(e.copyFor(parent, e.getTarget()));
-				}
-			} else {
-				final Node parent = getControl().getParent();
-				parent.fireEvent(e.copyFor(parent, e.getTarget()));
-			}
-//				e.consume();
+		if (!isTarget(e)) {
 			return;
 		}
-//		if (isBackground(e)) {
-//			this.getControl().setMouseTransparent(true);
-//			((Rectangle) e.getTarget()).setMouseTransparent(true);
-//			return;
-//		}
-		System.out.printf("HANDLER, %s\n", e);
+		log.trace("HANDLER, {}", e);
 //		((VE) this.getControl()).setSelected(true);
 	}
 
@@ -69,6 +49,26 @@ public abstract class ViewElementBehaviorBase<VE extends ViewElementBase> extend
 //		System.out.printf("HANDLER, %s\n", e);
 		getControl().setMouseTransparent(false);
 //		((Rectangle) e.getTarget()).setMouseTransparent(false);
+	}
+
+	private boolean isTarget(MouseEvent e) {
+		if (isBackground(e)) {
+			Optional<ViewElement> nextViewElement = this.getControl().getNextSiblingViewElement();
+			ViewElement target = null;
+			if (nextViewElement.isPresent()) {
+				final ViewElement nextNode = nextViewElement.get();
+				if (hitTest(e.getSceneX() - nextNode.getVirtualLayoutX(), e.getSceneY() - nextNode.getVirtualLayoutY(), 1d, 1d,
+						nextNode.getVirtualLayoutX(), nextNode.getVirtualLayoutY(), nextNode.getVirtualPrefWidth(), nextNode.getVirtualPrefHeight())) {
+					target = nextNode;
+				}
+			}
+			if (target == null) {
+				target = this.getParentViewElement();
+			}
+			target.fireEvent(e.copyFor(target, e.getTarget()));
+			return false;
+		}
+		return true;
 	}
 
 	static boolean isBackground(final MouseEvent e) {

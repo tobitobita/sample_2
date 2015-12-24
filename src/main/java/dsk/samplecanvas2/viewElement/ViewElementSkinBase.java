@@ -1,7 +1,6 @@
 package dsk.samplecanvas2.viewElement;
 
 import com.sun.javafx.scene.control.skin.BehaviorSkinBase;
-import static java.lang.String.format;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.Node;
@@ -9,6 +8,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import lombok.extern.slf4j.Slf4j;
+import static java.lang.String.format;
 
 /**
  * Nodeが持つスキンのベース。
@@ -76,14 +76,20 @@ public abstract class ViewElementSkinBase<VE extends ViewElementBase, B extends 
 		this.virtualViewElement.getChildren().add(node);
 	}
 
+	/**
+	 * 背景を初期化する。
+	 */
 	private void initBackground() {
 		this.background = new Rectangle(0d, 0d, this.viewElement.getPrefWidth(), this.viewElement.getPrefHeight());
 		this.background.setId(format("%s%s", BACKGROUND_ID_PREFIX, this.viewElement.getId()));
-		this.background.setFill(Color.BLACK);
-//		this.background.setMouseTransparent(true);
+		// nullにするとBehavior.isTarget判定ができなくなるので、不透明度を0とする。
+		this.background.setFill(new Color(0d, 0d, 0d, 0d));
 		this.getChildren().add(this.background);
 	}
 
+	/**
+	 * 仮想
+	 */
 	private void initVirtualViewElement() {
 		this.virtualViewElement = new Pane();
 		this.virtualViewElement.setPrefSize(this.viewElement.getVirtualPrefWidth(), this.viewElement.getVirtualPrefHeight());

@@ -3,19 +3,19 @@ package dsk.samplecanvas2.viewElement;
 import static dsk.samplecanvas2.viewElement.ViewElementBase.PADDING;
 import java.util.List;
 import java.util.Optional;
+import javafx.event.Event;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 
 public interface ViewElement {
 
 	static final double PADDING = 15d;
 
-	List<Node> getChildrenUnmodifiable();
-
 	default Optional<ViewElement> getNextSiblingViewElement() {
-		List<Node> list = this.getChildrenUnmodifiable();
+		List<Node> list = this.getParent().getChildrenUnmodifiable();
 		final int index = list.indexOf(this);
 		if (index - 1 >= 0) {
-			return Optional.of((ViewElementBase) list.get(index - 1));
+			return Optional.of((ViewElement) list.get(index - 1));
 		}
 		return Optional.empty();
 	}
@@ -28,42 +28,47 @@ public interface ViewElement {
 		this.setPrefSize(prefWidth + getVirtualPadding() * 2, prefHeight + getVirtualPadding() * 2);
 	}
 
-	void setPrefSize(double prefWidth, double prefHeigh);
-
 	default double getVirtualLayoutX() {
-		return this.getLayoutX() - getVirtualPadding();
+		return this.getLayoutX() + getVirtualPadding();
 	}
-
-	double getLayoutX();
 
 	default void setVirtualLayoutX(double layoutX) {
-		this.setLayoutX(layoutX + getVirtualPadding());
+		this.setLayoutX(layoutX - getVirtualPadding());
 	}
-
-	void setLayoutX(double layoutX);
 
 	default double getVirtualLayoutY() {
-		return this.getLayoutY() - getVirtualPadding();
+		return this.getLayoutY() + getVirtualPadding();
 	}
-
-	double getLayoutY();
 
 	default void setVirtualLayoutY(double layoutY) {
-		this.setLayoutY(layoutY + getVirtualPadding());
+		this.setLayoutY(layoutY - getVirtualPadding());
 	}
-
-	void setLayoutY(double layoutY);
 
 	default double getVirtualPrefWidth() {
 		return this.getPrefWidth() - getVirtualPadding() * 2;
 	}
 
-	double getPrefWidth();
-
 	default double getVirtualPrefHeight() {
 		return this.getPrefHeight() - getVirtualPadding() * 2;
 	}
 
-	double getPrefHeight();
+	void fireEvent(Event e);
 
+	List<Node> getChildrenUnmodifiable();
+
+	Parent getParent();
+
+	double getLayoutX();
+
+	void setPrefSize(double prefWidth, double prefHeigh);
+
+	void setLayoutX(double layoutX);
+
+	double getLayoutY();
+
+	void setLayoutY(double layoutY);
+
+	double getPrefWidth();
+
+	double getPrefHeight();
 }
