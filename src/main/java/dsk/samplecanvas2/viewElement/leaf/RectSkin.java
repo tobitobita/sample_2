@@ -16,8 +16,7 @@ public class RectSkin extends ViewElementSkinBase<Rect, RectBehavior> {
 	}
 
 	@Override
-	protected void doLayout(double contentWidth, double contentHeight) {
-//		log.trace("doLayout, contentWidth:{}, contentHeight:{}", contentWidth, contentHeight);
+	protected void update(double contentWidth, double contentHeight) {
 		if (this.rect == null) {
 			this.initRect();
 		}
@@ -28,10 +27,9 @@ public class RectSkin extends ViewElementSkinBase<Rect, RectBehavior> {
 	private void initRect() {
 		this.rect = new Rectangle();
 		//feffc8
-//		this.rect.setFill(Color.web("feffc8"));
-		this.rect.setFill(Color.RED);
-		this.rect.setArcWidth(5d);
-		this.rect.setArcHeight(5d);
-		this.add(rect);
+		this.rect.setFill(Color.web("feffc8"));
+		this.rect.setStroke(Color.BLACK);
+		this.rect.setStrokeWidth(2.0d);
+		this.addChild(rect);
 	}
 }

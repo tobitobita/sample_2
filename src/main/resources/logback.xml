@@ -1,12 +1,30 @@
 <configuration>
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <!-- encoders are assigned the type
-        ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
-        <encoder>
-            <pattern>%d{YYYY/MM/dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
-        </encoder>
-    </appender>
-    <root level="trace">
-        <appender-ref ref="STDOUT" />
-    </root>
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<!-- encoders are assigned the type
+		ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+		<encoder>
+			<pattern>%d{YYYY/MM/dd HH:mm:ss.SSS} [%thread] %-5level %marker %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<!-- イベント系 -->
+	<turboFilter class="ch.qos.logback.classic.turbo.MarkerFilter">
+		<Marker>mousePressed</Marker>
+		<OnMatch>DENY</OnMatch>
+	</turboFilter>
+	<turboFilter class="ch.qos.logback.classic.turbo.MarkerFilter">
+		<Marker>mouseReleased</Marker>
+		<OnMatch>DENY</OnMatch>
+	</turboFilter>
+	<turboFilter class="ch.qos.logback.classic.turbo.MarkerFilter">
+		<Marker>update</Marker>
+		<OnMatch>DENY</OnMatch>
+	</turboFilter>
+	<!-- 開発単位系 -->
+	<turboFilter class="ch.qos.logback.classic.turbo.MarkerFilter">
+		<Marker>ViewElementBase</Marker>
+		<OnMatch>DENY</OnMatch>
+	</turboFilter>
+	<root level="trace">
+		<appender-ref ref="STDOUT" />
+	</root>
 </configuration>

@@ -2,6 +2,9 @@ package dsk.samplecanvas2.utilities;
 
 public class ViewElementUtility {
 
+	public ViewElementUtility() {
+	}
+
 	/**
 	 * Rectに対してのhittestを判定する。
 	 *

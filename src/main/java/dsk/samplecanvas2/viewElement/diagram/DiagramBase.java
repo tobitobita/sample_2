@@ -9,45 +9,47 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
+/**
+ * ダイアグラムのベースクラス。
+ */
 public class DiagramBase extends Pane implements ViewElement {
 
+	/**
+	 * ダイアグラム状態を表す。
+	 */
 	private ObjectProperty<OperationMode> mode = new SimpleObjectProperty<>(this, "mode", SELECT);
 
+	/**
+	 * ダイアグラム状態のプロパティ。
+	 *
+	 * @return ダイアグラム状態。
+	 */
+	public ObjectProperty<OperationMode> modeProperty() {
+		return this.mode;
+	}
+
+	/**
+	 * ダイアグラムは余白なしとする。
+	 *
+	 * @return 余白。
+	 */
+	@Override
+	public double getViewElementPadding() {
+		return 0d;
+	}
+
+	/**
+	 * コンストラクタ。
+	 */
 	public DiagramBase() {
 		super();
 		this.setStyle("-fx-background-color: white;");
+		// mousePressedのフィルター時に選択状態を解除する。
 		this.addEventFilter(MouseEvent.MOUSE_PRESSED, e -> {
 			getChildren().stream().map(ViewElementBase.class::cast).forEach(viewElement -> {
 				viewElement.setSelected(false);
 			});
 			mode.set(SELECT);
 		});
-//		this.addEventFilter(MouseEvent.MOUSE_DRAGGED, e -> {
-//			System.out.printf("FILTER, %s\n", e);
-//			mode.set(MOVE);
-//		});
-//		this.addEventFilter(MouseEvent.MOUSE_RELEASED, e -> {
-//			System.out.printf("FILTER, %s\n", e);
-//			mode.set(SELECT);
-//			requestLayout();
-//		});
-		this.addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
-			System.out.printf("HANDLER, %s\n", e);
-		});
-//		this.addEventHandler(MouseEvent.MOUSE_RELEASED, e -> {
-//			System.out.printf("HANDLER, %s\n", e);
-//			getChildren().stream().map(ViewElementBase.class::cast).forEach(viewElement -> {
-//				viewElement.setMouseTransparent(false);
-//			});
-//		});
-	}
-
-	public ObjectProperty<OperationMode> modeProperty() {
-		return this.mode;
-	}
-
-	@Override
-	public double getVirtualPadding() {
-		return 0d;
 	}
 }

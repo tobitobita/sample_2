@@ -28,9 +28,10 @@ public class SimpleDiagramController implements Initializable {
 
 		for (int i = 0; i < 2; ++i) {
 			Rect rect = new Rect();
-			rect.setVirtualLayoutX(defaultX + 50d * i);
-			rect.setVirtualLayoutY(defaultY + 50d * i);
-			rect.setVirtualPrefSize(100d, 100d);
+			rect.setViewElementLayoutX(defaultX + 20d * i);
+			rect.setViewElementLayoutY(defaultY + 20d * i);
+			rect.setViewElementPrefWidth(40d);
+			rect.setViewElementPrefHeight(30d);
 			rect.setId(String.format("Rect%d", i));
 			this.diagram.getChildren().add(rect);
 		}
