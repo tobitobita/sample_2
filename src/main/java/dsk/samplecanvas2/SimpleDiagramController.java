@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class SimpleDiagramController implements Initializable {
+	@FXML
+	private AnchorPane anchorPane;
 
 	@FXML
 	private SimpleDiagram diagram;
@@ -17,11 +19,10 @@ public class SimpleDiagramController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		log.trace("initialize");
-
-		AnchorPane.setTopAnchor(diagram, 0d);
-		AnchorPane.setLeftAnchor(diagram, 0d);
-		AnchorPane.setBottomAnchor(diagram, 0d);
-		AnchorPane.setRightAnchor(diagram, 0d);
+		diagram.setLayoutX(0d);
+		diagram.setLayoutY(0d);
+		diagram.prefWidthProperty().bind(anchorPane.widthProperty());
+		diagram.prefHeightProperty().bind(anchorPane.heightProperty());
 
 		final double defaultX = 50d;
 		final double defaultY = 50d;
@@ -33,7 +34,7 @@ public class SimpleDiagramController implements Initializable {
 			rect.setViewElementPrefWidth(40d);
 			rect.setViewElementPrefHeight(30d);
 			rect.setId(String.format("Rect%d", i));
-			this.diagram.getChildren().add(rect);
+			this.diagram.addViewElement(rect);
 		}
 	}
 }

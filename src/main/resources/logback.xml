@@ -11,6 +11,10 @@
 		<Marker>mousePressed</Marker>
 		<OnMatch>DENY</OnMatch>
 	</turboFilter>
+<!--	<turboFilter class="ch.qos.logback.classic.turbo.MarkerFilter">
+		<Marker>mouseDragged</Marker>
+		<OnMatch>DENY</OnMatch>
+	</turboFilter>-->
 	<turboFilter class="ch.qos.logback.classic.turbo.MarkerFilter">
 		<Marker>mouseReleased</Marker>
 		<OnMatch>DENY</OnMatch>
@@ -24,6 +28,10 @@
 		<Marker>ViewElementBase</Marker>
 		<OnMatch>DENY</OnMatch>
 	</turboFilter>
+<!--	<turboFilter class="ch.qos.logback.classic.turbo.MarkerFilter">
+		<Marker>DiagramBase</Marker>
+		<OnMatch>DENY</OnMatch>
+	</turboFilter>-->
 	<root level="trace">
 		<appender-ref ref="STDOUT" />
 	</root>

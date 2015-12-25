@@ -3,21 +3,24 @@ package dsk.samplecanvas2.viewElement.diagram;
 import dsk.samplecanvas2.viewElement.OperationMode;
 import static dsk.samplecanvas2.viewElement.OperationMode.SELECT;
 import dsk.samplecanvas2.viewElement.ViewElement;
-import dsk.samplecanvas2.viewElement.ViewElementBase;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.Node;
+import javafx.scene.control.Control;
 import javafx.scene.layout.Pane;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * ダイアグラムのベースクラス。
  */
-public class DiagramBase extends Pane implements ViewElement {
+@Slf4j
+public class DiagramBase extends Control implements ViewElement {
 
+	private Pane viewElementPane;
 	/**
 	 * ダイアグラム状態を表す。
 	 */
-	private ObjectProperty<OperationMode> mode = new SimpleObjectProperty<>(this, "mode", SELECT);
+	private final ObjectProperty<OperationMode> mode = new SimpleObjectProperty<>(this, "mode", SELECT);
 
 	/**
 	 * ダイアグラム状態のプロパティ。
@@ -43,13 +46,35 @@ public class DiagramBase extends Pane implements ViewElement {
 	 */
 	public DiagramBase() {
 		super();
-		this.setStyle("-fx-background-color: white;");
-		// mousePressedのフィルター時に選択状態を解除する。
-		this.addEventFilter(MouseEvent.MOUSE_PRESSED, e -> {
-			getChildren().stream().map(ViewElementBase.class::cast).forEach(viewElement -> {
-				viewElement.setSelected(false);
-			});
-			mode.set(SELECT);
-		});
+//		this.setStyle("-fx-background-color: white;");
+		viewElementPane = new Pane();
+		viewElementPane.prefWidthProperty().bind(this.prefWidthProperty());
+		viewElementPane.prefHeightProperty().bind(this.prefHeightProperty());
+		getChildren().add(viewElementPane);
 	}
+
+	@Override
+	protected void layoutChildren() {
+		super.layoutChildren();
+		log.trace("x:{}, y:{}, width:{}, height:{}", getLayoutX(), getLayoutY(), getPrefWidth(), getPrefHeight());
+	}
+
+	/**
+	 * 標準のスキンを作成する。
+	 *
+	 * @return 作成されたスキン。
+	 */
+	@Override
+	protected DiagramSkinBase createDefaultSkin() {
+		return new DiagramSkinBase(this);
+	}
+
+	Pane getViewElementPane() {
+		return this.viewElementPane;
+	}
+
+	public void addViewElement(Node viewElement) {
+		this.viewElementPane.getChildren().add(viewElement);
+	}
+
 }

@@ -39,4 +39,8 @@ public final class MarkerConst {
 	 * ViewElementBase、Skin、Behavior。
 	 */
 	public static final Marker VIEW_ELEMENT_BASE = MarkerFactory.getMarker("ViewElementBase");
+	/**
+	 * DiagramBase等。
+	 */
+	public static final Marker DIAGRAM_BASE = MarkerFactory.getMarker("DiagramBase");
 }

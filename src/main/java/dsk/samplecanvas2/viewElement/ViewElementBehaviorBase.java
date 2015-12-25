@@ -5,6 +5,7 @@ import dsk.samplecanvas2.logging.MarkerConst;
 import static dsk.samplecanvas2.utilities.ViewElementUtility.hitTest;
 import static dsk.samplecanvas2.viewElement.ViewElementSkinBase.BACKGROUND_ID_PREFIX;
 import java.util.Optional;
+import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 import lombok.extern.slf4j.Slf4j;
@@ -16,15 +17,6 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public abstract class ViewElementBehaviorBase<VE extends ViewElementBase> extends BehaviorBase<VE> {
-
-	/**
-	 * 親のViewElementを取得する。
-	 *
-	 * @return 親のViewElement。
-	 */
-	protected ViewElement getParentViewElement() {
-		return (ViewElement) this.getControl().getParent();
-	}
 
 	/**
 	 * コンストラクタ。
@@ -71,21 +63,21 @@ public abstract class ViewElementBehaviorBase<VE extends ViewElementBase> extend
 	protected boolean isTarget(MouseEvent e) {
 		// 自身のクリックされた場所が背景か確認する。
 		if (isBackground(e)) {
-			// 背景の場合は次の兄弟を取得する。
-			Optional<ViewElement> nextViewElement = this.getControl().getNextSiblingViewElement();
+			// 背景の場合は前の兄弟を取得する。
+			Optional<Node> prev = this.getControl().getPreviousSiblingNode();
 			// 再イベントするターゲット。
-			ViewElement target = null;
-			// 次の兄弟のクリック場所が描画枠内の場合はその兄弟を設定する。
-			if (nextViewElement.isPresent()) {
-				final ViewElement nextNode = nextViewElement.get();
-				if (hitTest(e.getSceneX() - nextNode.getViewElementLayoutX(), e.getSceneY() - nextNode.getViewElementLayoutY(), 1d, 1d,
-						nextNode.getViewElementLayoutX(), nextNode.getViewElementLayoutY(), nextNode.getViewElementPrefWidth(), nextNode.getViewElementPrefHeight())) {
-					target = nextNode;
+			Node target = null;
+			// 前の兄弟のクリック場所が描画枠内の場合はその兄弟を設定する。
+			if (prev.isPresent()) {
+				final ViewElementBase prevNode = (ViewElementBase) prev.get();
+				if (hitTest(e.getSceneX(), e.getSceneY(), 1d, 1d,
+						prevNode.getViewElementLayoutX(), prevNode.getViewElementLayoutY(), prevNode.getViewElementPrefWidth(), prevNode.getViewElementPrefHeight())) {
+					target = prevNode;
 				}
 			}
 			// 再イベントするターゲットがない場合は親を設定する。
 			if (target == null) {
-				target = this.getParentViewElement();
+				target = this.getControl().getParent();
 			}
 			// イベント再送。
 			target.fireEvent(e.copyFor(target, e.getTarget()));

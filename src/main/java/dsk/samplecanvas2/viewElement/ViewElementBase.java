@@ -3,12 +3,14 @@ package dsk.samplecanvas2.viewElement;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.control.Control;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * ViewElementのベース。
  *
  * @param <S> ViewElementSkinBase。
  */
+@Slf4j
 public abstract class ViewElementBase<S extends ViewElementSkinBase> extends Control implements ViewElement, Selectable {
 
 	/**
@@ -60,6 +62,7 @@ public abstract class ViewElementBase<S extends ViewElementSkinBase> extends Con
 	 */
 	public ViewElementBase() {
 		super();
+		// TODO initializeで行う。
 		// 選択状態変更時にレイアウト変更を要求する。
 		this.selected.addListener((observable, newValue, oldValue) -> {
 			requestLayout();

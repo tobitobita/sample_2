@@ -12,17 +12,17 @@ import javafx.scene.Parent;
 public interface ViewElement {
 
 	/**
-	 * 次の兄弟を取得する。
+	 * 前の兄弟を取得する。
 	 *
-	 * @return 次の兄弟。
+	 * @return 前の兄弟。
 	 */
-	default Optional<ViewElement> getNextSiblingViewElement() {
-		List<Node> list = this.getParent().getChildrenUnmodifiable();
-		final int index = list.indexOf(this);
-		if (index - 1 >= 0) {
-			return Optional.of((ViewElement) list.get(index - 1));
+	default Optional<Node> getPreviousSiblingNode() {
+		final List<Node> children = this.getParent().getChildrenUnmodifiable();
+		final int index = children.indexOf(this);
+		if (index - 1 < 0) {
+			return Optional.empty();
 		}
-		return Optional.empty();
+		return Optional.of(children.get(index - 1));
 	}
 
 	/**
