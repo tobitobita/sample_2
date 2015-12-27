@@ -13,9 +13,6 @@ import javafx.scene.shape.Circle;
 import static javafx.scene.shape.StrokeType.INSIDE;
 import static dsk.samplecanvas2.logging.MarkerConst.UPDATE;
 import static java.lang.String.format;
-import static java.lang.String.format;
-import static java.lang.String.format;
-import static java.lang.String.format;
 
 /**
  * Nodeが持つスキンのベース。

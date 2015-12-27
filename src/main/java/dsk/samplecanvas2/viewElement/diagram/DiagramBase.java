@@ -3,6 +3,7 @@ package dsk.samplecanvas2.viewElement.diagram;
 import dsk.samplecanvas2.viewElement.OperationMode;
 import static dsk.samplecanvas2.viewElement.OperationMode.SELECT;
 import dsk.samplecanvas2.viewElement.ViewElement;
+import dsk.samplecanvas2.viewElement.ViewElementBase;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Node;
@@ -16,7 +17,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DiagramBase extends Control implements ViewElement {
 
+	/**
+	 * ViewElementを表示する枠。
+	 */
 	private Pane viewElementPane;
+
 	/**
 	 * ダイアグラム状態を表す。
 	 */
@@ -42,21 +47,21 @@ public class DiagramBase extends Control implements ViewElement {
 	}
 
 	/**
+	 * DiagramSkinを取得する。
+	 *
+	 * @return DiagramSkin。
+	 */
+	DiagramSkin getDiagramSkin() {
+		return (DiagramSkin) super.getSkin();
+	}
+
+	/**
 	 * コンストラクタ。
 	 */
 	public DiagramBase() {
 		super();
-//		this.setStyle("-fx-background-color: white;");
-		viewElementPane = new Pane();
-		viewElementPane.prefWidthProperty().bind(this.prefWidthProperty());
-		viewElementPane.prefHeightProperty().bind(this.prefHeightProperty());
-		getChildren().add(viewElementPane);
-	}
-
-	@Override
-	protected void layoutChildren() {
-		super.layoutChildren();
-		log.trace("x:{}, y:{}, width:{}, height:{}", getLayoutX(), getLayoutY(), getPrefWidth(), getPrefHeight());
+		// ViewElementの枠を初期化する。
+		initViewElementPane();
 	}
 
 	/**
@@ -65,16 +70,48 @@ public class DiagramBase extends Control implements ViewElement {
 	 * @return 作成されたスキン。
 	 */
 	@Override
-	protected DiagramSkinBase createDefaultSkin() {
-		return new DiagramSkinBase(this);
+	protected DiagramSkin createDefaultSkin() {
+		return new DiagramSkin(this);
 	}
 
-	Pane getViewElementPane() {
-		return this.viewElementPane;
+	/**
+	 * 全選択する。
+	 */
+	public void selectAll() {
+		this.viewElementPane.getChildren().stream()
+				.map(ViewElementBase.class::cast)
+				.forEach(viewElement -> {
+					viewElement.setSelected(true);
+				});
 	}
 
-	public void addViewElement(Node viewElement) {
+	/**
+	 * 全選択解除する。
+	 */
+	public void deselectAll() {
+		this.viewElementPane.getChildren().stream()
+				.map(ViewElementBase.class::cast)
+				.forEach(viewElement -> {
+					viewElement.setSelected(false);
+				});
+	}
+
+	/**
+	 * ViewElementを追加する。
+	 *
+	 * @param viewElement
+	 */
+	public void addViewElement(final Node viewElement) {
 		this.viewElementPane.getChildren().add(viewElement);
 	}
 
+	/**
+	 * ViewElementPaneを初期化する。
+	 */
+	private void initViewElementPane() {
+		viewElementPane = new Pane();
+		viewElementPane.prefWidthProperty().bind(this.prefWidthProperty());
+		viewElementPane.prefHeightProperty().bind(this.prefHeightProperty());
+		getChildren().add(viewElementPane);
+	}
 }
