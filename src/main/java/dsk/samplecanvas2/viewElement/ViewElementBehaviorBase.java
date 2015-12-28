@@ -6,6 +6,7 @@ import static dsk.samplecanvas2.utilities.ViewElementUtility.hitTest;
 import static dsk.samplecanvas2.viewElement.ViewElementSkinBase.BACKGROUND_ID_PREFIX;
 import java.util.Optional;
 import javafx.scene.Node;
+import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,14 @@ public abstract class ViewElementBehaviorBase<VE extends ViewElementBase> extend
 	 */
 	public ViewElementBehaviorBase(final VE viewElement) {
 		super(viewElement, TRAVERSAL_BINDINGS);
+		viewElement.addEventHandler(MouseDragEvent.MOUSE_DRAG_ENTERED, e -> {
+			log.trace(MarkerConst.MOUSE_DRAG_ENTERED, "HANDLER, {}", e);
+			this.getControl().setSelected(true);
+		});
+		viewElement.addEventHandler(MouseDragEvent.MOUSE_DRAG_EXITED, e -> {
+			log.trace(MarkerConst.MOUSE_DRAG_EXITED, "HANDLER, {}", e);
+			this.getControl().setSelected(false);
+		});
 	}
 
 	// --------

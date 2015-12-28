@@ -105,6 +105,14 @@ public class DiagramBase extends Control implements ViewElement {
 		this.viewElementPane.getChildren().add(viewElement);
 	}
 
+	void startFullDragAllViewElement() {
+		this.viewElementPane.getChildren().stream()
+				.map(ViewElementBase.class::cast)
+				.forEach(viewElement -> {
+					viewElement.startFullDrag();
+				});
+	}
+
 	/**
 	 * ViewElementPaneを初期化する。
 	 */

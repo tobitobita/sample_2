@@ -9,7 +9,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="468.0" prefWidth="517.0" style="-fx-background-color: #ffcccc;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dsk.samplecanvas2.SimpleDiagramController">
+<AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="468.0" prefWidth="517.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dsk.samplecanvas2.SimpleDiagramController">
    <children>
       <SimpleDiagram fx:id="diagram" layoutX="0" layoutY="0"/>
    </children>

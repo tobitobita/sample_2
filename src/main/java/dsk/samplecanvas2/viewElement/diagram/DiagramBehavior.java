@@ -24,19 +24,19 @@ public class DiagramBehavior extends BehaviorBase<DiagramBase> {
 	private final DoubleProperty selectWidth = new SimpleDoubleProperty(this, "selectWidth");
 	private final DoubleProperty selectHeight = new SimpleDoubleProperty(this, "selectHeight");
 
-	DoubleProperty layoutXProperty() {
+	DoubleProperty selectXProperty() {
 		return selectX;
 	}
 
-	DoubleProperty layoutYProperty() {
+	DoubleProperty selectYProperty() {
 		return selectY;
 	}
 
-	DoubleProperty widthProperty() {
+	DoubleProperty selectWidthProperty() {
 		return selectWidth;
 	}
 
-	DoubleProperty heightProperty() {
+	DoubleProperty selectHeightProperty() {
 		return selectHeight;
 	}
 
@@ -50,6 +50,11 @@ public class DiagramBehavior extends BehaviorBase<DiagramBase> {
 		diagram.addEventFilter(MouseEvent.MOUSE_PRESSED, e -> {
 			diagram.deselectAll();
 //			mode.set(SELECT);
+		});
+		diagram.addEventHandler(MouseEvent.DRAG_DETECTED, e -> {
+			log.trace("HANLDER, {}", e);
+			diagram.startFullDragAllViewElement();
+			e.consume();
 		});
 	}
 
