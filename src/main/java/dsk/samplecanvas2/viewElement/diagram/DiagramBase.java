@@ -1,12 +1,10 @@
 package dsk.samplecanvas2.viewElement.diagram;
 
-import dsk.samplecanvas2.viewElement.OperationMode;
-import static dsk.samplecanvas2.viewElement.OperationMode.SELECT;
 import dsk.samplecanvas2.viewElement.ViewElement;
 import dsk.samplecanvas2.viewElement.ViewElementBase;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.scene.Node;
+import dsk.samplecanvas2.viewElement.ViewElementSelectionModel;
+import javafx.beans.property.ReadOnlyProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.scene.control.Control;
 import javafx.scene.layout.Pane;
 import lombok.extern.slf4j.Slf4j;
@@ -20,21 +18,17 @@ public class DiagramBase extends Control implements ViewElement {
 	/**
 	 * ViewElementを表示する枠。
 	 */
-	private Pane viewElementPane;
+	private final Pane viewElementPane;
+
+	/**
+	 * 選択を管理するモデル。
+	 */
+	private final ViewElementSelectionModel selectionModel;
 
 	/**
 	 * ダイアグラム状態を表す。
 	 */
-	private final ObjectProperty<OperationMode> mode = new SimpleObjectProperty<>(this, "mode", SELECT);
-
-	/**
-	 * ダイアグラム状態のプロパティ。
-	 *
-	 * @return ダイアグラム状態。
-	 */
-	public ObjectProperty<OperationMode> modeProperty() {
-		return this.mode;
-	}
+	private final ChangeListener<Boolean> selectChangeListener;
 
 	/**
 	 * ダイアグラムは余白なしとする。
@@ -61,7 +55,20 @@ public class DiagramBase extends Control implements ViewElement {
 	public DiagramBase() {
 		super();
 		// ViewElementの枠を初期化する。
-		initViewElementPane();
+		this.viewElementPane = createViewElementPane();
+		this.selectionModel = new ViewElementSelectionModel(this.viewElementPane);
+		this.selectChangeListener = (observable, oldValue, newValue) -> {
+			if (newValue.equals(oldValue)) {
+				return;
+			}
+			final ReadOnlyProperty prop = (ReadOnlyProperty) observable;
+			final ViewElementBase viewElement = (ViewElementBase) prop.getBean();
+			if (newValue) {
+				this.selectionModel.select(viewElement);
+			} else {
+				this.selectionModel.clearSelection(viewElement);
+			}
+		};
 	}
 
 	/**
@@ -78,22 +85,14 @@ public class DiagramBase extends Control implements ViewElement {
 	 * 全選択する。
 	 */
 	public void selectAll() {
-		this.viewElementPane.getChildren().stream()
-				.map(ViewElementBase.class::cast)
-				.forEach(viewElement -> {
-					viewElement.setSelected(true);
-				});
+		this.selectionModel.selectAll();
 	}
 
 	/**
 	 * 全選択解除する。
 	 */
-	public void deselectAll() {
-		this.viewElementPane.getChildren().stream()
-				.map(ViewElementBase.class::cast)
-				.forEach(viewElement -> {
-					viewElement.setSelected(false);
-				});
+	public void clearSelection() {
+		this.selectionModel.clearSelection();
 	}
 
 	/**
@@ -101,7 +100,8 @@ public class DiagramBase extends Control implements ViewElement {
 	 *
 	 * @param viewElement
 	 */
-	public void addViewElement(final Node viewElement) {
+	public void addViewElement(final ViewElementBase viewElement) {
+		viewElement.selectedProperty().addListener(selectChangeListener);
 		this.viewElementPane.getChildren().add(viewElement);
 	}
 
@@ -114,12 +114,13 @@ public class DiagramBase extends Control implements ViewElement {
 	}
 
 	/**
-	 * ViewElementPaneを初期化する。
+	 * ViewElementPaneを作成する。
 	 */
-	private void initViewElementPane() {
-		viewElementPane = new Pane();
-		viewElementPane.prefWidthProperty().bind(this.prefWidthProperty());
-		viewElementPane.prefHeightProperty().bind(this.prefHeightProperty());
-		getChildren().add(viewElementPane);
+	private Pane createViewElementPane() {
+		final Pane pane = new Pane();
+		pane.prefWidthProperty().bind(this.prefWidthProperty());
+		pane.prefHeightProperty().bind(this.prefHeightProperty());
+		getChildren().add(pane);
+		return pane;
 	}
 }

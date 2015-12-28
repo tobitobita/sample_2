@@ -48,7 +48,7 @@ public class DiagramBehavior extends BehaviorBase<DiagramBase> {
 		super(diagram, keyBindings);
 		// mousePressedのフィルター時に選択状態を解除する。
 		diagram.addEventFilter(MouseEvent.MOUSE_PRESSED, e -> {
-			diagram.deselectAll();
+			diagram.clearSelection();
 //			mode.set(SELECT);
 		});
 		diagram.addEventHandler(MouseEvent.DRAG_DETECTED, e -> {

@@ -6,15 +6,19 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.layout.Pane;
 
-class ViewElementSelectionModel extends MultipleSelectionModel<ViewElementBase> {
+public class ViewElementSelectionModel extends MultipleSelectionModel<ViewElementBase> {
 
 	private final Pane viewElementPane;
 
 	private final ObservableList<ViewElementBase> selectedList = FXCollections.observableArrayList();
 
-	ViewElementSelectionModel(Pane viewElementPane) {
+	public ViewElementSelectionModel(Pane viewElementPane) {
 		super();
 		this.viewElementPane = viewElementPane;
+	}
+
+	public void clearSelection(ViewElementBase value) {
+		this.clearSelection(this.indexOf(value));
 	}
 
 	@Override
@@ -29,7 +33,10 @@ class ViewElementSelectionModel extends MultipleSelectionModel<ViewElementBase> 
 
 	@Override
 	public void selectIndices(int index, int... indices) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		this.select(index);
+		for (int idx : indices) {
+			this.select(idx);
+		}
 	}
 
 	@Override
@@ -53,37 +60,38 @@ class ViewElementSelectionModel extends MultipleSelectionModel<ViewElementBase> 
 
 	@Override
 	public void clearAndSelect(int index) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		this.clearSelection();
+		this.select(index);
 	}
 
 	@Override
 	public void select(int index) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		this.get(index).setSelected(true);
 	}
 
 	@Override
 	public void select(ViewElementBase obj) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		this.select(this.indexOf(obj));
 	}
 
 	@Override
 	public void clearSelection(int index) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		this.get(index).setSelected(false);
 	}
 
 	@Override
 	public void clearSelection() {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		this.selectedList.clear();
 	}
 
 	@Override
-	public boolean isSelected(int index) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	public boolean isSelected(final int index) {
+		return this.get(index).isSelected();
 	}
 
 	@Override
 	public boolean isEmpty() {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		return this.selectedList.isEmpty();
 	}
 
 	@Override
@@ -94,6 +102,14 @@ class ViewElementSelectionModel extends MultipleSelectionModel<ViewElementBase> 
 	@Override
 	public void selectNext() {
 		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
+	private ViewElementBase get(final int index) {
+		return (ViewElementBase) this.viewElementPane.getChildren().get(index);
+	}
+
+	private int indexOf(ViewElementBase value) {
+		return this.viewElementPane.getChildren().indexOf(value);
 	}
 
 	private Stream<ViewElementBase> getViewElementStream() {
