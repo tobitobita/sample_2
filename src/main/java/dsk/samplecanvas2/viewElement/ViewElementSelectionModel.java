@@ -1,24 +1,28 @@
 package dsk.samplecanvas2.viewElement;
 
 import java.util.stream.Stream;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.layout.Pane;
 
 public class ViewElementSelectionModel extends MultipleSelectionModel<ViewElementBase> {
 
+	public static enum SelectType {
+		SINGLE,
+		MULTI
+	}
+
 	private final Pane viewElementPane;
 
-	private final ObservableList<ViewElementBase> selectedList = FXCollections.observableArrayList();
+	private final FilteredList<ViewElementBase> selectedList;
 
 	public ViewElementSelectionModel(Pane viewElementPane) {
 		super();
 		this.viewElementPane = viewElementPane;
-	}
-
-	public void clearSelection(ViewElementBase value) {
-		this.clearSelection(this.indexOf(value));
+		this.selectedList = new FilteredList<>(new NodeToTransformationList<ViewElementBase>(this.viewElementPane.getChildren()), viewElement -> {
+			return viewElement.isSelected();
+		});
 	}
 
 	@Override
@@ -41,10 +45,8 @@ public class ViewElementSelectionModel extends MultipleSelectionModel<ViewElemen
 
 	@Override
 	public void selectAll() {
-		this.selectedList.clear();
 		this.getViewElementStream().forEach(viewElement -> {
 			viewElement.setSelected(true);
-			this.selectedList.add(viewElement);
 		});
 	}
 
@@ -76,12 +78,15 @@ public class ViewElementSelectionModel extends MultipleSelectionModel<ViewElemen
 
 	@Override
 	public void clearSelection(int index) {
-		this.get(index).setSelected(false);
+		final ViewElementBase viewElement = this.get(index);
+		viewElement.setSelected(false);
 	}
 
 	@Override
 	public void clearSelection() {
-		this.selectedList.clear();
+		this.getViewElementStream().forEach(viewElement -> {
+			viewElement.setSelected(false);
+		});
 	}
 
 	@Override

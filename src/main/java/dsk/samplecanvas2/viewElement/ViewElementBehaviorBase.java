@@ -3,6 +3,7 @@ package dsk.samplecanvas2.viewElement;
 import com.sun.javafx.scene.control.behavior.BehaviorBase;
 import dsk.samplecanvas2.logging.MarkerConst;
 import static dsk.samplecanvas2.utilities.ViewElementUtility.hitTest;
+import static dsk.samplecanvas2.viewElement.ViewElementSelectionModel.SelectType.SINGLE;
 import static dsk.samplecanvas2.viewElement.ViewElementSkinBase.BACKGROUND_ID_PREFIX;
 import java.util.Optional;
 import javafx.scene.Node;
@@ -26,13 +27,20 @@ public abstract class ViewElementBehaviorBase<VE extends ViewElementBase> extend
 	 */
 	public ViewElementBehaviorBase(final VE viewElement) {
 		super(viewElement, TRAVERSAL_BINDINGS);
-		viewElement.addEventHandler(MouseDragEvent.MOUSE_DRAG_ENTERED, e -> {
+		viewElement.addEventHandler(MouseDragEvent.MOUSE_DRAG_ENTERED_TARGET, e -> {
+			if (!isTarget(e)) {
+				return;
+			}
 			log.trace(MarkerConst.MOUSE_DRAG_ENTERED, "HANDLER, {}", e);
-			this.getControl().setSelected(true);
+			this.getControl().getOwner().select(this.getControl().getIndex());
 		});
-		viewElement.addEventHandler(MouseDragEvent.MOUSE_DRAG_EXITED, e -> {
+		viewElement.addEventHandler(MouseDragEvent.MOUSE_DRAG_EXITED_TARGET, e -> {
+			if (!isTarget(e)) {
+				return;
+			}
 			log.trace(MarkerConst.MOUSE_DRAG_EXITED, "HANDLER, {}", e);
-			this.getControl().setSelected(false);
+			// TODO 選択エリアと比べてヒットしているか確認する。
+//			this.getControl().getOwner().clearSelection(this.getControl().getIndex());
 		});
 	}
 
@@ -45,7 +53,10 @@ public abstract class ViewElementBehaviorBase<VE extends ViewElementBase> extend
 			return;
 		}
 		log.trace(MarkerConst.MOUSE_PRESSED, "HANDLER, {}", e);
-		this.getControl().setSelected(true);
+		if (this.getControl().getOwner().getSelectType() == SINGLE) {
+			this.getControl().getOwner().clearSelection();
+		}
+		this.getControl().getOwner().select(this.getControl().getIndex());
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package dsk.samplecanvas2.viewElement;
 
+import dsk.samplecanvas2.viewElement.diagram.DiagramBase;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.control.Control;
@@ -13,10 +14,16 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public abstract class ViewElementBase<S extends ViewElementSkinBase> extends Control implements ViewElement, Selectable {
 
+	private DiagramBase owner;
+
 	/**
 	 * 選択状態を表すプロパティ。
 	 */
 	private final BooleanProperty selected = new SimpleBooleanProperty(this, "selected");
+
+	public DiagramBase getOwner() {
+		return this.owner;
+	}
 
 	/**
 	 * 選択状態を取得する。
@@ -49,6 +56,15 @@ public abstract class ViewElementBase<S extends ViewElementSkinBase> extends Con
 	}
 
 	/**
+	 * インデックスを返す。
+	 *
+	 * @return インデックス。
+	 */
+	public int getIndex() {
+		return this.getParent().getChildrenUnmodifiable().indexOf(this);
+	}
+
+	/**
 	 * ViewElementSkinを取得する。
 	 *
 	 * @return ViewElementSkin。
@@ -60,9 +76,9 @@ public abstract class ViewElementBase<S extends ViewElementSkinBase> extends Con
 	/**
 	 * コンストラクタ。
 	 */
-	public ViewElementBase() {
+	public ViewElementBase(final DiagramBase owner) {
 		super();
-		// TODO initializeで行う。
+		this.owner = owner;
 		// 選択状態変更時にレイアウト変更を要求する。
 		this.selected.addListener((observable, newValue, oldValue) -> {
 			requestLayout();

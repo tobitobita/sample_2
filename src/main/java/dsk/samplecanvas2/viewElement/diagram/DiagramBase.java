@@ -3,7 +3,11 @@ package dsk.samplecanvas2.viewElement.diagram;
 import dsk.samplecanvas2.viewElement.ViewElement;
 import dsk.samplecanvas2.viewElement.ViewElementBase;
 import dsk.samplecanvas2.viewElement.ViewElementSelectionModel;
+import dsk.samplecanvas2.viewElement.ViewElementSelectionModel.SelectType;
+import static dsk.samplecanvas2.viewElement.ViewElementSelectionModel.SelectType.SINGLE;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.control.Control;
 import javafx.scene.layout.Pane;
@@ -25,10 +29,15 @@ public class DiagramBase extends Control implements ViewElement {
 	 */
 	private final ViewElementSelectionModel selectionModel;
 
-	/**
-	 * ダイアグラム状態を表す。
-	 */
-	private final ChangeListener<Boolean> selectChangeListener;
+	private ObjectProperty<SelectType> selectType = new SimpleObjectProperty<>(this, "selectType", SINGLE);
+
+	void setSelectType(SelectType type) {
+		this.selectType.set(type);
+	}
+
+	public SelectType getSelectType() {
+		return this.selectType.get();
+	}
 
 	/**
 	 * ダイアグラムは余白なしとする。
@@ -57,18 +66,6 @@ public class DiagramBase extends Control implements ViewElement {
 		// ViewElementの枠を初期化する。
 		this.viewElementPane = createViewElementPane();
 		this.selectionModel = new ViewElementSelectionModel(this.viewElementPane);
-		this.selectChangeListener = (observable, oldValue, newValue) -> {
-			if (newValue.equals(oldValue)) {
-				return;
-			}
-			final ReadOnlyProperty prop = (ReadOnlyProperty) observable;
-			final ViewElementBase viewElement = (ViewElementBase) prop.getBean();
-			if (newValue) {
-				this.selectionModel.select(viewElement);
-			} else {
-				this.selectionModel.clearSelection(viewElement);
-			}
-		};
 	}
 
 	/**
@@ -79,6 +76,18 @@ public class DiagramBase extends Control implements ViewElement {
 	@Override
 	protected DiagramSkin createDefaultSkin() {
 		return new DiagramSkin(this);
+	}
+
+	public void clearAndSelect(int index) {
+		selectionModel.clearAndSelect(index);
+	}
+
+	public void select(int index) {
+		selectionModel.select(index);
+	}
+
+	public void clearSelection(int index) {
+		selectionModel.clearSelection(index);
 	}
 
 	/**
@@ -101,7 +110,6 @@ public class DiagramBase extends Control implements ViewElement {
 	 * @param viewElement
 	 */
 	public void addViewElement(final ViewElementBase viewElement) {
-		viewElement.selectedProperty().addListener(selectChangeListener);
 		this.viewElementPane.getChildren().add(viewElement);
 	}
 

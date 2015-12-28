@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class SimpleDiagramController implements Initializable {
+
 	@FXML
 	private AnchorPane anchorPane;
 
@@ -28,7 +29,7 @@ public class SimpleDiagramController implements Initializable {
 		final double defaultY = 50d;
 
 		for (int i = 0; i < 2; ++i) {
-			Rect rect = new Rect();
+			Rect rect = new Rect(this.diagram);
 			rect.setViewElementLayoutX(defaultX + 20d * i);
 			rect.setViewElementLayoutY(defaultY + 20d * i);
 			rect.setViewElementPrefWidth(40d);

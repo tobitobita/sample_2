@@ -19,14 +19,14 @@
 		<Marker>mouseReleased</Marker>
 		<OnMatch>DENY</OnMatch>
 	</turboFilter>
-	<turboFilter class="ch.qos.logback.classic.turbo.MarkerFilter">
+<!--	<turboFilter class="ch.qos.logback.classic.turbo.MarkerFilter">
 		<Marker>mouseDragEntered</Marker>
 		<OnMatch>DENY</OnMatch>
 	</turboFilter>
 	<turboFilter class="ch.qos.logback.classic.turbo.MarkerFilter">
 		<Marker>mouseDragExited</Marker>
 		<OnMatch>DENY</OnMatch>
-	</turboFilter>
+	</turboFilter>-->
 	<turboFilter class="ch.qos.logback.classic.turbo.MarkerFilter">
 		<Marker>update</Marker>
 		<OnMatch>DENY</OnMatch>

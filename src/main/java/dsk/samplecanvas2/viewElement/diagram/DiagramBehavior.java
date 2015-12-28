@@ -3,6 +3,8 @@ package dsk.samplecanvas2.viewElement.diagram;
 import com.sun.javafx.scene.control.behavior.BehaviorBase;
 import com.sun.javafx.scene.control.behavior.KeyBinding;
 import dsk.samplecanvas2.logging.MarkerConst;
+import static dsk.samplecanvas2.viewElement.ViewElementSelectionModel.SelectType.MULTI;
+import static dsk.samplecanvas2.viewElement.ViewElementSelectionModel.SelectType.SINGLE;
 import static dsk.samplecanvas2.viewElement.diagram.DiagramSkin.LINE_WIDTH;
 import java.util.List;
 import javafx.beans.property.DoubleProperty;
@@ -49,11 +51,12 @@ public class DiagramBehavior extends BehaviorBase<DiagramBase> {
 		// mousePressedのフィルター時に選択状態を解除する。
 		diagram.addEventFilter(MouseEvent.MOUSE_PRESSED, e -> {
 			diagram.clearSelection();
-//			mode.set(SELECT);
+			diagram.setSelectType(SINGLE);
 		});
 		diagram.addEventHandler(MouseEvent.DRAG_DETECTED, e -> {
 			log.trace("HANLDER, {}", e);
 			diagram.startFullDragAllViewElement();
+			diagram.setSelectType(MULTI);
 			e.consume();
 		});
 	}
