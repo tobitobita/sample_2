@@ -108,5 +108,10 @@ var App = React.createClass({
 
 $(document).ready(function () {
 	console.log('start');
+	ReactDOM.unmountComponentAtNode(document.getElementById('app'));
 	ReactDOM.render(<App />, document.getElementById('app'));
+	setInterval(function(){
+		ReactDOM.unmountComponentAtNode(document.getElementById('app'));
+		ReactDOM.render(<App />, document.getElementById('app'));
+	},1000);
 });
