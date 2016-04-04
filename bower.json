@@ -1,0 +1,19 @@
+{
+  "name": "sample_d3",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "tobitobita <tobitobita.jp@gmail.com>"
+  ],
+  "license": "oreore",
+  "moduleType": [],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "private":true
+}

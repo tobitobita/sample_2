@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>sample d3</title>
+</head>
+<body>
+<script src="bower_components/d3/d3.min.js"></script>
+<script>
+    var dataList = [1, 2, 3, 4, 5];
+
+    var svg = d3.select('body')
+            .append('svg')
+            .attr('width', 500)
+            .attr('height', 500)
+            ;
+    svg.selectAll('circle')
+            .data(dataList)
+            .enter()
+            .append('circle')
+            .attr('cx', function (data, i) {
+                return i * 20 + 5;
+            })
+            .attr('cy', function (data, i) {
+                return 5;
+            })
+            .attr('r', function (data, i) {
+                return 5;
+            })
+    ;
+</script>
+</body>
+</html>
