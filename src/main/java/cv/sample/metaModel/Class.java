@@ -1,6 +1,8 @@
 package cv.sample.metaModel;
 
+import javafx.beans.property.ListProperty;
+
 public interface Class {
 
-    Property[] getProperties();
+    ListProperty<Property> propertiesProperty();
 }

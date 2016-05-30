@@ -1,13 +1,14 @@
 package cv.sample.app.controller;
 
 import cv.sample.app.model.Book;
+import cv.sample.metaModel.Property;
 import cv.sample.model.ListModel;
 import cv.sample.model.Model;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.ResourceBundle;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
@@ -29,16 +30,26 @@ public class TableController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        listModel.listProperty().bindContentBidirectional(this.table.getItems());
-
+        this.listModel.listProperty().bindContentBidirectional(this.table.getItems());
         this.table.getColumns().add(this.createNumberColumn());
-        Arrays.stream(listModel.getListTemplateType().getProperties())
-                .map(p -> {
-                    final TableColumn col = new TableColumn(p.getDisplayName());
-                    col.setCellValueFactory(new PropertyValueFactory(p.getName()));
-                    return col;
-                }).forEach(column -> {
-            this.table.getColumns().add(column);
+        this.listModel.getListTemplateType().propertiesProperty().addListener((ListChangeListener.Change<? extends Property> c) -> {
+            while (c.next()) {
+                if (c.wasPermutated()) {
+                } else if (c.wasUpdated()) {
+                } else {
+                    if (c.wasAdded()) {
+                        c.getAddedSubList().stream().map(p -> {
+                            final TableColumn col = new TableColumn(p.getDisplayName());
+                            col.setCellValueFactory(new PropertyValueFactory(p.getName()));
+                            return col;
+                        }).forEach(col -> {
+                            table.getColumns().add(col);
+                        });
+                    }
+                    if (c.wasRemoved()) {
+                    }
+                }
+            }
         });
     }
 

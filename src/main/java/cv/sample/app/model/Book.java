@@ -2,57 +2,20 @@ package cv.sample.app.model;
 
 import cv.sample.metaModel.Property;
 import cv.sample.model.Model;
-import static java.lang.reflect.Modifier.isStatic;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import cv.sample.metaModel.Class;
+import static java.lang.reflect.Modifier.isStatic;
+import java.util.Arrays;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleListProperty;
+import javafx.collections.FXCollections;
 
 public class Book implements Model {
 
-    public static final Class META_MODEL = () -> {
-        final List<Property> props = Arrays.stream(Book.class.getDeclaredFields())
-                .filter(f -> {
-                    f.setAccessible(true);
-                    return !isStatic(f.getModifiers());
-                })
-                .map(f -> {
-                    return new PropertyImpl(f.getName(), f.getName().toUpperCase(), f.getType());
-                }).collect(Collectors.toList());
-        return props.toArray(new Property[props.size()]);
-    };
-
-    private static class PropertyImpl implements Property {
-
-        private final String name;
-        private final String displayName;
-        private final java.lang.Class<?> type;
-
-        public PropertyImpl(String name, String displayName, java.lang.Class<?> type) {
-            this.name = name;
-            this.displayName = displayName;
-            this.type = type;
-        }
-
-        @Override
-        public String getName() {
-            return name;
-        }
-
-        @Override
-        public java.lang.Class<?> getType() {
-            return type;
-        }
-
-        @Override
-        public String getDisplayName() {
-            return displayName;
-        }
-    }
+    public static final BookClass META_MODEL = new BookClass();
 
     private final StringProperty isbn = new SimpleStringProperty(this, "isbn");
     private final StringProperty title = new SimpleStringProperty(this, "title");
@@ -63,6 +26,9 @@ public class Book implements Model {
     }
 
     public Book(String isbn, String title, String author, int price) {
+        if (!META_MODEL.isInit()) {
+            META_MODEL.init();
+        }
         this.isbn.set(isbn);
         this.title.set(title);
         this.author.set(author);
@@ -120,5 +86,48 @@ public class Book implements Model {
     @Override
     public Class getType() {
         return META_MODEL;
+    }
+}
+
+final class BookClass implements Class {
+
+    private final ListProperty<Property> properties = new SimpleListProperty<>(this, "properties", FXCollections.observableArrayList());
+
+    private static boolean init = false;
+
+    boolean isInit() {
+        return init;
+    }
+
+    void init() {
+        Arrays.stream(Book.class.getDeclaredFields())
+                .filter(f -> {
+                    f.setAccessible(true);
+                    return !isStatic(f.getModifiers());
+                }).map(f -> new Property() {
+            @Override
+            public String getName() {
+                return f.getName();
+            }
+
+            @Override
+            public String getDisplayName() {
+                return f.getName().toUpperCase();
+            }
+
+            @Override
+            public java.lang.Class<?> getType() {
+                return f.getType();
+            }
+        })
+                .forEach(p -> {
+                    properties.add(p);
+                });
+        init = true;
+    }
+
+    @Override
+    public ListProperty<Property> propertiesProperty() {
+        return properties;
     }
 }
