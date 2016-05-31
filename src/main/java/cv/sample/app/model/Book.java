@@ -1,45 +1,51 @@
 package cv.sample.app.model;
 
-import cv.sample.metaModel.Property;
 import cv.sample.model.Model;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import cv.sample.metaModel.Class;
-import static java.lang.reflect.Modifier.isStatic;
-import java.util.Arrays;
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ListProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleListProperty;
-import javafx.collections.FXCollections;
+import javafx.beans.property.SimpleObjectProperty;
 
 public class Book implements Model {
 
-    public static final BookClass META_MODEL = new BookClass();
+    public static final List<Field> FIELDS = new ArrayList<>();
+
+    static {
+        try {
+            FIELDS.add(Book.class.getDeclaredField("isbn"));
+            FIELDS.add(Book.class.getDeclaredField("title"));
+            FIELDS.add(Book.class.getDeclaredField("author"));
+            FIELDS.add(Book.class.getDeclaredField("price"));
+        } catch (NoSuchFieldException | SecurityException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     private final StringProperty isbn = new SimpleStringProperty(this, "isbn");
     private final StringProperty title = new SimpleStringProperty(this, "title");
-    private final StringProperty author = new SimpleStringProperty(this, "author");
+    private final ObjectProperty<Author> author = new SimpleObjectProperty<>(this, "author");
     private final IntegerProperty price = new SimpleIntegerProperty(this, "price");
 
     public Book() {
     }
 
-    public Book(String isbn, String title, String author, int price) {
-        if (!META_MODEL.isInit()) {
-            META_MODEL.init();
-        }
+    public Book(String isbn, String title, Author author, int price) {
         this.isbn.set(isbn);
         this.title.set(title);
-        this.author.set(author);
         this.price.set(price);
+        this.author.set(author);
     }
 
-    public String getAuthor() {
+    public Author getAuthor() {
         return author.get();
     }
 
-    public void setAuthor(String author) {
+    public void setAuthor(Author author) {
         this.author.set(author);
     }
 
@@ -75,59 +81,11 @@ public class Book implements Model {
         return title;
     }
 
-    public StringProperty authorProperty() {
-        return author;
-    }
-
     public IntegerProperty priceProperty() {
         return price;
     }
 
-    @Override
-    public Class getType() {
-        return META_MODEL;
-    }
-}
-
-final class BookClass implements Class {
-
-    private final ListProperty<Property> properties = new SimpleListProperty<>(this, "properties", FXCollections.observableArrayList());
-
-    private static boolean init = false;
-
-    boolean isInit() {
-        return init;
-    }
-
-    void init() {
-        Arrays.stream(Book.class.getDeclaredFields())
-                .filter(f -> {
-                    f.setAccessible(true);
-                    return !isStatic(f.getModifiers());
-                }).map(f -> new Property() {
-            @Override
-            public String getName() {
-                return f.getName();
-            }
-
-            @Override
-            public String getDisplayName() {
-                return f.getName().toUpperCase();
-            }
-
-            @Override
-            public java.lang.Class<?> getType() {
-                return f.getType();
-            }
-        })
-                .forEach(p -> {
-                    properties.add(p);
-                });
-        init = true;
-    }
-
-    @Override
-    public ListProperty<Property> propertiesProperty() {
-        return properties;
+    public ObjectProperty<Author> authorProperty() {
+        return author;
     }
 }

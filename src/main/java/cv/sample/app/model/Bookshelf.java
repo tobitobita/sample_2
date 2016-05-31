@@ -4,7 +4,6 @@ import cv.sample.model.ListModel;
 import javafx.beans.property.ReadOnlyListProperty;
 import javafx.beans.property.ReadOnlyListWrapper;
 import javafx.collections.FXCollections;
-import cv.sample.metaModel.Class;
 
 public class Bookshelf implements ListModel<Book> {
 
@@ -21,13 +20,8 @@ public class Bookshelf implements ListModel<Book> {
     }
 
     @Override
-    public Class getListTemplateType() {
-        return Book.META_MODEL;
-    }
-
-    @Override
-    public Class getType() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Class<?> getListTemplateType() {
+        return Book.class;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package cv.sample.app;
 
 import cv.sample.app.controller.TableController;
+import cv.sample.app.model.Author;
 import cv.sample.app.model.Book;
 import cv.sample.model.Model;
 import cv.sample.app.model.Bookshelf;
@@ -46,7 +47,7 @@ public class TableApplication extends Application {
     }
 
     private static void initSampleModel(final Bookshelf shelf) {
-        shelf.add(new Book("1234abcd", "我が輩は猫だと思う", "冬目漱石", 1280));
+        shelf.add(new Book("1234abcd", "我が輩は猫だと思う", new Author("漱石", "冬目", 37), 1280));
     }
 
     public static void main(String[] args) {
